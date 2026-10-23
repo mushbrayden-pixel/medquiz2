@@ -1,7 +1,8 @@
+```javascript
 'use strict';
 
 // Cloudflare Pages Function: deterministic, non-AI Pathology SAQ marking.
-// Required environment variables:
+// Required Cloudflare environment variables:
 // SUPABASE_URL
 // SUPABASE_SECRET_KEY
 // SUPABASE_PUBLISHABLE_KEY
@@ -81,7 +82,6 @@ async function supabaseRequest(env, path, options = {}) {
   return data;
 }
 
-// Normalize spelling, punctuation and capitalization.
 function normalize(value) {
   return String(value ?? '')
     .toLowerCase()
@@ -90,13 +90,6 @@ function normalize(value) {
     .replace(/[^a-z0-9]+/g, ' ')
     .trim()
     .replace(/\s+/g, ' ');
-}
-
-function containsPhrase(answer, phrase) {
-  const a = ` ${normalize(answer)} `;
-  const p = normalize(phrase);
-
-  return !!p && a.includes(` ${p} `);
 }
 
 const STOP_WORDS = new Set([
@@ -108,7 +101,52 @@ const STOP_WORDS = new Set([
   'involved', 'occurs', 'occur', 'increase', 'increased'
 ]);
 
-// Convert existing free-text marking schemes into marking points.
+const SYNONYM_GROUPS = [
+  ['dyspnoea', 'dyspnea', 'shortness of breath', 'breathlessness'],
+  ['oedema', 'edema', 'swelling'],
+  ['haemolysis', 'hemolysis', 'red cell destruction'],
+  ['fibrosis', 'scarring', 'fibrous tissue'],
+  ['inflammation', 'inflammatory response'],
+  ['molecular mimicry', 'cross reactivity', 'cross-reactivity', 'antigenic similarity'],
+  [
+    'streptococcus pyogenes',
+    'group a streptococcus',
+    'group a beta haemolytic streptococcus',
+    'group a beta hemolytic streptococcus',
+    'gas'
+  ],
+  ['mitral stenosis', 'narrowing of the mitral valve'],
+  ['valvular deformity', 'valve deformity', 'damaged valve', 'valve damage'],
+  ['heart failure', 'cardiac failure', 'congestive heart failure'],
+  ['atrial fibrillation', 'af'],
+  ['thromboembolism', 'embolism due to a blood clot'],
+  ['autoimmune', 'immune mediated', 'immune-mediated'],
+  [
+    'antibiotic prophylaxis',
+    'preventive antibiotics',
+    'long term antibiotics',
+    'long-term antibiotics'
+  ]
+];
+
+function expandedAnswer(answer) {
+  let text = ` ${normalize(answer)} `;
+
+  for (const group of SYNONYM_GROUPS) {
+    const normalized = group.map(normalize);
+
+    if (
+      normalized.some(term =>
+        term && text.includes(` ${term} `)
+      )
+    ) {
+      text += ` ${normalized.join(' ')} `;
+    }
+  }
+
+  return text.replace(/\s+/g, ' ');
+}
+
 function extractLegacyPoints(scheme) {
   const text = String(scheme || '').trim();
 
@@ -124,7 +162,7 @@ function extractLegacyPoints(scheme) {
 
   if (parts.length < 2) {
     parts = text
-      .split(/;|\. (?=\S)/)
+      .split(/;|\.(?:\s+|$)/)
       .map(x => x.trim())
       .filter(Boolean);
   }
@@ -135,7 +173,6 @@ function extractLegacyPoints(scheme) {
   }));
 }
 
-// Read JSON marking schemes or existing text-based schemes.
 function parseRubric(scheme, maxMarks) {
   let parsed = null;
 
@@ -143,7 +180,7 @@ function parseRubric(scheme, maxMarks) {
     try {
       parsed = JSON.parse(scheme);
     } catch {
-      // Existing free-text marking schemes are supported.
+      // Treat non-JSON text as a legacy model answer.
     }
   }
 
@@ -216,103 +253,6 @@ function parseRubric(scheme, maxMarks) {
   return points;
 }
 
-// Predefined medical synonyms.
-// Add more terms here as your quiz collection grows.
-const SYNONYM_GROUPS = [
-  [
-    'dyspnoea',
-    'dyspnea',
-    'shortness of breath',
-    'breathlessness'
-  ],
-  [
-    'oedema',
-    'edema',
-    'swelling'
-  ],
-  [
-    'haemolysis',
-    'hemolysis',
-    'red cell destruction'
-  ],
-  [
-    'fibrosis',
-    'scarring',
-    'fibrous tissue'
-  ],
-  [
-    'inflammation',
-    'inflammatory response'
-  ],
-  [
-    'molecular mimicry',
-    'cross reactivity',
-    'cross-reactivity',
-    'antigenic similarity'
-  ],
-  [
-    'streptococcus pyogenes',
-    'group a streptococcus',
-    'group a beta haemolytic streptococcus',
-    'group a beta hemolytic streptococcus',
-    'gas'
-  ],
-  [
-    'mitral stenosis',
-    'narrowing of the mitral valve'
-  ],
-  [
-    'valvular deformity',
-    'valve deformity',
-    'damaged valve',
-    'valve damage'
-  ],
-  [
-    'heart failure',
-    'cardiac failure',
-    'congestive heart failure'
-  ],
-  [
-    'atrial fibrillation',
-    'af'
-  ],
-  [
-    'thromboembolism',
-    'embolism due to a blood clot'
-  ],
-  [
-    'autoimmune',
-    'immune mediated',
-    'immune-mediated'
-  ],
-  [
-    'antibiotic prophylaxis',
-    'preventive antibiotics',
-    'long term antibiotics',
-    'long-term antibiotics'
-  ]
-];
-
-// Expand the answer with recognised equivalent terms.
-function expandedAnswer(answer) {
-  let text = ` ${normalize(answer)} `;
-
-  for (const group of SYNONYM_GROUPS) {
-    const normalized = group.map(normalize);
-
-    const matched = normalized.some(term =>
-      term && text.includes(` ${term} `)
-    );
-
-    if (matched) {
-      text += ` ${normalized.join(' ')} `;
-    }
-  }
-
-  return text.replace(/\s+/g, ' ');
-}
-
-// Check whether the student included a marking point.
 function criterionMatched(answer, criterion) {
   const normalizedAnswer = normalize(answer);
 
@@ -320,7 +260,6 @@ function criterionMatched(answer, criterion) {
 
   const expanded = expandedAnswer(answer);
 
-  // Explicit rubric keywords take priority.
   if (criterion.keywords?.length) {
     return criterion.keywords.some(k => {
       const key = normalize(k);
@@ -329,7 +268,6 @@ function criterionMatched(answer, criterion) {
     });
   }
 
-  // Otherwise, match important words from the marking point.
   const words = normalize(criterion.point)
     .split(' ')
     .filter(w => w.length > 2 && !STOP_WORDS.has(w));
@@ -342,19 +280,17 @@ function criterionMatched(answer, criterion) {
     expanded.includes(` ${w} `)
   ).length;
 
-  // A little flexibility for longer marking points.
-  const required = words.length <= 2
-    ? words.length
-    : Math.max(2, Math.ceil(words.length * 0.5));
+  const required =
+    words.length <= 2
+      ? words.length
+      : Math.max(2, Math.ceil(words.length * 0.5));
 
   return hits >= Math.min(required, words.length);
 }
 
-// Mark one answer using the available rubric.
 function markAnswer(answer, maxMarks, scheme) {
   const studentText = String(answer || '').trim();
   const maximum = Math.max(0, Number(maxMarks) || 0);
-
   const rubric = parseRubric(scheme, maximum);
 
   if (!studentText) {
@@ -362,12 +298,13 @@ function markAnswer(answer, maxMarks, scheme) {
       awarded: 0,
       maximum,
       feedback:
-        'No answer was entered. Review the marking points and try to include each required concept.'
+        'No answer was entered. Review the marking points and try to include each required concept.',
+      achieved: [],
+      missed: rubric.map(p => p.point)
     };
   }
 
   let earned = 0;
-
   const achieved = [];
   const missed = [];
 
@@ -401,11 +338,12 @@ function markAnswer(answer, maxMarks, scheme) {
   return {
     awarded: earned,
     maximum,
-    feedback
+    feedback,
+    achieved,
+    missed
   };
 }
 
-// Main Cloudflare Pages API handler.
 export async function onRequest(context) {
   const { request, env } = context;
   const corsHeaders = makeCorsHeaders(request);
@@ -422,20 +360,15 @@ export async function onRequest(context) {
     );
   }
 
-  // No OpenAI key is required.
   if (
     !env.SUPABASE_URL ||
     !env.SUPABASE_SECRET_KEY ||
     !env.SUPABASE_PUBLISHABLE_KEY
   ) {
-    return reply(
-      500,
-      {
-        error:
-          'Server configuration is incomplete. Check SUPABASE_URL, SUPABASE_SECRET_KEY and SUPABASE_PUBLISHABLE_KEY in Cloudflare Pages Variables and Secrets.'
-      },
-      corsHeaders
-    );
+    return reply(500, {
+      error:
+        'Server configuration is incomplete. Check SUPABASE_URL, SUPABASE_SECRET_KEY and SUPABASE_PUBLISHABLE_KEY in Cloudflare Pages Variables and Secrets.'
+    }, corsHeaders);
   }
 
   try {
@@ -454,7 +387,6 @@ export async function onRequest(context) {
       );
     }
 
-    // Verify the user's Supabase session.
     const authResponse = await fetch(
       `${env.SUPABASE_URL}/auth/v1/user`,
       {
@@ -511,7 +443,6 @@ export async function onRequest(context) {
       );
     }
 
-    // Find the submitted attempt.
     const attempts = await supabaseRequest(
       env,
       `attempts?id=eq.${encodeURIComponent(attemptId)}&select=id,user_id,quiz_id,status,score,total_marks,submitted_at`
@@ -527,7 +458,6 @@ export async function onRequest(context) {
       );
     }
 
-    // Check whether the user is an administrator.
     let isAdmin = false;
 
     try {
@@ -566,7 +496,6 @@ export async function onRequest(context) {
       );
     }
 
-    // Confirm this is a Pathology quiz.
     const quizzes = await supabaseRequest(
       env,
       `quizzes?id=eq.${encodeURIComponent(attempt.quiz_id)}&select=id,subject,title`
@@ -588,7 +517,6 @@ export async function onRequest(context) {
       );
     }
 
-    // Fetch all saved answers and their marking schemes.
     const answers = await supabaseRequest(
       env,
       `student_answers?attempt_id=eq.${encodeURIComponent(attempt.id)}&select=id,question_id,answer_text,awarded_marks,feedback,questions(question_text,marks,marking_scheme,correct_answer,explanation,question_order)`
@@ -612,21 +540,23 @@ export async function onRequest(context) {
     );
 
     const details = [];
-
     let score = 0;
     let totalMarks = 0;
 
-    // Mark each answer using key points, not AI.
     for (const answer of answers) {
       const question = answer.questions || {};
+
+      const modelAnswer =
+        question.marking_scheme ||
+        question.correct_answer ||
+        '';
 
       const marked = markAnswer(
         answer.answer_text,
         question.marks,
-        question.marking_scheme || question.correct_answer || ''
+        modelAnswer
       );
 
-      // Save marks and feedback for this answer.
       await supabaseRequest(
         env,
         `student_answers?id=eq.${encodeURIComponent(answer.id)}`,
@@ -646,16 +576,26 @@ export async function onRequest(context) {
       details.push({
         question_id: answer.question_id,
         question: question.question_text || '',
+        student_answer: answer.answer_text || '',
+        model_answer: modelAnswer,
+        correct_answer:
+          question.correct_answer ||
+          question.marking_scheme ||
+          '',
+        explanation:
+          question.explanation ||
+          marked.feedback,
         awarded_marks: marked.awarded,
         maximum_marks: marked.maximum,
-        feedback: marked.feedback
+        feedback: marked.feedback,
+        achieved_points: marked.achieved,
+        missed_points: marked.missed
       });
     }
 
     score = Math.round(score * 100) / 100;
     totalMarks = Math.round(totalMarks * 100) / 100;
 
-    // Save the final attempt score.
     await supabaseRequest(
       env,
       `attempts?id=eq.${encodeURIComponent(attempt.id)}`,
@@ -669,22 +609,18 @@ export async function onRequest(context) {
       }
     );
 
-    return reply(
-      200,
-      {
-        success: true,
-        attempt_id: attempt.id,
-        score,
-        total_marks: totalMarks,
-        percentage:
-          totalMarks > 0
-            ? Math.round((score / totalMarks) * 10000) / 100
-            : 0,
-        results: details,
-        details
-      },
-      corsHeaders
-    );
+    return reply(200, {
+      success: true,
+      attempt_id: attempt.id,
+      score,
+      total_marks: totalMarks,
+      percentage:
+        totalMarks > 0
+          ? Math.round((score / totalMarks) * 10000) / 100
+          : 0,
+      results: details,
+      details
+    }, corsHeaders);
 
   } catch (error) {
     console.error(
@@ -692,13 +628,10 @@ export async function onRequest(context) {
       error?.stack || error?.message || error
     );
 
-    return reply(
-      500,
-      {
-        error:
-          `Automatic marking failed: ${String(error?.message || 'unexpected server error').slice(0, 500)}. Your saved attempt has not been deleted.`
-      },
-      corsHeaders
-    );
+    return reply(500, {
+      error:
+        `Automatic marking failed: ${String(error?.message || 'unexpected server error').slice(0, 500)}. Your saved attempt has not been deleted; retry from its review page.`
+    }, corsHeaders);
   }
 }
+```
