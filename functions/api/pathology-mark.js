@@ -1,14 +1,10 @@
 'use strict';
 
-// Cloudflare Pages Function: AI-assisted Pathology SAQ marking.
-// Required Cloudflare secrets/variables:
+// Cloudflare Pages Function: deterministic, non-AI Pathology SAQ marking.
+// Required environment variables:
 // SUPABASE_URL
 // SUPABASE_SECRET_KEY
 // SUPABASE_PUBLISHABLE_KEY
-// OPENAI_API_KEY
-//
-// Optional:
-// OPENAI_MARKING_MODEL (defaults to gpt-4.1-mini)
 
 function makeCorsHeaders(request) {
   const origin = request.headers.get('Origin') || '';
@@ -57,7 +53,6 @@ async function supabaseRequest(env, path, options = {}) {
   );
 
   const raw = await response.text();
-
   let data = null;
 
   try {
@@ -86,441 +81,331 @@ async function supabaseRequest(env, path, options = {}) {
   return data;
 }
 
-async function markAnswerAI(
-  answer,
-  maxMarks,
-  questionText,
-  scheme,
-  correctAnswer,
-  explanation,
-  env
-) {
+// Normalize spelling, punctuation and capitalization.
+function normalize(value) {
+  return String(value ?? '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+    .replace(/\s+/g, ' ');
+}
+
+function containsPhrase(answer, phrase) {
+  const a = ` ${normalize(answer)} `;
+  const p = normalize(phrase);
+
+  return !!p && a.includes(` ${p} `);
+}
+
+const STOP_WORDS = new Set([
+  'the', 'and', 'or', 'of', 'to', 'in', 'a', 'an',
+  'is', 'are', 'was', 'were', 'be', 'by', 'for',
+  'with', 'after', 'before', 'may', 'can', 'this',
+  'that', 'into', 'from', 'on', 'as', 'it', 'their',
+  'its', 'due', 'which', 'when', 'during', 'involves',
+  'involved', 'occurs', 'occur', 'increase', 'increased'
+]);
+
+// Convert existing free-text marking schemes into marking points.
+function extractLegacyPoints(scheme) {
+  const text = String(scheme || '').trim();
+
+  if (!text) return [];
+
+  let parts = text
+    .replace(/\r/g, '\n')
+    .split(/\n+|(?=(?:^|\s)(?:\d{1,2}[.)]|[-•*])\s+)/)
+    .map(x =>
+      x.replace(/^\s*(?:\d{1,2}[.)]|[-•*])\s*/, '').trim()
+    )
+    .filter(Boolean);
+
+  if (parts.length < 2) {
+    parts = text
+      .split(/;|\. (?=\S)/)
+      .map(x => x.trim())
+      .filter(Boolean);
+  }
+
+  return parts.map(point => ({
+    point,
+    keywords: []
+  }));
+}
+
+// Read JSON marking schemes or existing text-based schemes.
+function parseRubric(scheme, maxMarks) {
+  let parsed = null;
+
+  if (typeof scheme === 'string') {
+    try {
+      parsed = JSON.parse(scheme);
+    } catch {
+      // Existing free-text marking schemes are supported.
+    }
+  }
+
+  let points = Array.isArray(parsed)
+    ? parsed
+    : extractLegacyPoints(scheme);
+
+  points = points.map((item, i) => {
+    if (typeof item === 'string') {
+      return {
+        point: item,
+        keywords: [],
+        marks: null,
+        index: i
+      };
+    }
+
+    return {
+      point: String(
+        item?.point ||
+        item?.concept ||
+        item?.criterion ||
+        ''
+      ).trim(),
+
+      keywords: Array.isArray(item?.keywords)
+        ? item.keywords.map(String).filter(x => x.trim())
+        : [],
+
+      marks:
+        Number.isFinite(Number(item?.marks)) &&
+        Number(item.marks) > 0
+          ? Number(item.marks)
+          : null,
+
+      index: i
+    };
+  }).filter(p => p.point);
+
+  if (!points.length) {
+    return [{
+      point: 'Relevant answer based on the model answer',
+      keywords: [],
+      marks: Number(maxMarks) || 0,
+      index: 0,
+      generic: true
+    }];
+  }
+
+  const explicitTotal = points.reduce(
+    (sum, p) => sum + (p.marks || 0),
+    0
+  );
+
+  if (points.some(p => p.marks === null) || explicitTotal <= 0) {
+    const each = (Number(maxMarks) || 0) / points.length;
+
+    points.forEach(p => {
+      p.marks = each;
+    });
+  } else if (
+    Math.abs(explicitTotal - maxMarks) > 0.001 &&
+    explicitTotal > 0
+  ) {
+    points.forEach(p => {
+      p.marks = p.marks * maxMarks / explicitTotal;
+    });
+  }
+
+  return points;
+}
+
+// Predefined medical synonyms.
+// Add more terms here as your quiz collection grows.
+const SYNONYM_GROUPS = [
+  [
+    'dyspnoea',
+    'dyspnea',
+    'shortness of breath',
+    'breathlessness'
+  ],
+  [
+    'oedema',
+    'edema',
+    'swelling'
+  ],
+  [
+    'haemolysis',
+    'hemolysis',
+    'red cell destruction'
+  ],
+  [
+    'fibrosis',
+    'scarring',
+    'fibrous tissue'
+  ],
+  [
+    'inflammation',
+    'inflammatory response'
+  ],
+  [
+    'molecular mimicry',
+    'cross reactivity',
+    'cross-reactivity',
+    'antigenic similarity'
+  ],
+  [
+    'streptococcus pyogenes',
+    'group a streptococcus',
+    'group a beta haemolytic streptococcus',
+    'group a beta hemolytic streptococcus',
+    'gas'
+  ],
+  [
+    'mitral stenosis',
+    'narrowing of the mitral valve'
+  ],
+  [
+    'valvular deformity',
+    'valve deformity',
+    'damaged valve',
+    'valve damage'
+  ],
+  [
+    'heart failure',
+    'cardiac failure',
+    'congestive heart failure'
+  ],
+  [
+    'atrial fibrillation',
+    'af'
+  ],
+  [
+    'thromboembolism',
+    'embolism due to a blood clot'
+  ],
+  [
+    'autoimmune',
+    'immune mediated',
+    'immune-mediated'
+  ],
+  [
+    'antibiotic prophylaxis',
+    'preventive antibiotics',
+    'long term antibiotics',
+    'long-term antibiotics'
+  ]
+];
+
+// Expand the answer with recognised equivalent terms.
+function expandedAnswer(answer) {
+  let text = ` ${normalize(answer)} `;
+
+  for (const group of SYNONYM_GROUPS) {
+    const normalized = group.map(normalize);
+
+    const matched = normalized.some(term =>
+      term && text.includes(` ${term} `)
+    );
+
+    if (matched) {
+      text += ` ${normalized.join(' ')} `;
+    }
+  }
+
+  return text.replace(/\s+/g, ' ');
+}
+
+// Check whether the student included a marking point.
+function criterionMatched(answer, criterion) {
+  const normalizedAnswer = normalize(answer);
+
+  if (!normalizedAnswer) return false;
+
+  const expanded = expandedAnswer(answer);
+
+  // Explicit rubric keywords take priority.
+  if (criterion.keywords?.length) {
+    return criterion.keywords.some(k => {
+      const key = normalize(k);
+
+      return !!key && expanded.includes(` ${key} `);
+    });
+  }
+
+  // Otherwise, match important words from the marking point.
+  const words = normalize(criterion.point)
+    .split(' ')
+    .filter(w => w.length > 2 && !STOP_WORDS.has(w));
+
+  if (!words.length) {
+    return expanded.includes(` ${normalize(criterion.point)} `);
+  }
+
+  const hits = words.filter(w =>
+    expanded.includes(` ${w} `)
+  ).length;
+
+  // A little flexibility for longer marking points.
+  const required = words.length <= 2
+    ? words.length
+    : Math.max(2, Math.ceil(words.length * 0.5));
+
+  return hits >= Math.min(required, words.length);
+}
+
+// Mark one answer using the available rubric.
+function markAnswer(answer, maxMarks, scheme) {
   const studentText = String(answer || '').trim();
   const maximum = Math.max(0, Number(maxMarks) || 0);
+
+  const rubric = parseRubric(scheme, maximum);
 
   if (!studentText) {
     return {
       awarded: 0,
       maximum,
       feedback:
-        'No answer was entered. Review the question and model answer, then try to include the important required concepts.',
-      criteria: []
+        'No answer was entered. Review the marking points and try to include each required concept.'
     };
   }
 
-  if (!env.OPENAI_API_KEY) {
-    throw new Error(
-      'AI marking is not configured. Add OPENAI_API_KEY in Cloudflare Pages > Settings > Variables and Secrets.'
-    );
-  }
+  let earned = 0;
 
-  const rubricText = String(scheme || '').trim();
-  const referenceText = String(correctAnswer || '').trim();
-  const explanationText = String(explanation || '').trim();
+  const achieved = [];
+  const missed = [];
 
-  const schema = {
-    type: 'object',
-    additionalProperties: false,
-    properties: {
-      awarded: {
-        type: 'number'
-      },
-      feedback: {
-        type: 'string'
-      },
-      criteria: {
-        type: 'array',
-        items: {
-          type: 'object',
-          additionalProperties: false,
-          properties: {
-            criterion: {
-              type: 'string'
-            },
-            status: {
-              type: 'string',
-              enum: [
-                'correct',
-                'partially correct',
-                'missing',
-                'incorrect'
-              ]
-            },
-            marks_awarded: {
-              type: 'number'
-            },
-            marks_available: {
-              type: 'number'
-            },
-            explanation: {
-              type: 'string'
-            }
-          },
-          required: [
-            'criterion',
-            'status',
-            'marks_awarded',
-            'marks_available',
-            'explanation'
-          ]
-        }
-      }
-    },
-    required: [
-      'awarded',
-      'feedback',
-      'criteria'
-    ]
-  };
+  for (const point of rubric) {
+    const matched = criterionMatched(studentText, point);
 
-  const instructions = `
-You are an experienced, fair medical-school Pathology examiner.
-
-Your task is to mark a student's short-answer question using the
-actual question, its maximum marks, and the supplied marking guide
-or model answer.
-
-CORE MARKING PRINCIPLES
-
-1. MARK MEANING, NOT WORDING.
-Award credit when the student correctly explains a medical concept,
-even if their wording differs from the model answer.
-
-Accept medically valid synonyms, standard abbreviations,
-equivalent terminology, and valid alternative explanations.
-
-Do not require students to reproduce the model answer word for word.
-
-2. AWARD FAIR PARTIAL CREDIT.
-If a student demonstrates part of a concept correctly but omits
-an important detail, award credit for the part demonstrated.
-
-Do not automatically give zero for an answer that is incomplete
-but contains correct medical knowledge.
-
-Award full marks for a criterion only when the required concept
-is adequately explained according to the question and marking guide.
-
-3. RECOGNISE DISTINCT KEY POINTS.
-Identify the important assessable points required by the question.
-
-Break the total into clear, independent criteria. Allocate marks
-in proportion to the importance and complexity of each criterion.
-
-If the supplied rubric gives explicit marks for its criteria,
-respect those marks as far as possible.
-
-If no detailed rubric is supplied, construct a reasonable marking
-scheme from the question and model answer.
-
-Do not invent unnecessary requirements or penalise students for
-omitting details that the question did not reasonably require.
-
-4. AVOID UNFAIR DEDUCTIONS.
-Do not penalise different wording when the medical meaning is correct.
-
-Do not deduct marks twice for the same omission.
-
-Do not award the same credit repeatedly for repeating one idea.
-
-Do not treat an omitted optional example as a major error.
-
-Do not assume a statement is wrong simply because it is absent
-from the model answer. Evaluate whether it is medically valid
-and relevant to the question.
-
-If the student gives contradictory statements, assess the
-contradiction fairly and explain its effect on the relevant criterion.
-
-5. IDENTIFY FOUR TYPES OF PERFORMANCE.
-
-Use "correct" when the criterion is adequately met.
-
-Use "partially correct" when the student demonstrates some,
-but not all, of the required knowledge.
-
-Use "missing" when the criterion is not addressed.
-
-Use "incorrect" when the student gives a materially incorrect
-or misleading explanation instead of the required knowledge.
-
-6. PROVIDE USEFUL FEEDBACK.
-For every criterion, state:
-- The key point being assessed.
-- The marks awarded and marks available.
-- Whether the point is correct, partially correct, missing,
-  or incorrect.
-- A brief explanation of why the marks were awarded.
-
-In the overall feedback, identify the student's strengths,
-the most important omissions or errors, and how to improve.
-
-Be specific. Avoid vague comments such as "study more."
-
-7. MEDICAL ACCURACY.
-Use established medical knowledge to judge the student's answer.
-For Pathology questions, consider the relevant disease mechanisms,
-morphology, clinical features, complications, and prevention
-where the question asks for them.
-
-Accept equivalent valid medical explanations.
-
-Do not award marks for medically false statements, irrelevant
-material, or unsupported claims presented as established fact.
-
-If a statement is ambiguous, interpret it reasonably in context
-rather than assuming the worst.
-
-8. MARK LIMITS AND CONSISTENCY.
-All marks must be non-negative.
-
-Marks awarded for a criterion cannot exceed marks available.
-
-The total awarded must never exceed the question maximum.
-
-The sum of marks awarded across all criteria must equal the
-overall awarded score.
-
-The sum of marks available across criteria must equal the
-question maximum.
-
-Use sensible partial marks where appropriate. Avoid false precision.
-
-9. FAIRNESS.
-Be encouraging but academically rigorous. Do not inflate marks
-just to be encouraging, and do not make the marking unnecessarily
-harsh.
-
-Award marks for demonstrated knowledge, not for writing style,
-grammar, spelling, or exact phrases, unless the wording changes
-the medical meaning.
-
-10. OUTPUT.
-Return only the required structured JSON matching the supplied schema.
-Keep feedback concise, clear, and educational.
-`;
-
-  const userContent = `
-QUESTION (${maximum} marks):
-${String(questionText || '').trim()}
-
-MARKING GUIDE / RUBRIC:
-${rubricText || '(No separate marking scheme supplied)'}
-
-MODEL ANSWER:
-${referenceText || '(No separate model answer supplied)'}
-
-ADDITIONAL EXPLANATION:
-${explanationText || '(None supplied)'}
-
-STUDENT ANSWER:
-${studentText}
-
-Now mark the student's answer fairly.
-
-Important:
-- Assess the actual medical meaning of the student's answer.
-- Award marks for every relevant correct concept demonstrated.
-- Use partial marks when the knowledge is incomplete.
-- Explain the marks awarded for each important criterion.
-- Identify correct, partially correct, missing, and incorrect points.
-- Do not require exact wording from the model answer.
-- Do not invent extra requirements.
-- The criteria must cover the important assessable points without
-  double-counting.
-- The sum of marks_awarded must equal awarded.
-- The sum of marks_available must equal ${maximum}.
-- The awarded score must be between 0 and ${maximum}.
-`;
-
-  const response = await fetch(
-    'https://api.openai.com/v1/responses',
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${env.OPENAI_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: env.OPENAI_MARKING_MODEL || 'gpt-4.1-mini',
-        store: false,
-        instructions,
-        input: userContent,
-        text: {
-          format: {
-            type: 'json_schema',
-            name: 'medical_saq_marking',
-            strict: true,
-            schema
-          }
-        },
-        max_output_tokens: 2000
-      })
+    if (matched) {
+      earned += point.marks;
+      achieved.push(point.point);
+    } else {
+      missed.push(point.point);
     }
-  );
-
-  const raw = await response.text();
-
-  let payload;
-
-  try {
-    payload = raw ? JSON.parse(raw) : null;
-  } catch {
-    payload = null;
   }
 
-  if (!response.ok) {
-    const detail =
-      payload?.error?.message ||
-      `OpenAI returned HTTP ${response.status}`;
-
-    console.error(
-      'OpenAI marking request failed:',
-      response.status,
-      detail
-    );
-
-    throw new Error(`AI marking service failed: ${detail}`);
-  }
-
-  const outputText = (payload?.output || [])
-    .flatMap(item => item?.content || [])
-    .filter(part => part?.type === 'output_text')
-    .map(part => part.text || '')
-    .join('');
-
-  if (!outputText) {
-    throw new Error(
-      'AI marking service returned no marking result.'
-    );
-  }
-
-  let result;
-
-  try {
-    result = JSON.parse(outputText);
-  } catch {
-    throw new Error(
-      'AI marking service returned an unreadable marking result.'
-    );
-  }
-
-  const safeCriteria = Array.isArray(result.criteria)
-    ? result.criteria.map(c => {
-        const available = Math.max(
-          0,
-          Number(c.marks_available) || 0
-        );
-
-        const awarded = Math.max(
-          0,
-          Math.min(
-            available,
-            Number(c.marks_awarded) || 0
-          )
-        );
-
-        return {
-          criterion: String(
-            c.criterion || 'Assessment point'
-          ),
-          status: [
-            'correct',
-            'partially correct',
-            'missing',
-            'incorrect'
-          ].includes(c.status)
-            ? c.status
-            : 'partially correct',
-          marks_awarded:
-            Math.round(awarded * 100) / 100,
-          marks_available:
-            Math.round(available * 100) / 100,
-          explanation: String(c.explanation || '')
-        };
-      })
-    : [];
-
-  // Enforce the question maximum and keep the score consistent
-  // with the criterion-by-criterion marks.
-  let criteriaTotal = safeCriteria.reduce(
-    (sum, c) => sum + c.marks_awarded,
-    0
-  );
-
-  criteriaTotal = Math.round(criteriaTotal * 100) / 100;
-
-  let awarded = Math.round(
-    Math.min(
-      maximum,
-      Math.max(0, criteriaTotal)
-    ) * 100
+  earned = Math.round(
+    Math.min(maximum, Math.max(0, earned)) * 100
   ) / 100;
 
-  // Make the available criterion marks add up to the question maximum.
-  const availableTotal = safeCriteria.reduce(
-    (sum, c) => sum + c.marks_available,
-    0
-  );
-
-  if (
-    safeCriteria.length > 0 &&
-    Math.abs(availableTotal - maximum) > 0.01
-  ) {
-    if (availableTotal > 0) {
-      const factor = maximum / availableTotal;
-
-      for (const c of safeCriteria) {
-        c.marks_available =
-          Math.round(c.marks_available * factor * 100) / 100;
-
-        c.marks_awarded =
-          Math.round(
-            Math.min(
-              c.marks_available,
-              c.marks_awarded * factor
-            ) * 100
-          ) / 100;
-      }
-    } else {
-      safeCriteria[0].marks_available = maximum;
-      safeCriteria[0].marks_awarded = awarded;
-    }
-
-    criteriaTotal = safeCriteria.reduce(
-      (sum, c) => sum + c.marks_awarded,
-      0
-    );
-
-    awarded = Math.round(
-      Math.min(maximum, criteriaTotal) * 100
-    ) / 100;
-  }
-
-  const detailLines = safeCriteria.map(c =>
-    `• ${c.criterion}: ${c.marks_awarded}/${c.marks_available} (${c.status}) — ${c.explanation}`
-  );
-
   const feedback = [
-    String(
-      result.feedback ||
-      'Review the criterion-by-criterion feedback below.'
-    ),
-    detailLines.length
-      ? detailLines.join('\n')
-      : ''
-  ]
-    .filter(Boolean)
-    .join('\n\n');
+    achieved.length
+      ? `Recognised points: ${achieved.join('; ')}.`
+      : 'No marking points were recognised by the keyword rules.',
+
+    missed.length
+      ? `Points not recognised: ${missed.join('; ')}.`
+      : 'All configured marking points were recognised.',
+
+    'This is deterministic key-point marking with accepted medical synonyms. Unusual wording may still need an admin review.'
+  ].join(' ');
 
   return {
-    awarded,
+    awarded: earned,
     maximum,
-    feedback,
-    criteria: safeCriteria
+    feedback
   };
 }
 
+// Main Cloudflare Pages API handler.
 export async function onRequest(context) {
   const { request, env } = context;
   const corsHeaders = makeCorsHeaders(request);
@@ -537,17 +422,17 @@ export async function onRequest(context) {
     );
   }
 
+  // No OpenAI key is required.
   if (
     !env.SUPABASE_URL ||
     !env.SUPABASE_SECRET_KEY ||
-    !env.SUPABASE_PUBLISHABLE_KEY ||
-    !env.OPENAI_API_KEY
+    !env.SUPABASE_PUBLISHABLE_KEY
   ) {
     return reply(
       500,
       {
         error:
-          'Server configuration is incomplete. Check SUPABASE_URL, SUPABASE_SECRET_KEY, SUPABASE_PUBLISHABLE_KEY and OPENAI_API_KEY in Cloudflare Pages Variables and Secrets.'
+          'Server configuration is incomplete. Check SUPABASE_URL, SUPABASE_SECRET_KEY and SUPABASE_PUBLISHABLE_KEY in Cloudflare Pages Variables and Secrets.'
       },
       corsHeaders
     );
@@ -569,7 +454,7 @@ export async function onRequest(context) {
       );
     }
 
-    // Verify the student's Supabase session.
+    // Verify the user's Supabase session.
     const authResponse = await fetch(
       `${env.SUPABASE_URL}/auth/v1/user`,
       {
@@ -626,6 +511,7 @@ export async function onRequest(context) {
       );
     }
 
+    // Find the submitted attempt.
     const attempts = await supabaseRequest(
       env,
       `attempts?id=eq.${encodeURIComponent(attemptId)}&select=id,user_id,quiz_id,status,score,total_marks,submitted_at`
@@ -641,6 +527,7 @@ export async function onRequest(context) {
       );
     }
 
+    // Check whether the user is an administrator.
     let isAdmin = false;
 
     try {
@@ -679,6 +566,7 @@ export async function onRequest(context) {
       );
     }
 
+    // Confirm this is a Pathology quiz.
     const quizzes = await supabaseRequest(
       env,
       `quizzes?id=eq.${encodeURIComponent(attempt.quiz_id)}&select=id,subject,title`
@@ -688,9 +576,7 @@ export async function onRequest(context) {
 
     if (
       !quiz ||
-      !String(quiz.subject || '')
-        .toLowerCase()
-        .includes('pathology')
+      !String(quiz.subject || '').toLowerCase().includes('pathology')
     ) {
       return reply(
         400,
@@ -702,6 +588,7 @@ export async function onRequest(context) {
       );
     }
 
+    // Fetch all saved answers and their marking schemes.
     const answers = await supabaseRequest(
       env,
       `student_answers?attempt_id=eq.${encodeURIComponent(attempt.id)}&select=id,question_id,answer_text,awarded_marks,feedback,questions(question_text,marks,marking_scheme,correct_answer,explanation,question_order)`
@@ -725,31 +612,27 @@ export async function onRequest(context) {
     );
 
     const details = [];
+
     let score = 0;
     let totalMarks = 0;
 
+    // Mark each answer using key points, not AI.
     for (const answer of answers) {
       const question = answer.questions || {};
 
-      const marked = await markAnswerAI(
+      const marked = markAnswer(
         answer.answer_text,
         question.marks,
-        question.question_text,
-        question.marking_scheme,
-        question.correct_answer,
-        question.explanation,
-        env
+        question.marking_scheme || question.correct_answer || ''
       );
 
-      // Save marks and feedback for this student's answer.
+      // Save marks and feedback for this answer.
       await supabaseRequest(
         env,
         `student_answers?id=eq.${encodeURIComponent(answer.id)}`,
         {
           method: 'PATCH',
-          headers: {
-            Prefer: 'return=minimal'
-          },
+          headers: { Prefer: 'return=minimal' },
           body: JSON.stringify({
             awarded_marks: marked.awarded,
             feedback: marked.feedback
@@ -772,15 +655,13 @@ export async function onRequest(context) {
     score = Math.round(score * 100) / 100;
     totalMarks = Math.round(totalMarks * 100) / 100;
 
-    // Save the total score for the attempt.
+    // Save the final attempt score.
     await supabaseRequest(
       env,
       `attempts?id=eq.${encodeURIComponent(attempt.id)}`,
       {
         method: 'PATCH',
-        headers: {
-          Prefer: 'return=minimal'
-        },
+        headers: { Prefer: 'return=minimal' },
         body: JSON.stringify({
           score,
           total_marks: totalMarks
@@ -797,15 +678,14 @@ export async function onRequest(context) {
         total_marks: totalMarks,
         percentage:
           totalMarks > 0
-            ? Math.round(
-                (score / totalMarks) * 10000
-              ) / 100
+            ? Math.round((score / totalMarks) * 10000) / 100
             : 0,
         results: details,
         details
       },
       corsHeaders
     );
+
   } catch (error) {
     console.error(
       'Pathology automatic marking error:',
@@ -816,9 +696,7 @@ export async function onRequest(context) {
       500,
       {
         error:
-          `Automatic marking failed: ${String(
-            error?.message || 'unexpected server error'
-          ).slice(0, 500)}. Your saved attempt has not been deleted. Check the error before retrying.`
+          `Automatic marking failed: ${String(error?.message || 'unexpected server error').slice(0, 500)}. Your saved attempt has not been deleted.`
       },
       corsHeaders
     );
