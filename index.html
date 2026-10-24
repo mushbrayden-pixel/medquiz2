@@ -102,7 +102,7 @@ async function retryMarking(attemptId){
   const button=$('retryMarkingBtn');
   if(button){button.disabled=true;button.textContent='Marking…';}
   try{
-    const response=await fetch('/.netlify/functions/pathology-mark',{
+    const response=await fetch('/pathology-mark',{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':`Bearer ${session.access_token}`},
       body:JSON.stringify({attempt_id:attemptId})
@@ -145,7 +145,7 @@ async function submitCurrent(auto){
     if(!attempts||!attempts.length)throw new Error('Your answers were saved, but the attempt could not be found for marking.');
     attemptId=attempts[0].id;
    }
-   const response=await fetch('/.netlify/functions/pathology-mark',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${session.access_token}`},body:JSON.stringify({attempt_id:attemptId})});
+   const response=await fetch('/pathology-mark',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${session.access_token}`},body:JSON.stringify({attempt_id:attemptId})});
    let marked;try{marked=await response.json();}catch{throw new Error('The AI marking service returned an unreadable response.');}
    if(!response.ok)throw new Error(marked.error||'AI marking failed.');
    const results=marked.results||marked.details||[];
