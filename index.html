@@ -34,13 +34,12 @@ main{max-width:1440px;margin:22px auto 50px;padding:0 20px}
 <button type="button" data-sidebar="pathology"><span class="sidebar-icon">🔬</span><span class="sidebar-label">Pathology</span></button>
 <div class="sidebar-divider"></div>
 <button type="button" data-sidebar="performance"><span class="sidebar-icon">📊</span><span class="sidebar-label">My Performance</span></button>
-<button type="button" data-sidebar="revision"><span class="sidebar-icon">🧠</span><span class="sidebar-label">Smart Revision</span></button>
 <button type="button" data-sidebar="attempts"><span class="sidebar-icon">📁</span><span class="sidebar-label">Recent Attempts</span></button>
 <button type="button" id="sidebarAdminBtn" class="hidden" data-sidebar="admin"><span class="sidebar-icon">⚙️</span><span class="sidebar-label">Admin</span></button>
 </nav><div class="sidebar-note">Your revision workspace<br>Study · Practise · Improve</div></aside>
 <div class="app-content">
 <section id="authPanel" class="card hidden"><h2 id="authTitle">Sign in</h2><p class="muted">Use your MedQuiz account. Students need an account to submit attempts.</p><label>Full name <span class="muted">(required every time you sign in or create an account)</span></label><input id="fullName" class="field" type="text" autocomplete="name" placeholder="Enter your full name" required><label>Email</label><input id="email" class="field" type="email" autocomplete="email"><label>Password</label><input id="password" class="field" type="password" autocomplete="current-password"><div class="row" style="justify-content:flex-start"><button class="primary" id="authSubmit">Sign in</button><button class="soft" id="toggleAuth">Create account</button><button class="soft" id="forgotPassword">Forgot password?</button><button class="soft hidden" id="backToLogin">Back to sign in</button><button class="soft" id="cancelAuth">Cancel</button></div><p id="authMsg" class="error"></p></section>
-<section id="home"><div class="hero"><span class="pill">MEDICAL REVISION HUB</span><h1>Your medical revision,<br>in one place.</h1><p class="muted">Pharmacology MCQs and Pathology MCQs or SAQs, with timed practice, a question navigator, review flags, unanswered-question checks, saved attempt history, answer review and retakes.</p><span class="pill">💊 Pharmacology · MCQs</span> <span class="pill">🔬 Pathology · MCQs & SAQs</span></div><div class="grid"><article class="card"><h2>💊 Pharmacology</h2><p class="muted">Challenging multiple-choice questions, timed practice and explanations.</p><button class="primary" onclick="showSubject('Pharmacology')">Explore quizzes →</button></article><article class="card"><h2>🔬 Pathology</h2><p class="muted">MCQs with automatic grading, plus short-answer questions with deterministic key-point marking and feedback.</p><button class="primary" onclick="showSubject('Pathology')">Explore quizzes →</button></article></div><h2>Available quizzes</h2><div id="allQuizzes" class="card">Loading quizzes…</div><details class="home-folder" id="performanceFolder"><summary><span class="folder-icon">📊</span><span><span class="folder-title">My Performance</span><span class="folder-subtitle">Scores, progress and topic strengths</span></span></summary><div class="folder-content"><div id="myPerformance" class="card"><p class="muted">Sign in to track your scores and progress over time.</p></div></div></details><details class="home-folder" id="revisionFolder"><summary><span class="folder-icon">🧠</span><span><span class="folder-title">Smart Revision</span><span class="folder-subtitle">Recommended practice based on your results</span></span></summary><div class="folder-content"><div id="smartRevision" class="card"><p class="muted">Sign in and complete quizzes to receive revision recommendations.</p></div></div></details><details class="home-folder" id="attemptsFolder"><summary><span class="folder-icon">📁</span><span><span class="folder-title">My Recent Attempts</span><span class="folder-subtitle">Open to view your saved quiz history</span></span></summary><div class="folder-content"><div id="myAttempts" class="card"><p class="muted">Sign in to view your latest attempts.</p></div></div></details></section>
+<section id="home"><div class="hero"><span class="pill">MEDICAL REVISION HUB</span><h1>Your medical revision,<br>in one place.</h1><p class="muted">Pharmacology MCQs and Pathology MCQs or SAQs, with timed practice, a question navigator, review flags, unanswered-question checks, saved attempt history, answer review and retakes.</p><span class="pill">💊 Pharmacology · MCQs</span> <span class="pill">🔬 Pathology · MCQs & SAQs</span></div><div class="grid"><article class="card"><h2>💊 Pharmacology</h2><p class="muted">Challenging multiple-choice questions, timed practice and explanations.</p><button class="primary" onclick="showSubject('Pharmacology')">Explore quizzes →</button></article><article class="card"><h2>🔬 Pathology</h2><p class="muted">MCQs with automatic grading, plus short-answer questions with deterministic key-point marking and feedback.</p><button class="primary" onclick="showSubject('Pathology')">Explore quizzes →</button></article></div><h2>Available quizzes</h2><div id="allQuizzes" class="card">Loading quizzes…</div><details class="home-folder" id="performanceFolder"><summary><span class="folder-icon">📊</span><span><span class="folder-title">My Performance</span><span class="folder-subtitle">Scores, progress and topic strengths</span></span></summary><div class="folder-content"><div id="myPerformance" class="card"><p class="muted">Sign in to track your scores and progress over time.</p></div></div></details><details class="home-folder" id="attemptsFolder"><summary><span class="folder-icon">📁</span><span><span class="folder-title">My Recent Attempts</span><span class="folder-subtitle">Open to view your saved quiz history</span></span></summary><div class="folder-content"><div id="myAttempts" class="card"><p class="muted">Sign in to view your latest attempts.</p></div></div></details></section>
 <section id="subjectPage" class="hidden"><button class="soft" onclick="goHome()">← Back</button><h1 id="subjectTitle"></h1><div id="subjectQuizzes" class="card"></div></section>
 <section id="quizPage" class="hidden"><button class="soft" onclick="goHome()">← Exit quiz</button><div class="row"><div><span id="quizTag" class="pill"></span><h1 id="quizTitle"></h1><p id="quizMeta" class="muted"></p></div><div class="card" style="text-align:center;padding:12px"><div class="small muted">TIME LEFT</div><div id="timer" class="stat">20:00</div></div></div><div id="mcqNavigator" class="card hidden"><div class="row"><span id="mcqProgress" class="pill">Question 1 of 1</span><span id="mcqAnswerCount" class="muted small">0 answered</span></div><div class="trend-track" style="margin:12px 0"><div id="mcqProgressFill" class="trend-fill" style="width:0%"></div></div><div class="quiz-tools"><button id="flagQuestion" class="soft" type="button">☆ Mark for review</button><span class="muted small">Green = answered · gold outline = flagged · blue outline = current</span></div><div id="questionPalette" class="question-palette" aria-label="Question navigator"></div><div class="row" style="justify-content:space-between"><button id="mcqPrevious" class="soft" type="button">← Previous</button><button id="mcqNext" class="primary" type="button">Next →</button></div></div><div id="quizQuestions"></div><button id="submitQuiz" class="primary" style="width:100%">Submit quiz</button><div id="quizResult" class="card hidden"></div></section>
 <section id="attemptDetailPage" class="hidden"><button class="soft" onclick="goHome()">← Back to attempts</button><h1>Attempt results</h1><div id="attemptDetail" class="card"><p class="muted">Loading attempt…</p></div></section>
@@ -85,30 +84,6 @@ async function renderMyPerformance(){
   }catch(e){box.innerHTML=`<p class="error">Could not load performance tracker: ${esc(e.message)}<br><span class="small">The performance-tracker SQL setup must be run in Supabase before this section can display results.</span></p>`;}
 }
 
-async function renderSmartRevision(){
- const box=$('smartRevision');
- if(!box)return;
- if(!session){box.innerHTML='<p class="muted">Sign in and complete quizzes to get your personal revision plan.</p>';return;}
- try{
-  const {data:rows,error}=await db.from('performance_records').select('quiz_title,subject,score,total_marks,percentage,submitted_at').eq('user_id',session.user.id).order('submitted_at',{ascending:false}).limit(500);
-  if(error)throw error;
-  const scored=(rows||[]).filter(r=>Number(r.total_marks)>0&&r.score!==null&&r.score!==undefined);
-  if(!scored.length){box.innerHTML='<h3>Build your revision profile</h3><p>Complete your first quiz. MedQuiz will use your saved results to suggest what to practise next.</p>';return;}
-  const pct=r=>Math.max(0,Math.min(100,Number(r.percentage??(100*Number(r.score||0)/Math.max(1,Number(r.total_marks||0))))));
-  const byQuiz=new Map();
-  scored.forEach(r=>{const key=(r.subject||'Other')+'::'+(r.quiz_title||'Quiz');if(!byQuiz.has(key))byQuiz.set(key,{title:r.quiz_title||'Quiz',subject:r.subject||'Other',scores:[]});byQuiz.get(key).scores.push(pct(r));});
-  const areas=[...byQuiz.values()].map(v=>({...v,latest:v.scores[0],attempts:v.scores.length}));
-  const priority=areas.filter(v=>v.latest<60).sort((a,b)=>a.latest-b.latest);
-  const practice=areas.filter(v=>v.latest>=60&&v.latest<80).sort((a,b)=>a.latest-b.latest);
-  const strong=areas.filter(v=>v.latest>=80).sort((a,b)=>b.latest-a.latest);
-  const recommendation=(v,label)=>`<div class="quizrow"><div class="row"><div><b>${esc(v.title)}</b><div class="muted small">${esc(v.subject)} · latest result ${v.latest.toFixed(1)}% · ${v.attempts} recorded attempt${v.attempts===1?'':'s'}</div><span class="pill">${label}</span></div><button class="primary" onclick="findRevisionQuiz('${esc(v.title).replace(/'/g,"&#39;")}','${esc(v.subject).replace(/'/g,"&#39;")}')">Find practice</button></div></div>`;
-  box.innerHTML=`<div class="notice"><b>How recommendations work:</b> these are quiz-level recommendations based on your saved results. They are not yet question-level topic analytics; question-level analysis will become reliable as topic tags are added to the question bank.</div><h3>Revise first</h3>${priority.length?priority.slice(0,4).map(v=>recommendation(v,'High priority · below 60%')).join(''):'<p class="muted">No quiz results below 60%. Keep practising.</p>'}<h3>Practise again</h3>${practice.length?practice.slice(0,3).map(v=>recommendation(v,'Developing · 60–79%')).join(''):'<p class="muted">No results in the 60–79% range right now.</p>'}<h3>Maintain your strengths</h3>${strong.length?strong.slice(0,3).map(v=>`<div class="quizrow"><b>${esc(v.title)}</b> — ${v.latest.toFixed(1)}% <span class="pill">${esc(v.subject)}</span></div>`).join(''):'<p class="muted">Scores of 80% or above will appear here.</p>'}<p class="muted small">Your plan updates from saved performance records. It does not delete attempts or change marks.</p>`;
- }catch(e){box.innerHTML=`<p class="error">Could not create revision plan: ${esc(e.message)}</p>`;}
-}
-async function findRevisionQuiz(title,subject){
- try{const quizzes=await fetchQuizzes(subject);const target=String(title||'').toLowerCase();const found=quizzes.find(q=>String(q.title||'').toLowerCase()===target)||quizzes.find(q=>String(q.title||'').toLowerCase().includes(target)||target.includes(String(q.title||'').toLowerCase()));if(found){startQuiz(found.id);return;}msg('No published quiz with that title is currently available. Open the subject page to choose another quiz.');showSubject(subject);}catch(e){msg('Could not find practice quiz: '+e.message);}
-}
-
 async function renderHome(){
   try {
     const qs = await fetchQuizzes();
@@ -124,7 +99,6 @@ async function renderHome(){
         .limit(5);
       if (error) throw error;
       await renderMyPerformance();
-      await renderSmartRevision();
       $('myAttempts').innerHTML = data?.length ? data.map(a => `
         <div class="quizrow">
           <b>${esc(a.quizzes?.title || 'Quiz')}</b>
@@ -137,7 +111,6 @@ async function renderHome(){
         </div>`).join('') : '<p class="muted">No attempts yet. Start a quiz to build your history.</p>';
     } else {
       await renderMyPerformance();
-      await renderSmartRevision();
       $('myAttempts').innerHTML = '<p class="muted">Sign in to view your latest attempts.</p>';
     }
     if (isAdmin) renderAdmin();
@@ -505,7 +478,7 @@ document.querySelectorAll('[data-sidebar]').forEach(btn=>btn.addEventListener('c
   if(target==='pathology'){showSubject('Pathology');return}
   if(target==='admin'){if(isAdmin){$('adminBtn').click()}return}
   goHome();
-  const folderMap={performance:'performanceFolder',revision:'revisionFolder',attempts:'attemptsFolder'};
+  const folderMap={performance:'performanceFolder',attempts:'attemptsFolder'};
   const folder=$(folderMap[target]);
   if(folder){folder.open=true;folder.scrollIntoView({behavior:'smooth',block:'start'});}
 }));
