@@ -183,40 +183,63 @@ async function viewAttempt(attemptId){
     const title=a.quizzes?.title||'Quiz';
     const date=a.submitted_at||a.created_at;
     const subject=String(a.quizzes?.subject||'');
-    const format=String(a.quizzes?.question_format|| (subject==='Pharmacology'?'MCQ':'SAQ')).toUpperCase();
-    const {data:answers, error:answersError}=await db.from('student_answers')
-      .select('id,question_id,answer_text,selected_options,awarded_marks,feedback,questions(question_text,marks,question_order,explanation,marking_scheme,options)')
-      .eq('attempt_id',attemptId);
-    if(answersError)throw answersError;
-    const ordered=(answers||[]).sort((x,y)=>Number(x.questions?.question_order||0)-Number(y.questions?.question_order||0));
-    const hasUnmarked=format==='SAQ' && ordered.some(x=>x.awarded_marks===null || x.awarded_marks===undefined || !x.feedback);
-    const details=ordered.length?ordered.map((x,i)=>{
-      const q=x.questions||{};
-      const max=Number(q.marks||1);
-      const studentText=String(x.answer_text||'').trim();
-      const savedMark=x.awarded_marks===null||x.awarded_marks===undefined?'Not marked':`${esc(x.awarded_marks)} / ${esc(max)}`;
-      const selected=Array.isArray(x.selected_options)?x.selected_options:[];
-      const options=Array.isArray(q.options)?q.options:[];
-      const selectedText=selected.length?selected.map(n=>options[Number(n)]??n).join(', '):'No option selected';
-      const answerText=format==='MCQ'?selectedText:(studentText||'No answer entered');
-      const feedback=x.feedback||q.explanation||'No feedback saved for this answer.';
-      const keyPoints=String(q.marking_scheme||'').trim();
-      const selectedIndex=selected.length?Number(selected[0]):null;
-      const mcqCorrect=selectedIndex!==null && q.correct_answer_index!==undefined ? selectedIndex===Number(q.correct_answer_index) : null;
-      return `<article class="question"><h3>${i+1}. ${esc(q.question_text||'Question')}</h3><p><b>Your answer:</b><br>${esc(answerText).replace(/\n/g,'<br>')}</p>${format==='SAQ'?`<p><b>Marks:</b> ${savedMark}</p><p><b>Model answer / key points used for marking:</b><br>${esc(keyPoints||'The model answer/key points were not saved for this question.').replace(/\n/g,'<br>')}</p><p><b>Marking feedback:</b><br>${esc(feedback).replace(/\n/g,'<br>')}</p>`:`<p><b>Explanation:</b><br>${esc(feedback).replace(/\n/g,'<br>')}</p>`}</article>`;
-    }).join(''):'<p class="muted">No saved answers were found for this attempt.</p>';
+    const format=String(a.quizzes?.question_format||(subject==='Pharmacology'?'MCQ':'SAQ')).toUpperCase();
+    let detailsHtml='';
+
+    if(format==='MCQ'){
+      // This RPC only returns answer keys after submission and only to the attempt owner.
+      const {data:review,error:reviewError}=await db.rpc('get_medquiz_attempt_review',{p_attempt_id:attemptId});
+      if(reviewError)throw new Error('Could not load the saved MCQ review. Run the supplied get_medquiz_attempt_review SQL function in Supabase, then redeploy this HTML. Details: '+reviewError.message);
+      const reviewItems=Array.isArray(review?.details)?review.details:[];
+      detailsHtml=reviewItems.length?reviewItems.map((d,i)=>{
+        const opts=Array.isArray(d.options)?d.options:[];
+        const selectedIndex=d.selected_answer_index===null||d.selected_answer_index===undefined||d.selected_answer_index===''?null:Number(d.selected_answer_index);
+        const correctIndex=d.correct_answer_index===null||d.correct_answer_index===undefined||d.correct_answer_index===''?null:Number(d.correct_answer_index);
+        const selectedValid=Number.isInteger(selectedIndex)&&selectedIndex>=0&&selectedIndex<opts.length;
+        const correctValid=Number.isInteger(correctIndex)&&correctIndex>=0&&correctIndex<opts.length;
+        const choiceHtml=opts.map((option,j)=>{
+          const chosen=selectedValid&&selectedIndex===j;
+          const correct=correctValid&&correctIndex===j;
+          const style=correct?'border-color:#14805e;background:#eaf8f1;':chosen?'border-color:#d97706;background:#fff8e6;':'';
+          return `<div class="option" style="${style}"><span><b>${String.fromCharCode(65+j)}.</b> ${esc(option)} ${correct?' ✓ Correct answer':''} ${chosen?' ← Your answer':''}</span></div>`;
+        }).join('');
+        const selectedText=selectedValid?`${String.fromCharCode(65+selectedIndex)}. ${opts[selectedIndex]}`:'No answer selected';
+        const correctText=correctValid?`${String.fromCharCode(65+correctIndex)}. ${opts[correctIndex]}`:'Correct answer unavailable — please contact the administrator.';
+        const isCorrect=selectedValid&&correctValid&&selectedIndex===correctIndex;
+        return `<article class="question" data-question-id="${esc(d.question_id||'')}"><b>${isCorrect?'✓ Correct':'✗ Incorrect / unanswered'}</b><h3>${i+1}. ${esc(d.question||d.question_text||'Question')}</h3><h4>Answer choices</h4>${choiceHtml}<p><b>Your answer:</b> ${esc(selectedText)}</p><p><b>Correct answer:</b> ${esc(correctText)}</p><p><b>Explanation:</b><br>${esc(d.explanation||'No explanation was provided.').replace(/\n/g,'<br>')}</p></article>`;
+      }).join(''):'<p class="muted">No saved answers were found for this attempt.</p>';
+    }else{
+      const {data:answers,error:answersError}=await db.from('student_answers')
+        .select('id,question_id,answer_text,selected_options,awarded_marks,feedback,questions(question_text,marks,question_order,explanation,marking_scheme,options)')
+        .eq('attempt_id',attemptId);
+      if(answersError)throw answersError;
+      const ordered=(answers||[]).sort((x,y)=>Number(x.questions?.question_order||0)-Number(y.questions?.question_order||0));
+      const hasUnmarked=a.status==='submitted'&&ordered.some(x=>x.awarded_marks===null||x.awarded_marks===undefined||!x.feedback);
+      detailsHtml=ordered.length?ordered.map((x,i)=>{
+        const q=x.questions||{};
+        const max=Number(q.marks||1);
+        const studentText=String(x.answer_text||'').trim();
+        const savedMark=x.awarded_marks===null||x.awarded_marks===undefined?'Not marked':`${esc(x.awarded_marks)} / ${esc(max)}`;
+        const feedback=x.feedback||q.explanation||'No feedback saved for this answer.';
+        const keyPoints=String(q.marking_scheme||'').trim();
+        return `<article class="question"><h3>${i+1}. ${esc(q.question_text||'Question')} <span class="pill">${esc(max)} marks</span></h3><p><b>Your answer:</b><br>${esc(studentText||'No answer entered').replace(/\n/g,'<br>')}</p><p><b>Marks:</b> ${savedMark}</p><p><b>Model answer / key points used for marking:</b><br>${esc(keyPoints||'The model answer/key points were not saved for this question.').replace(/\n/g,'<br>')}</p><p><b>Marking feedback:</b><br>${esc(feedback).replace(/\n/g,'<br>')}</p></article>`;
+      }).join(''):'<p class="muted">No saved answers were found for this attempt.</p>';
+      $('attemptDetail').dataset.hasUnmarked=hasUnmarked?'true':'false';
+    }
+
     const isSAQ=format==='SAQ';
+    const hasUnmarkedSAQ=isSAQ&&$('attemptDetail').dataset.hasUnmarked==='true';
     $('attemptDetail').innerHTML=`
       <span class="pill">${esc(a.status||'Unknown status')}</span>
       <h2>${esc(title)}</h2>
       <p class="muted">${esc(subject)} · ${date?new Date(date).toLocaleString():'Date unavailable'}</p>
       <div class="stat">${a.score==null?'Awaiting marking':`${esc(a.score)} / ${esc(a.total_marks)} marks`}</div>${a.score!=null&&Number(a.total_marks)>0?`<p><b>Overall score:</b> ${Math.round(Number(a.score)/Number(a.total_marks)*100)}%</p>`:''}
       <div class="row" style="justify-content:flex-start;margin:16px 0">
-        ${isSAQ&&a.status==='submitted'&&hasUnmarked?`<button class="primary" id="retryMarkingBtn" onclick="retryMarking('${a.id}')">Retry marking</button>`:''}
+        ${isSAQ&&a.status==='submitted'&&hasUnmarkedSAQ?`<button class="primary" id="retryMarkingBtn" onclick="retryMarking('${a.id}')">Retry marking</button>`:''}
         <button class="soft" onclick="startQuiz('${a.quiz_id}')">Retake quiz ↻</button>
         <button class="soft" onclick="goHome()">Back to attempts</button>
       </div>
-      <h3>Answer review</h3><p class="muted">For Pathology SAQs, each question shows your submitted answer, the model answer/key points used for marking, the marks awarded, and feedback.</p>${details}`;
+      <h3>Answer review</h3><p class="muted">MCQs show every option, your saved answer, the correct answer, and the explanation. Pathology SAQs show your submitted answer, model answer/key points, marks awarded, and feedback.</p>${detailsHtml}`;
   }catch(e){msg('Could not open this attempt: '+e.message);goHome();}
 }
 
