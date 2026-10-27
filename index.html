@@ -281,8 +281,8 @@ async function startQuiz(id,useTopicFilters=false){
   $('submitQuiz').classList.remove('hidden');
   $('quizTag').textContent=q.subject+' · '+format;
   $('quizTitle').textContent=q.title;
-  $('quizMeta').textContent=`${questions.length} questions${currentQuiz.topicPractice?.topic!=='all'?' · '+currentQuiz.topicPractice.topic:''}${currentQuiz.topicPractice?.subtopic!=='all'?' · '+currentQuiz.topicPractice.subtopic:''}${currentQuiz.topicPractice?.difficulty!=='all'?' · '+currentQuiz.topicPractice.difficulty:''} · ${format==='MCQ'?'Multiple choice':'Short answer'} · ${q.duration_minutes||20} minutes`;
-  $('quizQuestions').innerHTML=questions.map((it,i)=>format==='MCQ'
+  $('quizMeta').textContent=`${selectedQuestions.length} questions${currentQuiz.topicPractice?.topic!=='all'?' · '+currentQuiz.topicPractice.topic:''}${currentQuiz.topicPractice?.subtopic!=='all'?' · '+currentQuiz.topicPractice.subtopic:''}${currentQuiz.topicPractice?.difficulty!=='all'?' · '+currentQuiz.topicPractice.difficulty:''} · ${format==='MCQ'?'Multiple choice':'Short answer'} · ${q.duration_minutes||20} minutes`;
+  $('quizQuestions').innerHTML=selectedQuestions.map((it,i)=>format==='MCQ'
    ?`<article class="question mcq-question" data-mcq-index="${i}"><h3>${i+1}. ${esc(it.question_text)}</h3><p class="muted small">${esc([it.topic,it.subtopic,it.difficulty].filter(Boolean).join(" · "))}</p>${(it.options||[]).map((o,j)=>`<label class="option"><input type="radio" name="ans${i}" value="${j}"><span>${String.fromCharCode(65+j)}. ${esc(o)}</span></label>`).join('')}</article>`
    :`<article class="question"><h3>${i+1}. ${esc(it.question_text)} <span class="pill">${it.marks||1} marks</span></h3><p class="muted small">${esc([it.topic,it.subtopic,it.difficulty].filter(Boolean).join(" · "))}</p><textarea class="field answer" id="saq${i}" placeholder="Type your answer..."></textarea></article>`).join('');
   const mcq=format==='MCQ';
