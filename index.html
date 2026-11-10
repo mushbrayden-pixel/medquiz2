@@ -534,8 +534,7 @@ async function submitBankPractice(auto){
    resultHtml=`<span class="pill">PRACTICE COMPLETE</span><h2>Compare your answers with the model answers</h2><p class="muted">Your SAQ session has been saved as self-review. Compare your response against the model answer and marking points; marks are not automatically awarded.</p>${questions.map((q,i)=>{const key=keyMap.get(String(q.id));const answer=$('saq'+i)?.value||'';answerRows.push({question_id:q.id,topic:q.topic||'Uncategorised',subtopic:q.subtopic||null,selected_option:null,is_correct:null,answer_text:answer||'No answer entered'});return `<div class="question"><h3>${i+1}. ${esc(q.question_text)} <span class="pill">${q.marks||1} marks</span></h3><p><b>Your answer:</b><br>${esc(answer||'No answer entered').replace(/\n/g,'<br>')}</p><p><b>Model answer / marking scheme:</b><br>${esc(key?.model_answer||key?.marking_scheme||'No model answer has been saved for this question.').replace(/\n/g,'<br>')}</p></div>`;}).join('')}`;
   }
   $('quizResult').innerHTML=resultHtml;
-  try{await saveBankPracticeAttempt({format,questions,score,totalMarks,answerRows});$('quizResult').insertAdjacentHTML('afterbegin','<p class="success"><b>✓ Practice result saved.</b> Find it under My Performance.</p>');}
-  catch(saveError){$('quizResult').insertAdjacentHTML('afterbegin',`<p class="error"><b>Your practice was marked, but its history could not be saved:</b> ${esc(saveError.message)}. Ask the administrator to check the tracking SQL migration.</p>`);}
+  // Question Bank practice is intentionally not saved to history.
   $('quizResult').scrollIntoView({behavior:'smooth'});
  }catch(e){$('quizResult').innerHTML=`<p class="error">Could not mark this practice session: ${esc(e.message)}</p><p class="muted">Check that the student Question Bank answer-key read policy has been added in Supabase.</p>`;}
 }
