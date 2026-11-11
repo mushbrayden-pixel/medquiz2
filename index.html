@@ -138,31 +138,42 @@ details.admin-folder{display:block;border:1px solid var(--line);border-radius:16
 .dashboard-preview-content{min-height:190px;max-height:360px;overflow:auto;padding:8px 2px}
 .dashboard-preview-card .row{align-items:flex-start}
 @media(max-width:900px){.dashboard-subject-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.app-shell{grid-template-columns:minmax(0,1fr)}}
+/* Mobile navigation: collapsed hamburger drawer; desktop sidebar remains permanently visible. */
+.mobile-menu-toggle{display:none}
+.dashboard-hub-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:22px 0 28px;align-items:start}
+.dashboard-hub-card{margin:0;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:#fff;box-shadow:0 9px 26px rgba(16,35,63,.065);min-width:0;transition:transform .18s,box-shadow .18s}
+.dashboard-hub-card:hover{transform:translateY(-2px);box-shadow:0 13px 30px rgba(16,35,63,.09)}
+.dashboard-hub-card>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:20px;min-height:112px}
+.dashboard-hub-card>summary::-webkit-details-marker{display:none}
+.performance-hub>summary{background:linear-gradient(135deg,#edf3ff,#fff)}.attempts-hub>summary{background:linear-gradient(135deg,#f4efff,#fff)}.quizzes-hub>summary{background:linear-gradient(135deg,#eafaf3,#fff)}
+.hub-icon{display:grid;place-items:center;flex:0 0 48px;width:48px;height:48px;border-radius:15px;background:#fff;font-size:24px;box-shadow:0 4px 13px rgba(16,35,63,.07)}
+.hub-copy{display:flex;flex-direction:column;gap:5px;min-width:0;flex:1}.hub-copy b{font-size:16px;color:var(--navy)}.hub-copy small{font-size:11px;line-height:1.4;color:var(--muted)}
+.hub-open{display:grid;place-items:center;flex:0 0 30px;width:30px;height:30px;border-radius:50%;background:#fff;color:var(--blue);font-size:21px;font-weight:700}
+.dashboard-hub-card[open]{grid-column:1/-1}.dashboard-hub-card[open] .hub-open{transform:rotate(45deg)}
+.hub-panel{padding:18px 20px 20px;border-top:1px solid var(--line);background:#fff}.hub-panel-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.dashboard-preview-content{max-height:340px;overflow:auto;margin-top:12px;padding:4px 2px}.dashboard-preview-content .metric-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:900px){.dashboard-subject-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard-hub-grid{grid-template-columns:1fr}.dashboard-hub-card[open]{grid-column:auto}}
 @media(max-width:760px){
- .app-sidebar{position:relative;top:auto;padding:10px;border-radius:15px;display:block}
- .sidebar-brand{display:block;padding:4px 8px 9px}
- .sidebar-note,.sidebar-divider{display:none}
+ .mobile-menu-toggle{display:inline-flex;align-items:center;gap:10px;margin:0 0 10px;padding:11px 15px;background:#10233f;color:#fff;border-radius:12px;box-shadow:0 5px 14px rgba(16,35,63,.15)}
+ .mobile-menu-toggle span:first-child{font-size:20px;line-height:1}
+ .app-sidebar{display:none;position:absolute;z-index:50;top:0;left:0;right:0;width:100%;padding:13px;border-radius:16px;box-shadow:0 18px 40px rgba(16,35,63,.2);background:#fff}
+ .app-sidebar.mobile-open{display:block}
+ .app-shell{position:relative;display:block}
+ .sidebar-brand{display:block;padding:4px 8px 10px}.sidebar-note,.sidebar-divider{display:none}
  .sidebar-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;overflow:visible;max-width:100%;padding:0}
  .sidebar-nav button{width:100%;min-width:0;white-space:normal;flex:initial;justify-content:flex-start;padding:10px 9px;min-height:46px;font-size:12px}
  .sidebar-nav button .sidebar-label{display:inline;overflow-wrap:anywhere}
- .dashboard-subject-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
- .dashboard-subject-card{min-height:205px;padding:16px!important}
- .dashboard-preview-grid{grid-template-columns:1fr;gap:12px}
- .dashboard-preview-card{min-height:240px;padding:17px!important}
- .dashboard-preview-content{min-height:120px;max-height:300px}
+ .dashboard-subject-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.dashboard-subject-card{min-height:205px;padding:16px!important}
+ .hub-panel{padding:14px}.dashboard-preview-content .metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:420px){
- .sidebar-nav{grid-template-columns:repeat(2,minmax(0,1fr))}
- .sidebar-nav button{font-size:11px;gap:6px;padding:9px 7px}
- .sidebar-icon{width:20px;flex-basis:20px;font-size:15px}
- .dashboard-subject-grid{grid-template-columns:1fr}
- .dashboard-subject-card{min-height:170px}
- .dashboard-preview-card .row{display:flex;flex-direction:column;align-items:stretch}
- .dashboard-preview-card .row button{width:100%}
+ .sidebar-nav{grid-template-columns:repeat(2,minmax(0,1fr))}.sidebar-nav button{font-size:11px;gap:6px;padding:9px 7px}.sidebar-icon{width:20px;flex-basis:20px;font-size:15px}
+ .dashboard-subject-grid{grid-template-columns:1fr}.dashboard-subject-card{min-height:170px}
+ .dashboard-hub-card>summary{padding:16px;min-height:98px}.hub-icon{width:42px;height:42px;flex-basis:42px}.hub-copy b{font-size:14px}
+ .hub-panel-top{align-items:stretch}.hub-panel-top button{width:100%}
 }
 
 </style></head><body><header><div class="brand">Med<span>Quiz</span></div><div class="row"><span id="userLabel" class="small"></span><button id="authBtn" class="soft">Sign in</button><button id="adminBtn" class="soft hidden">Admin</button></div></header><main><div class="app-shell">
-<aside class="app-sidebar" aria-label="Main navigation"><div class="sidebar-brand">MedQuiz workspace</div><nav class="sidebar-nav">
+<button type="button" id="mobileMenuToggle" class="mobile-menu-toggle" aria-expanded="false" aria-controls="mainSidebar"><span aria-hidden="true">☰</span><span>Menu</span></button><aside id="mainSidebar" class="app-sidebar" aria-label="Main navigation"><div class="sidebar-brand">MedQuiz workspace</div><nav class="sidebar-nav">
 <button type="button" class="active" data-sidebar="home"><span class="sidebar-icon">⌂</span><span class="sidebar-label">Home</span></button>
 <button type="button" data-sidebar="pharmacology"><span class="sidebar-icon">💊</span><span class="sidebar-label">Pharmacology</span></button>
 <button type="button" data-sidebar="pathology"><span class="sidebar-icon">🔬</span><span class="sidebar-label">Pathology</span></button>
@@ -183,9 +194,19 @@ details.admin-folder{display:block;border:1px solid var(--line);border-radius:16
  <article class="card dashboard-subject-card"><span class="subject-symbol">💊</span><h2>Pharmacology</h2><p class="muted">Challenge yourself with medical pharmacology MCQs, timed quizzes and detailed explanations.</p><button class="primary" onclick="showSubject('Pharmacology')">Explore Pharmacology →</button></article>
  <article class="card dashboard-subject-card"><span class="subject-symbol">🔬</span><h2>Pathology</h2><p class="muted">Practise Pathology MCQs and short-answer questions with marking feedback.</p><button class="primary" onclick="showSubject('Pathology')">Explore Pathology →</button></article>
 </div>
-<div class="dashboard-preview-grid">
- <article class="card dashboard-preview-card"><div class="row"><div><h2>📊 My Performance</h2><p class="muted small">Your scores, averages and progress.</p></div><button class="soft" type="button" onclick="showPerformance()">View all →</button></div><div id="homePerformancePreview" class="dashboard-preview-content"><p class="muted">Sign in to view your performance.</p></div></article>
- <article class="card dashboard-preview-card"><div class="row"><div><h2>🗂️ Recent Attempts</h2><p class="muted small">Your latest quiz activity.</p></div><button class="soft" type="button" onclick="showRecentAttempts()">View all →</button></div><div id="homeAttemptsPreview" class="dashboard-preview-content"><p class="muted">Sign in to view your recent attempts.</p></div></article>
+<div class="dashboard-hub-grid">
+ <details class="dashboard-hub-card performance-hub">
+  <summary><span class="hub-icon">📊</span><span class="hub-copy"><b>My Performance</b><small>Scores, averages and learning progress</small></span><span class="hub-open">＋</span></summary>
+  <div class="hub-panel"><div class="hub-panel-top"><span class="pill">YOUR PROGRESS</span><button class="soft" type="button" onclick="showPerformance()">Open full report →</button></div><div id="homePerformancePreview" class="dashboard-preview-content"><p class="muted">Open this panel to view your performance.</p></div></div>
+ </details>
+ <details class="dashboard-hub-card attempts-hub">
+  <summary><span class="hub-icon">🗂️</span><span class="hub-copy"><b>Recent Attempts</b><small>Your latest quiz activity and results</small></span><span class="hub-open">＋</span></summary>
+  <div class="hub-panel"><div class="hub-panel-top"><span class="pill">RECENT ACTIVITY</span><button class="soft" type="button" onclick="showRecentAttempts()">View all attempts →</button></div><div id="homeAttemptsPreview" class="dashboard-preview-content"><p class="muted">Open this panel to view your recent attempts.</p></div></div>
+ </details>
+ <details class="dashboard-hub-card quizzes-hub">
+  <summary><span class="hub-icon">📝</span><span class="hub-copy"><b>Available Quizzes</b><small>Discover published tests and start practising</small></span><span class="hub-open">＋</span></summary>
+  <div class="hub-panel"><div class="hub-panel-top"><span class="pill">QUIZ LIBRARY</span><button class="soft" type="button" onclick="showAvailableQuizzes()">Open quiz library →</button></div><div id="homeAvailableQuizzesPreview" class="dashboard-preview-content"><p class="muted">Open this panel to load published quizzes.</p></div></div>
+ </details>
 </div>
 </section>
 <section id="questionBankStudent" class="hidden">
@@ -1005,10 +1026,21 @@ $('studentBankSelectAll').addEventListener('click',()=>{studentBankSelected=new 
 $('studentBankClearSelection').addEventListener('click',()=>{studentBankSelected.clear();renderStudentBankSubtopics();});
 refreshSession();
 
+// Dashboard panels load their contents only when opened, keeping the home screen clean.
+document.querySelectorAll('.dashboard-hub-card').forEach(panel=>panel.addEventListener('toggle',async()=>{
+ if(!panel.open)return;
+ if(panel.classList.contains('performance-hub')){if(session)await renderMyPerformance();else $('homePerformancePreview').innerHTML='<p class="muted">Sign in to view your performance.</p>';}
+ if(panel.classList.contains('attempts-hub')){if(session)await renderRecentAttempts();else $('homeAttemptsPreview').innerHTML='<p class="muted">Sign in to view your recent attempts.</p>';}
+ if(panel.classList.contains('quizzes-hub')){const box=$('homeAvailableQuizzesPreview');box.innerHTML='<p class="muted">Loading published quizzes…</p>';try{const qs=await fetchQuizzes();box.innerHTML=qs.length?qs.map(quizCard).join(''):'<p class="muted">There are no published quizzes available at the moment.</p>';}catch(e){box.innerHTML=`<p class="error">Could not load quizzes: ${esc(e.message)}</p>`;}}
+}));
+const mobileMenuToggle=$('mobileMenuToggle'),mainSidebar=$('mainSidebar');
+if(mobileMenuToggle&&mainSidebar){mobileMenuToggle.addEventListener('click',()=>{const open=mainSidebar.classList.toggle('mobile-open');mobileMenuToggle.setAttribute('aria-expanded',String(open));mobileMenuToggle.querySelector('span:last-child').textContent=open?'Close menu':'Menu';mobileMenuToggle.querySelector('span:first-child').textContent=open?'✕':'☰';});}
+
 // Sidebar navigation: use the existing page functions so database/auth behaviour stays unchanged.
 document.querySelectorAll('[data-sidebar]').forEach(btn=>btn.addEventListener('click',()=>{
   document.querySelectorAll('[data-sidebar]').forEach(b=>b.classList.toggle('active',b===btn));
   const target=btn.dataset.sidebar;
+  if(mainSidebar){mainSidebar.classList.remove('mobile-open');mobileMenuToggle?.setAttribute('aria-expanded','false');if(mobileMenuToggle){mobileMenuToggle.querySelector('span:last-child').textContent='Menu';mobileMenuToggle.querySelector('span:first-child').textContent='☰';}}
   if(target==='home'){goHome();return}
   if(target==='pharmacology'){showSubject('Pharmacology');return}
   if(target==='pathology'){showSubject('Pathology');return}
