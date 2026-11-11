@@ -806,12 +806,25 @@ let bankAdminCache=[],bankUploadRows=[],bankUploadValidated=false;
 function openQuestionBankAdmin(){if(!isAdmin){msg('Admin access required.');return;}document.querySelectorAll('#adminPage > .grid,#adminPage > details,#adminPage > .notice').forEach(el=>el.classList.add('hidden'));$('questionBankAdmin').classList.remove('hidden');loadQuestionBankAdmin();}
 function closeQuestionBankAdmin(){$('questionBankAdmin').classList.add('hidden');document.querySelectorAll('#adminPage > .grid,#adminPage > details,#adminPage > .notice').forEach(el=>el.classList.remove('hidden'));}
 function syncBankFormat(){const f=$('bankFormat').value;if($('bankSubject').value==='Pharmacology'&&f==='SAQ'){$('bankFormat').value='MCQ';$('bankImportMsg').textContent='Pharmacology supports MCQs only.';}}
+const PHARMACOLOGY_ANTIMICROBIAL_TOPIC='Antimicrobial Drugs';
+const PHARMACOLOGY_ANTIMICROBIAL_SUBTOPICS=["Antibiotic classification and mechanisms", "Beta-lactam antibiotics", "Aminoglycosides", "Tetracyclines", "Macrolides", "Lincosamides", "Glycopeptides", "Fluoroquinolones", "Oxazolidinones", "Sulfonamides and trimethoprim", "Other antibacterial drugs", "Antitubercular drugs", "Antileprosy drugs", "Antifungal drugs", "Antiviral drugs", "Antiretroviral drugs", "Antimalarial drugs", "Antiprotozoal drugs", "Antisyphilitic drugs"];
 function refreshBankTopicOptions(){
- const subject=$('bankSubject').value,topics=[...new Set(bankAdminCache.filter(q=>q.subject===subject).map(q=>q.topic).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+ const subject=$('bankSubject').value;
+ const topics=[...new Set([
+   ...bankAdminCache.filter(q=>q.subject===subject).map(q=>q.topic).filter(Boolean),
+   ...(subject==='Pharmacology'?[PHARMACOLOGY_ANTIMICROBIAL_TOPIC]:[])
+ ])].sort((a,b)=>a.localeCompare(b));
  $('bankTopicOptions').innerHTML=topics.map(t=>`<option value="${esc(t)}"></option>`).join('');
+ if(subject==='Pharmacology'&&!$('bankTopicChoice').value.trim()) $('bankTopicChoice').value=PHARMACOLOGY_ANTIMICROBIAL_TOPIC;
  refreshBankSubtopicOptions();
 }
-function refreshBankSubtopicOptions(){const subject=$('bankSubject').value,topic=$('bankTopicChoice').value.trim();const subs=[...new Set(bankAdminCache.filter(q=>q.subject===subject&&q.topic===topic).map(q=>q.subtopic).filter(Boolean))].sort((a,b)=>a.localeCompare(b));$('bankSubtopicOptions').innerHTML=subs.map(t=>`<option value="${esc(t)}"></option>`).join('');}
+function refreshBankSubtopicOptions(){
+ const subject=$('bankSubject').value,topic=$('bankTopicChoice').value.trim();
+ const existing=bankAdminCache.filter(q=>q.subject===subject&&q.topic===topic).map(q=>q.subtopic).filter(Boolean);
+ const defaults=(subject==='Pharmacology'&&topic===PHARMACOLOGY_ANTIMICROBIAL_TOPIC)?PHARMACOLOGY_ANTIMICROBIAL_SUBTOPICS:[];
+ const subs=[...new Set([...existing,...defaults])].sort((a,b)=>a.localeCompare(b));
+ $('bankSubtopicOptions').innerHTML=subs.map(t=>`<option value="${esc(t)}"></option>`).join('');
+}
 function bankCell(row,...names){for(const n of names){const key=Object.keys(row||{}).find(k=>k.trim().toLowerCase().replace(/[^a-z0-9]/g,'')===n.toLowerCase().replace(/[^a-z0-9]/g,''));if(key!==undefined&&row[key]!==null&&row[key]!==undefined&&String(row[key]).trim()!=='')return row[key];}return '';}
 function normaliseBankUploadRow(row,index){const subject=$('bankSubject').value,format=$('bankFormat').value;const question=String(bankCell(row,'question','questiontext','stem')||'').trim();if(!question)throw new Error(`Row ${index+2}: question is empty.`);const topic=String(bankCell(row,'topic')||$('bankTopicChoice').value||'').trim();const subtopic=String(bankCell(row,'subtopic')||$('bankSubtopicChoice').value||'').trim();const difficulty=String(bankCell(row,'difficulty')||$('bankDifficulty').value||'Unspecified').trim();if(!topic)throw new Error(`Row ${index+2}: choose a topic or provide a Topic column.`);
  const x={question,topic,subtopic,difficulty};
