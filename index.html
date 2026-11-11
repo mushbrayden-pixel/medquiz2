@@ -123,6 +123,44 @@ details.admin-folder{display:block;border:1px solid var(--line);border-radius:16
 .available-quiz-list{margin-top:16px}
 @media(max-width:900px){.dashboard-subject-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:650px){.dashboard-subject-grid,.dashboard-preview-grid{grid-template-columns:1fr}.dashboard-subject-card{min-height:160px}.dashboard-preview-card{min-height:180px}}
+
+/* Distinct dashboard destinations and reliable responsive navigation */
+.dashboard-subject-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:18px 0 24px}
+.dashboard-subject-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;min-height:225px;margin:0!important;padding:22px!important;overflow:hidden;border-radius:18px;box-shadow:0 8px 22px rgba(16,35,63,.055)}
+.dashboard-subject-card:nth-child(1){background:linear-gradient(145deg,#eef4ff,#fff 78%);border-top:4px solid #246bfd}
+.dashboard-subject-card:nth-child(2){background:linear-gradient(145deg,#effaf5,#fff 78%);border-top:4px solid #15966a}
+.dashboard-subject-card:nth-child(3){background:linear-gradient(145deg,#fff6ee,#fff 78%);border-top:4px solid #e58a35}
+.dashboard-subject-card h2{margin:10px 0 5px}.dashboard-subject-card p{flex:1;font-size:13px}.subject-symbol{display:grid;place-items:center;width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,.85);font-size:25px;box-shadow:0 3px 12px rgba(16,35,63,.06)}
+.dashboard-preview-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:20px 0}
+.dashboard-preview-card{margin:0!important;min-height:300px;padding:22px!important;border-radius:18px;box-shadow:0 8px 22px rgba(16,35,63,.055)}
+.dashboard-preview-card:first-child{border-left:4px solid #246bfd;background:linear-gradient(150deg,#f4f7ff,#fff 65%)}
+.dashboard-preview-card:last-child{border-left:4px solid #8a63d2;background:linear-gradient(150deg,#f8f5ff,#fff 65%)}
+.dashboard-preview-content{min-height:190px;max-height:360px;overflow:auto;padding:8px 2px}
+.dashboard-preview-card .row{align-items:flex-start}
+@media(max-width:900px){.dashboard-subject-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.app-shell{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:760px){
+ .app-sidebar{position:relative;top:auto;padding:10px;border-radius:15px;display:block}
+ .sidebar-brand{display:block;padding:4px 8px 9px}
+ .sidebar-note,.sidebar-divider{display:none}
+ .sidebar-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;overflow:visible;max-width:100%;padding:0}
+ .sidebar-nav button{width:100%;min-width:0;white-space:normal;flex:initial;justify-content:flex-start;padding:10px 9px;min-height:46px;font-size:12px}
+ .sidebar-nav button .sidebar-label{display:inline;overflow-wrap:anywhere}
+ .dashboard-subject-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .dashboard-subject-card{min-height:205px;padding:16px!important}
+ .dashboard-preview-grid{grid-template-columns:1fr;gap:12px}
+ .dashboard-preview-card{min-height:240px;padding:17px!important}
+ .dashboard-preview-content{min-height:120px;max-height:300px}
+}
+@media(max-width:420px){
+ .sidebar-nav{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .sidebar-nav button{font-size:11px;gap:6px;padding:9px 7px}
+ .sidebar-icon{width:20px;flex-basis:20px;font-size:15px}
+ .dashboard-subject-grid{grid-template-columns:1fr}
+ .dashboard-subject-card{min-height:170px}
+ .dashboard-preview-card .row{display:flex;flex-direction:column;align-items:stretch}
+ .dashboard-preview-card .row button{width:100%}
+}
+
 </style></head><body><header><div class="brand">Med<span>Quiz</span></div><div class="row"><span id="userLabel" class="small"></span><button id="authBtn" class="soft">Sign in</button><button id="adminBtn" class="soft hidden">Admin</button></div></header><main><div class="app-shell">
 <aside class="app-sidebar" aria-label="Main navigation"><div class="sidebar-brand">MedQuiz workspace</div><nav class="sidebar-nav">
 <button type="button" class="active" data-sidebar="home"><span class="sidebar-icon">⌂</span><span class="sidebar-label">Home</span></button>
