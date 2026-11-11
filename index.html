@@ -172,6 +172,30 @@ details.admin-folder{display:block;border:1px solid var(--line);border-radius:16
  .hub-panel-top{align-items:stretch}.hub-panel-top button{width:100%}
 }
 
+
+/* Large, distinct dashboard destinations: each card opens a dedicated page. */
+.dashboard-destination-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin:28px 0 34px;align-items:stretch}
+.destination-card{position:relative;isolation:isolate;display:flex;flex-direction:column;min-width:0;min-height:390px;padding:26px 25px 24px;border:1px solid var(--line);border-radius:22px;overflow:hidden;background:#fff;box-shadow:0 12px 32px rgba(16,35,63,.075);transition:transform .2s ease,box-shadow .2s ease}
+.destination-card:hover{transform:translateY(-4px);box-shadow:0 18px 38px rgba(16,35,63,.12)}
+.destination-card:after{content:"";position:absolute;z-index:-1;width:190px;height:190px;right:-68px;top:90px;border-radius:50%;opacity:.65}
+.destination-performance{border-top:6px solid #2868df;background:linear-gradient(155deg,#edf4ff 0%,#fff 62%)}.destination-performance:after{background:radial-gradient(circle,#c8dcff 0%,rgba(200,220,255,0) 70%)}
+.destination-attempts{border-top:6px solid #8255c7;background:linear-gradient(155deg,#f5efff 0%,#fff 62%)}.destination-attempts:after{background:radial-gradient(circle,#e1d0ff 0%,rgba(225,208,255,0) 70%)}
+.destination-quizzes{border-top:6px solid #15966a;background:linear-gradient(155deg,#eafaf3 0%,#fff 62%)}.destination-quizzes:after{background:radial-gradient(circle,#c4f0dc 0%,rgba(196,240,220,0) 70%)}
+.destination-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.destination-icon{display:grid;place-items:center;width:62px;height:62px;border-radius:19px;background:rgba(255,255,255,.9);font-size:31px;box-shadow:0 6px 18px rgba(16,35,63,.08)}
+.destination-tag{padding:7px 10px;border-radius:30px;background:rgba(255,255,255,.82);font-size:10px;letter-spacing:1px;font-weight:900;color:#53627a}
+.destination-number{margin:25px 0 5px;font-size:12px;font-weight:900;letter-spacing:2px;color:#8290a5}
+.destination-card h2{font-size:25px;margin:0 0 12px;letter-spacing:-.7px}
+.destination-card p{font-size:14px;line-height:1.7;color:#59677c;margin:0 0 18px;min-height:72px}
+.destination-points{display:grid;gap:8px;margin:0 0 24px;color:#41516a;font-size:12px;font-weight:700}
+.destination-points span:before{content:"•";margin-right:9px;font-size:17px;vertical-align:-1px}
+.destination-action{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;margin-top:auto;padding:15px 17px;border:0;border-radius:13px;color:#fff;font-weight:850;text-align:left;box-shadow:0 6px 16px rgba(16,35,63,.12)}
+.destination-action span{font-size:21px;line-height:1}
+.destination-performance .destination-action{background:#2868df}.destination-attempts .destination-action{background:#8255c7}.destination-quizzes .destination-action{background:#15966a}
+.destination-action:hover{filter:brightness(.96)}
+@media(max-width:1050px){.dashboard-destination-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.destination-card{min-height:360px}}
+@media(max-width:650px){.dashboard-destination-grid{grid-template-columns:1fr;gap:14px;margin:20px 0 26px}.destination-card{min-height:0;padding:22px}.destination-card p{min-height:0}.destination-number{margin-top:18px}}
+
 </style></head><body><header><div class="brand">Med<span>Quiz</span></div><div class="row"><span id="userLabel" class="small"></span><button id="authBtn" class="soft">Sign in</button><button id="adminBtn" class="soft hidden">Admin</button></div></header><main><div class="app-shell">
 <button type="button" id="mobileMenuToggle" class="mobile-menu-toggle" aria-expanded="false" aria-controls="mainSidebar"><span aria-hidden="true">☰</span><span>Menu</span></button><aside id="mainSidebar" class="app-sidebar" aria-label="Main navigation"><div class="sidebar-brand">MedQuiz workspace</div><nav class="sidebar-nav">
 <button type="button" class="active" data-sidebar="home"><span class="sidebar-icon">⌂</span><span class="sidebar-label">Home</span></button>
@@ -194,19 +218,31 @@ details.admin-folder{display:block;border:1px solid var(--line);border-radius:16
  <article class="card dashboard-subject-card"><span class="subject-symbol">💊</span><h2>Pharmacology</h2><p class="muted">Challenge yourself with medical pharmacology MCQs, timed quizzes and detailed explanations.</p><button class="primary" onclick="showSubject('Pharmacology')">Explore Pharmacology →</button></article>
  <article class="card dashboard-subject-card"><span class="subject-symbol">🔬</span><h2>Pathology</h2><p class="muted">Practise Pathology MCQs and short-answer questions with marking feedback.</p><button class="primary" onclick="showSubject('Pathology')">Explore Pathology →</button></article>
 </div>
-<div class="dashboard-hub-grid">
- <details class="dashboard-hub-card performance-hub">
-  <summary><span class="hub-icon">📊</span><span class="hub-copy"><b>My Performance</b><small>Scores, averages and learning progress</small></span><span class="hub-open">＋</span></summary>
-  <div class="hub-panel"><div class="hub-panel-top"><span class="pill">YOUR PROGRESS</span><button class="soft" type="button" onclick="showPerformance()">Open full report →</button></div><div id="homePerformancePreview" class="dashboard-preview-content"><p class="muted">Open this panel to view your performance.</p></div></div>
- </details>
- <details class="dashboard-hub-card attempts-hub">
-  <summary><span class="hub-icon">🗂️</span><span class="hub-copy"><b>Recent Attempts</b><small>Your latest quiz activity and results</small></span><span class="hub-open">＋</span></summary>
-  <div class="hub-panel"><div class="hub-panel-top"><span class="pill">RECENT ACTIVITY</span><button class="soft" type="button" onclick="showRecentAttempts()">View all attempts →</button></div><div id="homeAttemptsPreview" class="dashboard-preview-content"><p class="muted">Open this panel to view your recent attempts.</p></div></div>
- </details>
- <details class="dashboard-hub-card quizzes-hub">
-  <summary><span class="hub-icon">📝</span><span class="hub-copy"><b>Available Quizzes</b><small>Discover published tests and start practising</small></span><span class="hub-open">＋</span></summary>
-  <div class="hub-panel"><div class="hub-panel-top"><span class="pill">QUIZ LIBRARY</span><button class="soft" type="button" onclick="showAvailableQuizzes()">Open quiz library →</button></div><div id="homeAvailableQuizzesPreview" class="dashboard-preview-content"><p class="muted">Open this panel to load published quizzes.</p></div></div>
- </details>
+<div class="dashboard-destination-grid" aria-label="Student workspace">
+ <article class="destination-card destination-performance">
+  <div class="destination-top"><span class="destination-icon">📊</span><span class="destination-tag">YOUR PROGRESS</span></div>
+  <div class="destination-number">01</div>
+  <h2>My Performance</h2>
+  <p>See the bigger picture. Review your scores, subject averages, completed quizzes and areas that need more revision.</p>
+  <div class="destination-points"><span>✓ Score history</span><span>✓ Pharmacology & Pathology</span><span>✓ Progress at a glance</span></div>
+  <button class="destination-action" type="button" onclick="showPerformance()">Open performance <span>→</span></button>
+ </article>
+ <article class="destination-card destination-attempts">
+  <div class="destination-top"><span class="destination-icon">🗂️</span><span class="destination-tag">YOUR ACTIVITY</span></div>
+  <div class="destination-number">02</div>
+  <h2>Recent Attempts</h2>
+  <p>Return to your latest work. Check submitted answers, review feedback, inspect marks or retake a quiz.</p>
+  <div class="destination-points"><span>✓ Latest submissions</span><span>✓ Review results</span><span>✓ Retake previous quizzes</span></div>
+  <button class="destination-action" type="button" onclick="showRecentAttempts()">View my attempts <span>→</span></button>
+ </article>
+ <article class="destination-card destination-quizzes">
+  <div class="destination-top"><span class="destination-icon">📝</span><span class="destination-tag">PRACTICE LIBRARY</span></div>
+  <div class="destination-number">03</div>
+  <h2>Available Quizzes</h2>
+  <p>Explore published assessments from your lecturers and begin a focused revision session whenever you're ready.</p>
+  <div class="destination-points"><span>✓ Published quizzes</span><span>✓ MCQs and SAQs</span><span>✓ Timed assessments</span></div>
+  <button class="destination-action" type="button" onclick="showAvailableQuizzes()">Explore quiz library <span>→</span></button>
+ </article>
 </div>
 </section>
 <section id="questionBankStudent" class="hidden">
@@ -303,19 +339,9 @@ async function showAvailableQuizzes(){
  catch(e){box.innerHTML=`<p class="error">Could not load available quizzes: ${esc(e.message)}</p>`;}
 }
 async function renderHome(){
- try{
-  const name=session?($('userLabel').textContent||session.user.user_metadata?.full_name||session.user.email?.split('@')[0]||'Student'):'Student';
-  if($('welcomeName'))$('welcomeName').textContent=name;
-  if(session){
-   await renderMyPerformance();await renderRecentAttempts();
-   $('homePerformancePreview').innerHTML=$('myPerformance').innerHTML;
-   $('homeAttemptsPreview').innerHTML=$('myAttempts').innerHTML;
-  }else{
-   $('homePerformancePreview').innerHTML='<p class="muted">Sign in to see your quiz scores and subject averages.</p>';
-   $('homeAttemptsPreview').innerHTML='<p class="muted">Sign in to see your latest quiz attempts and review your answers.</p>';
-  }
-  if(isAdmin)renderAdmin();
- }catch(e){$('homeAttemptsPreview').innerHTML=`<p class="error">Could not load dashboard information: ${esc(e.message)}</p>`;}
+ const name=session?($('userLabel').textContent||session.user.user_metadata?.full_name||session.user.email?.split('@')[0]||'Student'):'Student';
+ if($('welcomeName'))$('welcomeName').textContent=name;
+ if(isAdmin)renderAdmin();
 }
 
 function returnFromAttempt(){const target=attemptReturnPage||'recentAttemptsPage';hidePages();if(target==='performancePage'){$('performancePage').classList.remove('hidden');renderMyPerformance();return}if(target==='recentAttemptsPage'){$('recentAttemptsPage').classList.remove('hidden');renderRecentAttempts();return}if(target==='subjectPage'){showSubject($('subjectTitle').textContent||'Pharmacology');return}if(target==='adminPage'){if(isAdmin){$('adminPage').classList.remove('hidden');renderAdmin()}else goHome();return}goHome()}
@@ -1026,13 +1052,7 @@ $('studentBankSelectAll').addEventListener('click',()=>{studentBankSelected=new 
 $('studentBankClearSelection').addEventListener('click',()=>{studentBankSelected.clear();renderStudentBankSubtopics();});
 refreshSession();
 
-// Dashboard panels load their contents only when opened, keeping the home screen clean.
-document.querySelectorAll('.dashboard-hub-card').forEach(panel=>panel.addEventListener('toggle',async()=>{
- if(!panel.open)return;
- if(panel.classList.contains('performance-hub')){if(session)await renderMyPerformance();else $('homePerformancePreview').innerHTML='<p class="muted">Sign in to view your performance.</p>';}
- if(panel.classList.contains('attempts-hub')){if(session)await renderRecentAttempts();else $('homeAttemptsPreview').innerHTML='<p class="muted">Sign in to view your recent attempts.</p>';}
- if(panel.classList.contains('quizzes-hub')){const box=$('homeAvailableQuizzesPreview');box.innerHTML='<p class="muted">Loading published quizzes…</p>';try{const qs=await fetchQuizzes();box.innerHTML=qs.length?qs.map(quizCard).join(''):'<p class="muted">There are no published quizzes available at the moment.</p>';}catch(e){box.innerHTML=`<p class="error">Could not load quizzes: ${esc(e.message)}</p>`;}}
-}));
+// Dashboard destination cards navigate to dedicated full-page sections.
 const mobileMenuToggle=$('mobileMenuToggle'),mainSidebar=$('mainSidebar');
 if(mobileMenuToggle&&mainSidebar){mobileMenuToggle.addEventListener('click',()=>{const open=mainSidebar.classList.toggle('mobile-open');mobileMenuToggle.setAttribute('aria-expanded',String(open));mobileMenuToggle.querySelector('span:last-child').textContent=open?'Close menu':'Menu';mobileMenuToggle.querySelector('span:first-child').textContent=open?'✕':'☰';});}
 
