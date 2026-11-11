@@ -91,6 +91,20 @@ details.admin-folder{display:block;border:1px solid var(--line);border-radius:16
 .dashboard-action-copy small{font-size:11px;line-height:1.35;font-weight:500;color:var(--muted)}
 .dashboard-action-arrow{font-size:19px;color:var(--blue);font-weight:900}
 @media(max-width:760px){.dashboard-actions{grid-template-columns:1fr;gap:8px}.dashboard-action{min-height:58px}.dashboard-action-copy small{font-size:12px}}
+
+
+/* Multi-subtopic Question Bank selector */
+.subtopic-picker{margin-top:8px;padding:16px;border:1px solid var(--line);border-radius:15px;background:#fbfcff}
+.subtopic-picker-heading{align-items:flex-start;margin-bottom:12px}
+.subtopic-checklist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;max-height:340px;overflow:auto;padding:2px}
+.subtopic-check{display:flex;align-items:flex-start;gap:10px;padding:11px 12px;border:1px solid var(--line);border-radius:11px;background:#fff;cursor:pointer;font-size:13px;font-weight:650;color:var(--ink)}
+.subtopic-check:hover{border-color:#b8ccfa;background:#f8faff}
+.subtopic-check input{margin:3px 0 0;accent-color:var(--blue);flex:0 0 auto}
+.subtopic-check-copy{display:flex;flex-direction:column;gap:2px;min-width:0}
+.subtopic-check-copy small{font-size:11px;color:var(--muted);font-weight:500}
+.subtopic-count-row{justify-content:flex-start;margin-top:12px}
+.subtopic-picker .small{font-size:12px}
+@media(max-width:600px){.subtopic-checklist{grid-template-columns:1fr}.subtopic-picker{padding:12px}.subtopic-picker-heading>.row{width:100%;justify-content:flex-start!important}}
 </style></head><body><header><div class="brand">Med<span>Quiz</span></div><div class="row"><span id="userLabel" class="small"></span><button id="authBtn" class="soft">Sign in</button><button id="adminBtn" class="soft hidden">Admin</button></div></header><main><div class="app-shell">
 <aside class="app-sidebar" aria-label="Main navigation"><div class="sidebar-brand">MedQuiz workspace</div><nav class="sidebar-nav">
 <button type="button" class="active" data-sidebar="home"><span class="sidebar-icon">⌂</span><span class="sidebar-label">Home</span></button>
@@ -117,11 +131,16 @@ details.admin-folder{display:block;border:1px solid var(--line);border-radius:16
  <div class="card" style="margin-top:14px"><h2 style="margin-top:0">Build your practice session</h2><div class="grid">
   <div><label for="studentBankSubject">Subject</label><select id="studentBankSubject" class="field"><option>Pharmacology</option><option>Pathology</option></select></div>
   <div><label for="studentBankFormat">Question format</label><select id="studentBankFormat" class="field"><option value="MCQ">MCQs</option><option value="SAQ">Short-answer questions</option></select></div>
-  <div><label for="studentBankTopic">Topic</label><select id="studentBankTopic" class="field"><option value="all">All topics</option></select></div>
-  <div><label for="studentBankSubtopic">Subtopic</label><select id="studentBankSubtopic" class="field"><option value="all">All subtopics</option></select></div>
+  <div><label for="studentBankTopic">Major topic</label><select id="studentBankTopic" class="field"><option value="all">All major topics</option></select></div>
   <div><label for="studentBankDifficulty">Difficulty</label><select id="studentBankDifficulty" class="field"><option value="all">All difficulties</option></select></div>
   <div><label for="studentBankCount">Number of questions</label><select id="studentBankCount" class="field"><option value="5">5 questions</option><option value="10" selected>10 questions</option><option value="15">15 questions</option><option value="20">20 questions</option><option value="0">All matching questions (max 100)</option></select></div>
- </div><div class="row" style="justify-content:flex-start;margin-top:16px"><button class="primary" id="generateBankPractice" type="button" onclick="generateBankPractice()">Generate Practice</button><button class="soft" type="button" onclick="resetStudentBankFilters()">Reset filters</button></div><p id="studentBankMessage" class="muted small" aria-live="polite">Choose your filters and generate a practice session.</p></div>
+ </div>
+ <div class="subtopic-picker">
+  <div class="row subtopic-picker-heading"><div><label>Choose subtopics</label><p class="muted small" style="margin:3px 0 0">Select one or more subtopics. Questions will come only from your selections.</p></div><div class="row" style="justify-content:flex-end"><button class="soft small" type="button" id="studentBankSelectAll">Select all</button><button class="soft small" type="button" id="studentBankClearSelection">Clear selection</button></div></div>
+  <div id="studentBankSubtopicList" class="subtopic-checklist"><p class="muted small">Loading subtopics…</p></div>
+  <div class="row subtopic-count-row"><span id="studentBankSelectionSummary" class="pill">0 subtopics selected</span><span id="studentBankAvailableCount" class="pill">0 questions available</span></div>
+ </div>
+ <div class="row" style="justify-content:flex-start;margin-top:16px"><button class="primary" id="generateBankPractice" type="button" onclick="generateBankPractice()">Generate Practice</button><button class="soft" type="button" onclick="resetStudentBankFilters()">Reset filters</button></div><p id="studentBankMessage" class="muted small" aria-live="polite">Choose one or more subtopics and generate a practice session.</p></div>
  <div class="card"><h3 style="margin-top:0">How practice works</h3><p class="muted">MCQs are automatically marked after submission, with the correct answer and explanation. For Pathology SAQs, submit your response and compare it with the model answer and marking points. Question Bank practice is separate from formal published quizzes.</p></div>
 </section>
 <section id="subjectPage" class="hidden"><button class="soft" onclick="goHome()">← Back</button><h1 id="subjectTitle"></h1><div class="card hidden" aria-hidden="true"><h2>Topic filters</h2><p class="muted">Internal filters retained for compatibility.</p><div class="grid"><div><label for="topicFilter">Topic</label><select id="topicFilter" class="field"><option value="all">All topics</option></select></div><div><label for="subtopicFilter">Subtopic</label><select id="subtopicFilter" class="field"><option value="all">All subtopics</option></select></div><div><label for="difficultyFilter">Difficulty</label><select id="difficultyFilter" class="field"><option value="all">All difficulties</option></select></div><div><label for="questionCountFilter">Questions per practice session</label><select id="questionCountFilter" class="field"><option value="0">All matching questions</option><option value="5">5 questions</option><option value="10">10 questions</option><option value="20">20 questions</option><option value="30">30 questions</option><option value="50">50 questions</option></select></div></div><label class="option" style="max-width:360px"><input id="shuffleTopicQuestions" type="checkbox" checked><span>Randomize question order and select a random subset when a question limit is set</span></label><div class="row"><button class="soft" type="button" id="clearTopicFilters">Clear filters</button><span id="topicFilterSummary" class="muted small">Loading topic information…</span></div></div><div id="subjectQuizzes" class="card"></div></section>
@@ -498,12 +517,147 @@ function applyAdminAttemptFilters(){
 }
 
 let studentBankMeta=[];
-function fillStudentBankSelect(id,values,label){const el=$(id);const old=el.value;const vals=[...new Set((values||[]).filter(v=>String(v||'').trim()).map(v=>String(v).trim()))].sort((a,b)=>a.localeCompare(b));el.innerHTML=`<option value="all">${label}</option>`+vals.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');el.value=vals.includes(old)?old:'all';}
-async function loadStudentBankFilters(){const note=$('studentBankMessage');note.textContent='Loading available topics…';try{const {data,error}=await db.from('question_bank').select('subject,question_format,topic,subtopic,difficulty').eq('is_active',true).limit(2000);if(error)throw error;studentBankMeta=data||[];updateStudentBankFilters();note.textContent=studentBankMeta.length?`${studentBankMeta.length} active bank questions are available. Choose your filters to begin.`:'No active questions are available yet.';}catch(e){note.textContent='Could not load Question Bank filters: '+e.message;note.className='error';}}
-function updateStudentBankFilters(){const subject=$('studentBankSubject').value,format=$('studentBankFormat').value;const rows=studentBankMeta.filter(q=>q.subject===subject&&q.question_format===format);fillStudentBankSelect('studentBankTopic',rows.map(q=>q.topic),'All topics');updateStudentBankSubtopics();fillStudentBankSelect('studentBankDifficulty',rows.map(q=>q.difficulty||'Unspecified'),'All difficulties');}
-function updateStudentBankSubtopics(){const subject=$('studentBankSubject').value,format=$('studentBankFormat').value,topic=$('studentBankTopic').value;const rows=studentBankMeta.filter(q=>q.subject===subject&&q.question_format===format&&(topic==='all'||q.topic===topic));fillStudentBankSelect('studentBankSubtopic',rows.map(q=>q.subtopic),'All subtopics');}
-function resetStudentBankFilters(){$('studentBankSubject').value='Pharmacology';$('studentBankFormat').value='MCQ';$('studentBankCount').value='10';updateStudentBankFilters();$('studentBankMessage').className='muted small';$('studentBankMessage').textContent='Filters reset. Generate a new practice session when ready.';}
-async function generateBankPractice(){if(!session){showAuth();return;}const subject=$('studentBankSubject').value,format=$('studentBankFormat').value,topic=$('studentBankTopic').value,subtopic=$('studentBankSubtopic').value,difficulty=$('studentBankDifficulty').value,count=Number($('studentBankCount').value);const note=$('studentBankMessage');if(subject==='Pharmacology'&&format!=='MCQ'){note.className='error';note.textContent='Pharmacology Question Bank practice is MCQ-only.';return;}const button=$('generateBankPractice');button.disabled=true;note.className='muted small';note.textContent='Finding matching questions…';try{let query=db.from('question_bank').select('id,subject,question_format,question_text,options,marks,topic,subtopic,difficulty').eq('is_active',true).eq('subject',subject).eq('question_format',format);if(topic!=='all')query=query.eq('topic',topic);if(subtopic!=='all')query=query.eq('subtopic',subtopic);if(difficulty!=='all')query=query.eq('difficulty',difficulty);const {data,error}=await query.limit(1000);if(error)throw error;let questions=data||[];if(!questions.length){note.textContent='No active questions match these filters. Try another topic, difficulty or format.';return;}questions=questions.sort(()=>Math.random()-.5);if(count>0)questions=questions.slice(0,count);questions=questions.slice(0,100);currentQuiz={id:null,title:`Question Bank Practice · ${subject}`,subject,question_format:format,duration_minutes:0,questions,isBankPractice:true,topicPractice:{topic,subtopic,difficulty}};currentQuestionIndex=0;flaggedQuestions=new Set();submitted=false;hidePages();$('quizPage').classList.remove('hidden');$('quizResult').classList.add('hidden');$('submitQuiz').classList.remove('hidden');$('submitQuiz').textContent='Submit practice';$('quizTag').textContent=`QUESTION BANK · ${subject} · ${format}`;$('quizTitle').textContent=currentQuiz.title;$('quizMeta').textContent=`${questions.length} randomly selected questions · ${topic==='all'?'All topics':topic} · ${format==='MCQ'?'Automatic marking':'Model-answer review'}`;$('quizQuestions').innerHTML=questions.map((it,i)=>format==='MCQ'?`<article class="question mcq-question" data-mcq-index="${i}"><h3>${i+1}. ${esc(it.question_text)}</h3><p class="muted small">${esc([it.topic,it.subtopic,it.difficulty].filter(Boolean).join(' · '))}</p>${(it.options||[]).map((o,j)=>`<label class="option"><input type="radio" name="ans${i}" value="${j}"><span>${String.fromCharCode(65+j)}. ${esc(o)}</span></label>`).join('')}</article>`:`<article class="question"><h3>${i+1}. ${esc(it.question_text)} <span class="pill">${it.marks||1} marks</span></h3><p class="muted small">${esc([it.topic,it.subtopic,it.difficulty].filter(Boolean).join(' · '))}</p><textarea class="field answer" id="saq${i}" placeholder="Type your answer..."></textarea></article>`).join('');const mcq=format==='MCQ';$('mcqNavigator').classList.toggle('hidden',!mcq);if(mcq){buildQuestionPalette();$('flagQuestion').onclick=toggleCurrentFlag;$('mcqPrevious').onclick=()=>moveMCQQuestion(-1);$('mcqNext').onclick=()=>moveMCQQuestion(1);showMCQQuestion(0);}else{$('submitQuiz').textContent='Submit answers';}$('timer').textContent='Practice';$('submitQuiz').onclick=()=>submitCurrent(false);note.textContent=`Practice started with ${questions.length} question(s).`; }catch(e){note.className='error';note.textContent='Could not generate practice: '+e.message;}finally{button.disabled=false;}}
+let studentBankSelected=new Set();
+
+function studentBankGroupKey(topic,subtopic){return `${String(topic||'').trim()}|||${String(subtopic||'').trim()}`;}
+function studentBankGroups(){
+ const subject=$('studentBankSubject').value,format=$('studentBankFormat').value,topic=$('studentBankTopic').value;
+ const rows=studentBankMeta.filter(q=>q.subject===subject&&q.question_format===format&&(topic==='all'||q.topic===topic));
+ const map=new Map();
+ rows.forEach(q=>{
+  const t=String(q.topic||'Uncategorised').trim(),st=String(q.subtopic||'Uncategorised').trim(),key=studentBankGroupKey(t,st);
+  if(!map.has(key))map.set(key,{key,topic:t,subtopic:st,count:0});
+  map.get(key).count++;
+ });
+ return [...map.values()].sort((a,b)=>a.topic.localeCompare(b.topic)||a.subtopic.localeCompare(b.subtopic));
+}
+function studentBankSelectedGroups(){return studentBankGroups().filter(g=>studentBankSelected.has(g.key));}
+function updateStudentBankSelectionSummary(){
+ const groups=studentBankSelectedGroups();
+ const count=studentBankMeta.filter(q=>{
+  if(q.subject!==$('studentBankSubject').value||q.question_format!==$('studentBankFormat').value)return false;
+  if($('studentBankTopic').value!=='all'&&q.topic!==$('studentBankTopic').value)return false;
+  if($('studentBankDifficulty').value!=='all'&&(q.difficulty||'Unspecified')!==$('studentBankDifficulty').value)return false;
+  return groups.some(g=>g.topic===String(q.topic||'Uncategorised').trim()&&g.subtopic===String(q.subtopic||'Uncategorised').trim());
+ }).length;
+ $('studentBankSelectionSummary').textContent=`${groups.length} subtopic${groups.length===1?'':'s'} selected`;
+ $('studentBankAvailableCount').textContent=`${count} active question${count===1?'':'s'} available`;
+}
+function renderStudentBankSubtopics(){
+ const box=$('studentBankSubtopicList');if(!box)return;
+ const groups=studentBankGroups();
+ const valid=new Set(groups.map(g=>g.key));
+ studentBankSelected=new Set([...studentBankSelected].filter(k=>valid.has(k)));
+ if(!groups.length){box.innerHTML='<p class="muted small">No active subtopics are available for these filters.</p>';updateStudentBankSelectionSummary();return;}
+ box.innerHTML=groups.map(g=>`<label class="subtopic-check"><input type="checkbox" data-bank-subtopic="${esc(g.key)}" ${studentBankSelected.has(g.key)?'checked':''}><span class="subtopic-check-copy"><span>${esc(g.subtopic)}</span><small>${esc(g.topic)} · ${g.count} active question${g.count===1?'':'s'}</small></span></label>`).join('');
+ box.querySelectorAll('input[data-bank-subtopic]').forEach(input=>input.addEventListener('change',()=>{
+  const key=input.dataset.bankSubtopic;
+  if(input.checked)studentBankSelected.add(key);else studentBankSelected.delete(key);
+  updateStudentBankSelectionSummary();
+ }));
+ updateStudentBankSelectionSummary();
+}
+function fillStudentBankSelect(id,values,label){
+ const el=$(id),old=el.value,vals=[...new Set((values||[]).filter(v=>String(v||'').trim()).map(v=>String(v).trim()))].sort((a,b)=>a.localeCompare(b));
+ el.innerHTML=`<option value="all">${label}</option>`+vals.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');
+ el.value=vals.includes(old)?old:'all';
+}
+async function fetchAllStudentBankRows(columns,subject,format){
+ const all=[];let from=0,batch=1000;
+ while(true){
+  let query=db.from('question_bank').select(columns).eq('is_active',true);
+  if(subject)query=query.eq('subject',subject);
+  if(format)query=query.eq('question_format',format);
+  const {data,error}=await query.range(from,from+batch-1);
+  if(error)throw error;
+  const rows=data||[];all.push(...rows);
+  if(rows.length<batch)break;
+  from+=batch;
+ }
+ return all;
+}
+async function loadStudentBankFilters(){
+ const note=$('studentBankMessage');note.textContent='Loading available topics and subtopics…';
+ try{
+  studentBankMeta=await fetchAllStudentBankRows('subject,question_format,topic,subtopic,difficulty',null,null);
+  studentBankSelected.clear();
+  updateStudentBankFilters();
+  note.className='muted small';
+  note.textContent=studentBankMeta.length?`${studentBankMeta.length} active Question Bank questions are available. Select one or more subtopics to begin.`:'No active questions are available yet.';
+ }catch(e){note.textContent='Could not load Question Bank filters: '+e.message;note.className='error';}
+}
+function updateStudentBankFilters(){
+ const subject=$('studentBankSubject').value,format=$('studentBankFormat').value;
+ const rows=studentBankMeta.filter(q=>q.subject===subject&&q.question_format===format);
+ fillStudentBankSelect('studentBankTopic',rows.map(q=>q.topic),'All major topics');
+ fillStudentBankSelect('studentBankDifficulty',rows.map(q=>q.difficulty||'Unspecified'),'All difficulties');
+ renderStudentBankSubtopics();
+}
+function updateStudentBankSubtopics(){renderStudentBankSubtopics();}
+function resetStudentBankFilters(){
+ $('studentBankSubject').value='Pharmacology';$('studentBankFormat').value='MCQ';$('studentBankCount').value='10';
+ $('studentBankTopic').value='all';$('studentBankDifficulty').value='all';studentBankSelected.clear();
+ updateStudentBankFilters();$('studentBankMessage').className='muted small';
+ $('studentBankMessage').textContent='Filters reset. Select one or more subtopics to generate a new practice session.';
+}
+function shuffleStudentBank(items){
+ const a=[...items];
+ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+ return a;
+}
+function distributeStudentBankQuestions(rows,selectedGroups,limit){
+ const grouped=new Map(selectedGroups.map(g=>[g.key,[]]));
+ rows.forEach(q=>{
+  const key=studentBankGroupKey(q.topic||'Uncategorised',q.subtopic||'Uncategorised');
+  if(grouped.has(key))grouped.get(key).push(q);
+ });
+ for(const [key,list] of grouped)grouped.set(key,shuffleStudentBank(list));
+ const result=[];let remaining=true;
+ while(result.length<limit&&remaining){
+  remaining=false;
+  for(const g of selectedGroups){
+   const list=grouped.get(g.key);
+   if(list&&list.length&&result.length<limit){result.push(list.pop());remaining=true;}
+  }
+ }
+ return shuffleStudentBank(result);
+}
+async function generateBankPractice(){
+ if(!session){showAuth();return;}
+ const subject=$('studentBankSubject').value,format=$('studentBankFormat').value,topic=$('studentBankTopic').value,difficulty=$('studentBankDifficulty').value,count=Number($('studentBankCount').value);
+ const note=$('studentBankMessage'),selectedGroups=studentBankSelectedGroups();
+ if(subject==='Pharmacology'&&format!=='MCQ'){note.className='error';note.textContent='Pharmacology Question Bank practice is MCQ-only.';return;}
+ if(!selectedGroups.length){note.className='error';note.textContent='Select at least one subtopic. Use Select all if you want questions from every available subtopic.';return;}
+ const button=$('generateBankPractice');button.disabled=true;note.className='muted small';note.textContent='Finding matching questions…';
+ try{
+  let query=db.from('question_bank').select('id,subject,question_format,question_text,options,marks,topic,subtopic,difficulty').eq('is_active',true).eq('subject',subject).eq('question_format',format);
+  if(topic!=='all')query=query.eq('topic',topic);
+  if(difficulty!=='all')query=query.eq('difficulty',difficulty);
+  let allRows=[],from=0,batch=1000;
+  while(true){
+   const {data,error}=await query.range(from,from+batch-1);if(error)throw error;
+   const page=data||[];allRows.push(...page);if(page.length<batch)break;from+=batch;
+  }
+  const selectedKeys=new Set(selectedGroups.map(g=>g.key));
+  let questions=allRows.filter(q=>selectedKeys.has(studentBankGroupKey(q.topic||'Uncategorised',q.subtopic||'Uncategorised')));
+  if(!questions.length){note.className='error';note.textContent='No active questions are currently available in the selected subtopics. Please choose another subtopic.';return;}
+  const requested=count>0?Math.min(count,100):100;
+  questions=distributeStudentBankQuestions(questions,selectedGroups,Math.min(requested,questions.length));
+  if(!questions.length){note.className='error';note.textContent='No questions could be selected from those subtopics.';return;}
+  const selectedNames=selectedGroups.map(g=>g.subtopic);
+  currentQuiz={id:null,title:`Question Bank Practice · ${subject}`,subject,question_format:format,duration_minutes:0,questions,isBankPractice:true,topicPractice:{topic,subtopics:selectedNames,subtopic:selectedNames.join(', '),difficulty}};
+  currentQuestionIndex=0;flaggedQuestions=new Set();submitted=false;hidePages();$('quizPage').classList.remove('hidden');$('quizResult').classList.add('hidden');$('submitQuiz').classList.remove('hidden');$('submitQuiz').textContent='Submit practice';
+  $('quizTag').textContent=`QUESTION BANK · ${subject} · ${format}`;
+  $('quizTitle').textContent=currentQuiz.title;
+  $('quizMeta').textContent=`${questions.length} randomly selected questions · ${selectedNames.join(', ')} · ${format==='MCQ'?'Automatic marking':'Model-answer review'}`;
+  $('quizQuestions').innerHTML=questions.map((it,i)=>format==='MCQ'?`<article class="question mcq-question" data-mcq-index="${i}"><h3>${i+1}. ${esc(it.question_text)}</h3><p class="muted small">${esc([it.topic,it.subtopic,it.difficulty].filter(Boolean).join(' · '))}</p>${(it.options||[]).map((o,j)=>`<label class="option"><input type="radio" name="ans${i}" value="${j}"><span>${String.fromCharCode(65+j)}. ${esc(o)}</span></label>`).join('')}</article>`:`<article class="question"><h3>${i+1}. ${esc(it.question_text)} <span class="pill">${it.marks||1} marks</span></h3><p class="muted small">${esc([it.topic,it.subtopic,it.difficulty].filter(Boolean).join(' · '))}</p><textarea class="field answer" id="saq${i}" placeholder="Type your answer..."></textarea></article>`).join('');
+  const mcq=format==='MCQ';$('mcqNavigator').classList.toggle('hidden',!mcq);
+  if(mcq){buildQuestionPalette();$('flagQuestion').onclick=toggleCurrentFlag;$('mcqPrevious').onclick=()=>moveMCQQuestion(-1);$('mcqNext').onclick=()=>moveMCQQuestion(1);showMCQQuestion(0);}else{$('submitQuiz').textContent='Submit answers';}
+  $('timer').textContent='Practice';$('submitQuiz').onclick=()=>submitCurrent(false);
+  note.className='success';note.textContent=`Practice started with ${questions.length} question(s) from ${selectedGroups.length} selected subtopic(s).`;
+ }catch(e){note.className='error';note.textContent='Could not generate practice: '+e.message;}
+ finally{button.disabled=false;}
+}
 async function submitBankPractice(auto){
  const format=currentQuiz.question_format,questions=currentQuiz.questions;submitted=true;$('mcqNavigator').classList.add('hidden');if(timerHandle){clearInterval(timerHandle);timerHandle=null;}$('quizResult').classList.remove('hidden');$('submitQuiz').classList.add('hidden');
  try{
@@ -767,7 +921,10 @@ async function saveAdjustedMarks(){
 }
 
 $('bankSubject').addEventListener('change',()=>{syncBankFormat();refreshBankTopicOptions();});$('bankFormat').addEventListener('change',()=>{syncBankFormat();bankUploadValidated=false;$('bankImportBtn').disabled=true;});$('bankTopicChoice').addEventListener('input',refreshBankSubtopicOptions);['bankSearch','bankFilterSubject','bankFilterFormat','bankFilterDifficulty','bankFilterStatus'].forEach(id=>$(id).addEventListener(id==='bankSearch'?'input':'change',renderQuestionBankAdmin));$('bankUploadFile').addEventListener('change',()=>{bankUploadValidated=false;bankUploadRows=[];$('bankImportBtn').disabled=true;$('bankImportPreview').classList.add('hidden');});syncBankFormat();
-$('studentBankSubject').addEventListener('change',()=>{if($('studentBankSubject').value==='Pharmacology')$('studentBankFormat').value='MCQ';updateStudentBankFilters();});$('studentBankFormat').addEventListener('change',()=>updateStudentBankFilters());$('studentBankTopic').addEventListener('change',updateStudentBankSubtopics);
+$('studentBankSubject').addEventListener('change',()=>{if($('studentBankSubject').value==='Pharmacology')$('studentBankFormat').value='MCQ';studentBankSelected.clear();updateStudentBankFilters();});$('studentBankFormat').addEventListener('change',()=>{studentBankSelected.clear();updateStudentBankFilters();});$('studentBankTopic').addEventListener('change',()=>{studentBankSelected.clear();updateStudentBankSubtopics();});
+$('studentBankDifficulty').addEventListener('change',updateStudentBankSelectionSummary);
+$('studentBankSelectAll').addEventListener('click',()=>{studentBankSelected=new Set(studentBankGroups().map(g=>g.key));renderStudentBankSubtopics();});
+$('studentBankClearSelection').addEventListener('click',()=>{studentBankSelected.clear();renderStudentBankSubtopics();});
 refreshSession();
 
 // Sidebar navigation: use the existing page functions so database/auth behaviour stays unchanged.
