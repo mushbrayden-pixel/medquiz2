@@ -91,117 +91,11 @@ details.admin-folder{display:block;border:1px solid var(--line);border-radius:16
 .dashboard-action-copy small{font-size:11px;line-height:1.35;font-weight:500;color:var(--muted)}
 .dashboard-action-arrow{font-size:19px;color:var(--blue);font-weight:900}
 @media(max-width:760px){.dashboard-actions{grid-template-columns:1fr;gap:8px}.dashboard-action{min-height:58px}.dashboard-action-copy small{font-size:12px}}
-
-
-/* Multi-subtopic Question Bank selector */
-.subtopic-picker{margin-top:8px;padding:16px;border:1px solid var(--line);border-radius:15px;background:#fbfcff}
-.subtopic-picker-heading{align-items:flex-start;margin-bottom:12px}
-.subtopic-checklist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;max-height:340px;overflow:auto;padding:2px}
-.subtopic-check{display:flex;align-items:flex-start;gap:10px;padding:11px 12px;border:1px solid var(--line);border-radius:11px;background:#fff;cursor:pointer;font-size:13px;font-weight:650;color:var(--ink)}
-.subtopic-check:hover{border-color:#b8ccfa;background:#f8faff}
-.subtopic-check input{margin:3px 0 0;accent-color:var(--blue);flex:0 0 auto}
-.subtopic-check-copy{display:flex;flex-direction:column;gap:2px;min-width:0}
-.subtopic-check-copy small{font-size:11px;color:var(--muted);font-weight:500}
-.subtopic-count-row{justify-content:flex-start;margin-top:12px}
-.subtopic-picker .small{font-size:12px}
-@media(max-width:600px){.subtopic-checklist{grid-template-columns:1fr}.subtopic-picker{padding:12px}.subtopic-picker-heading>.row{width:100%;justify-content:flex-start!important}}
-
-/* Refined student dashboard layout */
-.dashboard-welcome{margin-bottom:18px;padding:30px clamp(22px,4vw,42px)}
-.dashboard-welcome h1{font-size:clamp(30px,4vw,43px);margin:10px 0 7px}
-.dashboard-subject-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:0 0 22px}
-.dashboard-subject-card{min-height:190px;padding:23px;display:flex;flex-direction:column;align-items:flex-start;position:relative;overflow:hidden}
-.dashboard-subject-card .subject-symbol{display:grid;place-items:center;width:46px;height:46px;border-radius:14px;background:#edf3ff;font-size:23px;margin-bottom:13px}
-.dashboard-subject-card h2{margin:0 0 8px}
-.dashboard-subject-card p{flex:1;margin:0 0 16px}
-.dashboard-preview-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:20px}
-.dashboard-preview-card{min-width:0;min-height:260px;padding:20px;margin:0}
-.dashboard-preview-content{max-height:360px;overflow:auto;padding-right:4px}
-.dashboard-preview-content .metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-.dashboard-preview-content .student-performance-folder{padding:12px}
-.dashboard-preview-content table{min-width:520px}
-.available-quiz-list{margin-top:16px}
-@media(max-width:900px){.dashboard-subject-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:650px){.dashboard-subject-grid,.dashboard-preview-grid{grid-template-columns:1fr}.dashboard-subject-card{min-height:160px}.dashboard-preview-card{min-height:180px}}
-
-/* Distinct dashboard destinations and reliable responsive navigation */
-.dashboard-subject-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:18px 0 24px}
-.dashboard-subject-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;min-height:225px;margin:0!important;padding:22px!important;overflow:hidden;border-radius:18px;box-shadow:0 8px 22px rgba(16,35,63,.055)}
-.dashboard-subject-card:nth-child(1){background:linear-gradient(145deg,#eef4ff,#fff 78%);border-top:4px solid #246bfd}
-.dashboard-subject-card:nth-child(2){background:linear-gradient(145deg,#effaf5,#fff 78%);border-top:4px solid #15966a}
-.dashboard-subject-card:nth-child(3){background:linear-gradient(145deg,#fff6ee,#fff 78%);border-top:4px solid #e58a35}
-.dashboard-subject-card h2{margin:10px 0 5px}.dashboard-subject-card p{flex:1;font-size:13px}.subject-symbol{display:grid;place-items:center;width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,.85);font-size:25px;box-shadow:0 3px 12px rgba(16,35,63,.06)}
-.dashboard-preview-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:20px 0}
-.dashboard-preview-card{margin:0!important;min-height:300px;padding:22px!important;border-radius:18px;box-shadow:0 8px 22px rgba(16,35,63,.055)}
-.dashboard-preview-card:first-child{border-left:4px solid #246bfd;background:linear-gradient(150deg,#f4f7ff,#fff 65%)}
-.dashboard-preview-card:last-child{border-left:4px solid #8a63d2;background:linear-gradient(150deg,#f8f5ff,#fff 65%)}
-.dashboard-preview-content{min-height:190px;max-height:360px;overflow:auto;padding:8px 2px}
-.dashboard-preview-card .row{align-items:flex-start}
-@media(max-width:900px){.dashboard-subject-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.app-shell{grid-template-columns:minmax(0,1fr)}}
-/* Mobile navigation: collapsed hamburger drawer; desktop sidebar remains permanently visible. */
-.mobile-menu-toggle{display:none}
-.dashboard-hub-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:22px 0 28px;align-items:start}
-.dashboard-hub-card{margin:0;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:#fff;box-shadow:0 9px 26px rgba(16,35,63,.065);min-width:0;transition:transform .18s,box-shadow .18s}
-.dashboard-hub-card:hover{transform:translateY(-2px);box-shadow:0 13px 30px rgba(16,35,63,.09)}
-.dashboard-hub-card>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:20px;min-height:112px}
-.dashboard-hub-card>summary::-webkit-details-marker{display:none}
-.performance-hub>summary{background:linear-gradient(135deg,#edf3ff,#fff)}.attempts-hub>summary{background:linear-gradient(135deg,#f4efff,#fff)}.quizzes-hub>summary{background:linear-gradient(135deg,#eafaf3,#fff)}
-.hub-icon{display:grid;place-items:center;flex:0 0 48px;width:48px;height:48px;border-radius:15px;background:#fff;font-size:24px;box-shadow:0 4px 13px rgba(16,35,63,.07)}
-.hub-copy{display:flex;flex-direction:column;gap:5px;min-width:0;flex:1}.hub-copy b{font-size:16px;color:var(--navy)}.hub-copy small{font-size:11px;line-height:1.4;color:var(--muted)}
-.hub-open{display:grid;place-items:center;flex:0 0 30px;width:30px;height:30px;border-radius:50%;background:#fff;color:var(--blue);font-size:21px;font-weight:700}
-.dashboard-hub-card[open]{grid-column:1/-1}.dashboard-hub-card[open] .hub-open{transform:rotate(45deg)}
-.hub-panel{padding:18px 20px 20px;border-top:1px solid var(--line);background:#fff}.hub-panel-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.dashboard-preview-content{max-height:340px;overflow:auto;margin-top:12px;padding:4px 2px}.dashboard-preview-content .metric-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
-@media(max-width:900px){.dashboard-subject-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard-hub-grid{grid-template-columns:1fr}.dashboard-hub-card[open]{grid-column:auto}}
-@media(max-width:760px){
- .mobile-menu-toggle{display:inline-flex;align-items:center;gap:10px;margin:0 0 10px;padding:11px 15px;background:#10233f;color:#fff;border-radius:12px;box-shadow:0 5px 14px rgba(16,35,63,.15)}
- .mobile-menu-toggle span:first-child{font-size:20px;line-height:1}
- .app-sidebar{display:none;position:absolute;z-index:50;top:0;left:0;right:0;width:100%;padding:13px;border-radius:16px;box-shadow:0 18px 40px rgba(16,35,63,.2);background:#fff}
- .app-sidebar.mobile-open{display:block}
- .app-shell{position:relative;display:block}
- .sidebar-brand{display:block;padding:4px 8px 10px}.sidebar-note,.sidebar-divider{display:none}
- .sidebar-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;overflow:visible;max-width:100%;padding:0}
- .sidebar-nav button{width:100%;min-width:0;white-space:normal;flex:initial;justify-content:flex-start;padding:10px 9px;min-height:46px;font-size:12px}
- .sidebar-nav button .sidebar-label{display:inline;overflow-wrap:anywhere}
- .dashboard-subject-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.dashboard-subject-card{min-height:205px;padding:16px!important}
- .hub-panel{padding:14px}.dashboard-preview-content .metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-@media(max-width:420px){
- .sidebar-nav{grid-template-columns:repeat(2,minmax(0,1fr))}.sidebar-nav button{font-size:11px;gap:6px;padding:9px 7px}.sidebar-icon{width:20px;flex-basis:20px;font-size:15px}
- .dashboard-subject-grid{grid-template-columns:1fr}.dashboard-subject-card{min-height:170px}
- .dashboard-hub-card>summary{padding:16px;min-height:98px}.hub-icon{width:42px;height:42px;flex-basis:42px}.hub-copy b{font-size:14px}
- .hub-panel-top{align-items:stretch}.hub-panel-top button{width:100%}
-}
-
-
-/* Large, distinct dashboard destinations: each card opens a dedicated page. */
-.dashboard-destination-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin:28px 0 34px;align-items:stretch}
-.destination-card{position:relative;isolation:isolate;display:flex;flex-direction:column;min-width:0;min-height:390px;padding:26px 25px 24px;border:1px solid var(--line);border-radius:22px;overflow:hidden;background:#fff;box-shadow:0 12px 32px rgba(16,35,63,.075);transition:transform .2s ease,box-shadow .2s ease}
-.destination-card:hover{transform:translateY(-4px);box-shadow:0 18px 38px rgba(16,35,63,.12)}
-.destination-card:after{content:"";position:absolute;z-index:-1;width:190px;height:190px;right:-68px;top:90px;border-radius:50%;opacity:.65}
-.destination-performance{border-top:6px solid #2868df;background:linear-gradient(155deg,#edf4ff 0%,#fff 62%)}.destination-performance:after{background:radial-gradient(circle,#c8dcff 0%,rgba(200,220,255,0) 70%)}
-.destination-attempts{border-top:6px solid #8255c7;background:linear-gradient(155deg,#f5efff 0%,#fff 62%)}.destination-attempts:after{background:radial-gradient(circle,#e1d0ff 0%,rgba(225,208,255,0) 70%)}
-.destination-quizzes{border-top:6px solid #15966a;background:linear-gradient(155deg,#eafaf3 0%,#fff 62%)}.destination-quizzes:after{background:radial-gradient(circle,#c4f0dc 0%,rgba(196,240,220,0) 70%)}
-.destination-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.destination-icon{display:grid;place-items:center;width:62px;height:62px;border-radius:19px;background:rgba(255,255,255,.9);font-size:31px;box-shadow:0 6px 18px rgba(16,35,63,.08)}
-.destination-tag{padding:7px 10px;border-radius:30px;background:rgba(255,255,255,.82);font-size:10px;letter-spacing:1px;font-weight:900;color:#53627a}
-.destination-number{margin:25px 0 5px;font-size:12px;font-weight:900;letter-spacing:2px;color:#8290a5}
-.destination-card h2{font-size:25px;margin:0 0 12px;letter-spacing:-.7px}
-.destination-card p{font-size:14px;line-height:1.7;color:#59677c;margin:0 0 18px;min-height:72px}
-.destination-points{display:grid;gap:8px;margin:0 0 24px;color:#41516a;font-size:12px;font-weight:700}
-.destination-points span:before{content:"•";margin-right:9px;font-size:17px;vertical-align:-1px}
-.destination-action{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;margin-top:auto;padding:15px 17px;border:0;border-radius:13px;color:#fff;font-weight:850;text-align:left;box-shadow:0 6px 16px rgba(16,35,63,.12)}
-.destination-action span{font-size:21px;line-height:1}
-.destination-performance .destination-action{background:#2868df}.destination-attempts .destination-action{background:#8255c7}.destination-quizzes .destination-action{background:#15966a}
-.destination-action:hover{filter:brightness(.96)}
-@media(max-width:1050px){.dashboard-destination-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.destination-card{min-height:360px}}
-@media(max-width:650px){.dashboard-destination-grid{grid-template-columns:1fr;gap:14px;margin:20px 0 26px}.destination-card{min-height:0;padding:22px}.destination-card p{min-height:0}.destination-number{margin-top:18px}}
-
 </style></head><body><header><div class="brand">Med<span>Quiz</span></div><div class="row"><span id="userLabel" class="small"></span><button id="authBtn" class="soft">Sign in</button><button id="adminBtn" class="soft hidden">Admin</button></div></header><main><div class="app-shell">
-<button type="button" id="mobileMenuToggle" class="mobile-menu-toggle" aria-expanded="false" aria-controls="mainSidebar"><span aria-hidden="true">☰</span><span>Menu</span></button><aside id="mainSidebar" class="app-sidebar" aria-label="Main navigation"><div class="sidebar-brand">MedQuiz workspace</div><nav class="sidebar-nav">
+<aside class="app-sidebar" aria-label="Main navigation"><div class="sidebar-brand">MedQuiz workspace</div><nav class="sidebar-nav">
 <button type="button" class="active" data-sidebar="home"><span class="sidebar-icon">⌂</span><span class="sidebar-label">Home</span></button>
 <button type="button" data-sidebar="pharmacology"><span class="sidebar-icon">💊</span><span class="sidebar-label">Pharmacology</span></button>
 <button type="button" data-sidebar="pathology"><span class="sidebar-icon">🔬</span><span class="sidebar-label">Pathology</span></button>
-<button type="button" data-sidebar="availableQuizzes"><span class="sidebar-icon">📝</span><span class="sidebar-label">Available Quizzes</span></button>
 <button type="button" data-sidebar="questionBank"><span class="sidebar-icon">📚</span><span class="sidebar-label">Question Bank</span></button>
 
 <div class="sidebar-divider"></div>
@@ -211,38 +105,11 @@ details.admin-folder{display:block;border:1px solid var(--line);border-radius:16
 </nav><div class="sidebar-note">Your revision workspace<br>Study · Practise · Improve</div></aside>
 <div class="app-content">
 <section id="authPanel" class="card hidden"><h2 id="authTitle">Sign in</h2><p class="muted">Use your MedQuiz account. Students need an account to submit attempts.</p><label id="fullNameLabel" class="hidden">Full name <span class="muted">(enter this once when creating your account)</span></label><input id="fullName" class="field hidden" type="text" autocomplete="name" placeholder="Enter your full name"><label>Email</label><input id="email" class="field" type="email" autocomplete="email"><label>Password</label><input id="password" class="field" type="password" autocomplete="current-password"><div class="row" style="justify-content:flex-start"><button class="primary" id="authSubmit">Sign in</button><button class="soft" id="toggleAuth">Create account</button><button class="soft" id="forgotPassword">Forgot password?</button><button class="soft hidden" id="backToLogin">Back to sign in</button><button class="soft" id="cancelAuth">Cancel</button></div><p id="authMsg" class="error"></p></section>
-<section id="home">
-<div class="hero dashboard-welcome"><span class="pill">MEDICAL REVISION HUB</span><h1>Welcome back,<br><span id="welcomeName">Student</span>.</h1><p class="muted">Your medical revision workspace. Choose a subject, practise from the Question Bank, and track your progress.</p><span class="pill">💊 Pharmacology · MCQs</span> <span class="pill">🔬 Pathology · MCQs & SAQs</span></div>
-<div class="dashboard-subject-grid">
- <article class="card dashboard-subject-card"><span class="subject-symbol">📚</span><h2>Question Bank</h2><p class="muted">Build a personalised practice session by choosing a major topic and one or more subtopics.</p><button class="primary" onclick="openStudentQuestionBank()">Open Question Bank →</button></article>
- <article class="card dashboard-subject-card"><span class="subject-symbol">💊</span><h2>Pharmacology</h2><p class="muted">Challenge yourself with medical pharmacology MCQs, timed quizzes and detailed explanations.</p><button class="primary" onclick="showSubject('Pharmacology')">Explore Pharmacology →</button></article>
- <article class="card dashboard-subject-card"><span class="subject-symbol">🔬</span><h2>Pathology</h2><p class="muted">Practise Pathology MCQs and short-answer questions with marking feedback.</p><button class="primary" onclick="showSubject('Pathology')">Explore Pathology →</button></article>
-</div>
-<div class="dashboard-destination-grid" aria-label="Student workspace">
- <article class="destination-card destination-performance">
-  <div class="destination-top"><span class="destination-icon">📊</span><span class="destination-tag">YOUR PROGRESS</span></div>
-  <div class="destination-number">01</div>
-  <h2>My Performance</h2>
-  <p>See the bigger picture. Review your scores, subject averages, completed quizzes and areas that need more revision.</p>
-  <div class="destination-points"><span>✓ Score history</span><span>✓ Pharmacology & Pathology</span><span>✓ Progress at a glance</span></div>
-  <button class="destination-action" type="button" onclick="showPerformance()">Open performance <span>→</span></button>
- </article>
- <article class="destination-card destination-attempts">
-  <div class="destination-top"><span class="destination-icon">🗂️</span><span class="destination-tag">YOUR ACTIVITY</span></div>
-  <div class="destination-number">02</div>
-  <h2>Recent Attempts</h2>
-  <p>Return to your latest work. Check submitted answers, review feedback, inspect marks or retake a quiz.</p>
-  <div class="destination-points"><span>✓ Latest submissions</span><span>✓ Review results</span><span>✓ Retake previous quizzes</span></div>
-  <button class="destination-action" type="button" onclick="showRecentAttempts()">View my attempts <span>→</span></button>
- </article>
- <article class="destination-card destination-quizzes">
-  <div class="destination-top"><span class="destination-icon">📝</span><span class="destination-tag">PRACTICE LIBRARY</span></div>
-  <div class="destination-number">03</div>
-  <h2>Available Quizzes</h2>
-  <p>Explore published assessments from your lecturers and begin a focused revision session whenever you're ready.</p>
-  <div class="destination-points"><span>✓ Published quizzes</span><span>✓ MCQs and SAQs</span><span>✓ Timed assessments</span></div>
-  <button class="destination-action" type="button" onclick="showAvailableQuizzes()">Explore quiz library <span>→</span></button>
- </article>
+<section id="home"><div class="hero"><span class="pill">MEDICAL REVISION HUB</span><h1>Your medical revision,<br>in one place.</h1><p class="muted">Pharmacology MCQs and Pathology MCQs or SAQs, with timed practice, a question navigator, review flags, unanswered-question checks, saved attempt history, answer review and retakes.</p><span class="pill">💊 Pharmacology · MCQs</span> <span class="pill">🔬 Pathology · MCQs & SAQs</span></div>
+<div class="grid"><article class="card"><h2>📚 Question Bank</h2><p class="muted">Build a fresh practice session from reusable questions. Choose a subject, topic, difficulty and question format.</p><button class="primary" onclick="openStudentQuestionBank()">Practise from Question Bank →</button></article><article class="card"><h2>💊 Pharmacology</h2><p class="muted">Challenging multiple-choice questions, timed practice and explanations.</p><button class="primary" onclick="showSubject('Pharmacology')">Explore quizzes →</button></article><article class="card"><h2>🔬 Pathology</h2><p class="muted">MCQs with automatic grading, plus short-answer questions with deterministic key-point marking and feedback.</p><button class="primary" onclick="showSubject('Pathology')">Explore quizzes →</button></article></div><div class="row"><h2>Available quizzes</h2><span class="muted small">Showing the 5 most recently added</span></div><div id="allQuizzes" class="card">Loading quizzes…</div>
+<div class="dashboard-actions" aria-label="Student tools">
+ <button class="dashboard-action" type="button" onclick="showPerformance()"><span class="dashboard-action-icon">📊</span><span class="dashboard-action-copy"><b>My performance</b><small>Scores and subject averages</small></span><span class="dashboard-action-arrow">→</span></button>
+ <button class="dashboard-action" type="button" onclick="showRecentAttempts()"><span class="dashboard-action-icon">🗂️</span><span class="dashboard-action-copy"><b>Recent attempts</b><small>Review or retake recent quizzes</small></span><span class="dashboard-action-arrow">→</span></button>
 </div>
 </section>
 <section id="questionBankStudent" class="hidden">
@@ -250,21 +117,15 @@ details.admin-folder{display:block;border:1px solid var(--line);border-radius:16
  <div class="card" style="margin-top:14px"><h2 style="margin-top:0">Build your practice session</h2><div class="grid">
   <div><label for="studentBankSubject">Subject</label><select id="studentBankSubject" class="field"><option>Pharmacology</option><option>Pathology</option></select></div>
   <div><label for="studentBankFormat">Question format</label><select id="studentBankFormat" class="field"><option value="MCQ">MCQs</option><option value="SAQ">Short-answer questions</option></select></div>
-  <div><label for="studentBankTopic">Major topic</label><select id="studentBankTopic" class="field"><option value="">Select a major topic first</option></select></div>
+  <div><label for="studentBankTopic">Topic</label><select id="studentBankTopic" class="field"><option value="all">All topics</option></select></div>
+  <div><label for="studentBankSubtopic">Subtopic</label><select id="studentBankSubtopic" class="field"><option value="all">All subtopics</option></select></div>
   <div><label for="studentBankDifficulty">Difficulty</label><select id="studentBankDifficulty" class="field"><option value="all">All difficulties</option></select></div>
   <div><label for="studentBankCount">Number of questions</label><select id="studentBankCount" class="field"><option value="5">5 questions</option><option value="10" selected>10 questions</option><option value="15">15 questions</option><option value="20">20 questions</option><option value="0">All matching questions (max 100)</option></select></div>
- </div>
- <div class="subtopic-picker">
-  <div class="row subtopic-picker-heading"><div><label>Choose subtopics</label><p class="muted small" style="margin:3px 0 0">Select one or more subtopics. Questions will come only from your selections.</p></div><div class="row" style="justify-content:flex-end"><button class="soft small" type="button" id="studentBankSelectAll">Select all</button><button class="soft small" type="button" id="studentBankClearSelection">Clear selection</button></div></div>
-  <div id="studentBankSubtopicList" class="subtopic-checklist"><p class="muted small">Loading subtopics…</p></div>
-  <div class="row subtopic-count-row"><span id="studentBankSelectionSummary" class="pill">0 subtopics selected</span><span id="studentBankAvailableCount" class="pill">0 questions available</span></div>
- </div>
- <div class="row" style="justify-content:flex-start;margin-top:16px"><button class="primary" id="generateBankPractice" type="button" onclick="generateBankPractice()">Generate Practice</button><button class="soft" type="button" onclick="resetStudentBankFilters()">Reset filters</button></div><p id="studentBankMessage" class="muted small" aria-live="polite">Choose one or more subtopics and generate a practice session.</p></div>
+ </div><div class="row" style="justify-content:flex-start;margin-top:16px"><button class="primary" id="generateBankPractice" type="button" onclick="generateBankPractice()">Generate Practice</button><button class="soft" type="button" onclick="resetStudentBankFilters()">Reset filters</button></div><p id="studentBankMessage" class="muted small" aria-live="polite">Choose your filters and generate a practice session.</p></div>
  <div class="card"><h3 style="margin-top:0">How practice works</h3><p class="muted">MCQs are automatically marked after submission, with the correct answer and explanation. For Pathology SAQs, submit your response and compare it with the model answer and marking points. Question Bank practice is separate from formal published quizzes.</p></div>
 </section>
-<section id="availableQuizzesPage" class="hidden"><div class="row"><div><span class="pill">QUIZ LIBRARY</span><h1 style="margin:8px 0 4px">Available Quizzes</h1><p class="muted">Browse all published Pharmacology and Pathology quizzes.</p></div><button class="soft" type="button" onclick="goHome()">← Back to dashboard</button></div><div id="availableQuizzesList" class="card available-quiz-list">Loading available quizzes…</div></section>
 <section id="subjectPage" class="hidden"><button class="soft" onclick="goHome()">← Back</button><h1 id="subjectTitle"></h1><div class="card hidden" aria-hidden="true"><h2>Topic filters</h2><p class="muted">Internal filters retained for compatibility.</p><div class="grid"><div><label for="topicFilter">Topic</label><select id="topicFilter" class="field"><option value="all">All topics</option></select></div><div><label for="subtopicFilter">Subtopic</label><select id="subtopicFilter" class="field"><option value="all">All subtopics</option></select></div><div><label for="difficultyFilter">Difficulty</label><select id="difficultyFilter" class="field"><option value="all">All difficulties</option></select></div><div><label for="questionCountFilter">Questions per practice session</label><select id="questionCountFilter" class="field"><option value="0">All matching questions</option><option value="5">5 questions</option><option value="10">10 questions</option><option value="20">20 questions</option><option value="30">30 questions</option><option value="50">50 questions</option></select></div></div><label class="option" style="max-width:360px"><input id="shuffleTopicQuestions" type="checkbox" checked><span>Randomize question order and select a random subset when a question limit is set</span></label><div class="row"><button class="soft" type="button" id="clearTopicFilters">Clear filters</button><span id="topicFilterSummary" class="muted small">Loading topic information…</span></div></div><div id="subjectQuizzes" class="card"></div></section>
-<section id="performancePage" class="hidden"><button class="soft" type="button" onclick="goHome()">← Back to dashboard</button><div class="row"><div><h1>📊 My Performance</h1><p class="muted">Your formal quiz results, topic strengths and progress.</p></div><button class="soft" type="button" onclick="renderMyPerformance()">Refresh</button></div><div id="myPerformance" class="card"><p class="muted">Loading your performance…</p></div></section>
+<section id="performancePage" class="hidden"><button class="soft" type="button" onclick="goHome()">← Back to dashboard</button><div class="row"><div><h1>📊 My Performance</h1><p class="muted">Your formal quiz results plus Question Bank practice history, topic strengths and progress.</p></div><button class="soft" type="button" onclick="renderMyPerformance()">Refresh</button></div><div id="myPerformance" class="card"><p class="muted">Loading your performance…</p></div></section>
 <section id="recentAttemptsPage" class="hidden"><button class="soft" type="button" onclick="goHome()">← Back to dashboard</button><div class="row"><div><h1>🗂️ Recent Attempts</h1><p class="muted">Your latest saved Pharmacology and Pathology quiz attempts.</p></div><button class="soft" type="button" onclick="renderRecentAttempts()">Refresh</button></div><div id="myAttempts" class="card"><p class="muted">Loading recent attempts…</p></div></section>
 <section id="quizPage" class="hidden"><button id="quizExitButton" class="soft" onclick="exitQuiz()">← Exit quiz</button><div class="row"><div><span id="quizTag" class="pill"></span><h1 id="quizTitle"></h1><p id="quizMeta" class="muted"></p></div><div class="card" style="text-align:center;padding:12px"><div class="small muted">TIME LEFT</div><div id="timer" class="stat">20:00</div></div></div><div id="mcqNavigator" class="card hidden"><div class="row"><span id="mcqProgress" class="pill">Question 1 of 1</span><span id="mcqAnswerCount" class="muted small">0 answered</span></div><div class="trend-track" style="margin:12px 0"><div id="mcqProgressFill" class="trend-fill" style="width:0%"></div></div><div class="quiz-tools"><button id="flagQuestion" class="soft" type="button">☆ Mark for review</button><span class="muted small">Green = answered · gold outline = flagged · blue outline = current</span></div><div id="questionPalette" class="question-palette" aria-label="Question navigator"></div><div class="row" style="justify-content:space-between"><button id="mcqPrevious" class="soft" type="button">← Previous</button><button id="mcqNext" class="primary" type="button">Next →</button></div></div><div id="quizQuestions"></div><button id="submitQuiz" class="primary" style="width:100%">Submit quiz</button><div id="quizResult" class="card hidden"></div></section>
 <section id="attemptDetailPage" class="hidden"><button class="soft" onclick="returnFromAttempt()">← Back</button><h1>Attempt results</h1><div id="attemptDetail" class="card"><p class="muted">Loading attempt…</p></div></section>
@@ -274,7 +135,7 @@ details.admin-folder{display:block;border:1px solid var(--line);border-radius:16
 <div class="grid" style="align-items:start">
 <div><label>Subject</label><select id="bankSubject" class="field"><option>Pharmacology</option><option>Pathology</option></select></div>
 <div><label>Question format</label><select id="bankFormat" class="field"><option value="MCQ">MCQ</option><option value="SAQ">SAQ</option></select></div>
-<div><label>Topic (choose existing or enter a new one)</label><input id="bankTopicChoice" class="field" list="bankTopicOptions" placeholder="e.g. Antimicrobial Drugs"><datalist id="bankTopicOptions"></datalist></div>
+<div><label>Topic (choose existing or enter a new one)</label><input id="bankTopicChoice" class="field" list="bankTopicOptions" value="Antimicrobial Drugs" placeholder="e.g. Antimicrobial Drugs"><datalist id="bankTopicOptions"></datalist></div>
 <div><label>Subtopic (choose existing or enter a new one)</label><input id="bankSubtopicChoice" class="field" list="bankSubtopicOptions" placeholder="e.g. Aminoglycosides"><datalist id="bankSubtopicOptions"></datalist></div>
 <div><label>Default difficulty (used if not supplied in file)</label><select id="bankDifficulty" class="field"><option>Unspecified</option><option>Easy</option><option>Moderate</option><option>Hard</option><option>Very hard</option></select></div>
 </div>
@@ -285,17 +146,15 @@ details.admin-folder{display:block;border:1px solid var(--line);border-radius:16
 <div id="bankImportPreview" class="card hidden" style="padding:15px;margin-top:14px" aria-live="polite"></div>
 <p id="bankImportMsg" class="muted small" aria-live="polite"></p>
 </div>
-<div class="card" style="margin-top:16px"><div class="row"><h3 style="margin:0">Find questions</h3><span id="bankCount" class="pill">Loading…</span></div><input id="bankSearch" class="field" placeholder="Search question, topic or subtopic"><div class="grid"><div><label>Subject</label><select id="bankFilterSubject" class="field"><option value="all">All subjects</option><option>Pharmacology</option><option>Pathology</option></select></div><div><label>Format</label><select id="bankFilterFormat" class="field"><option value="all">All formats</option><option>MCQ</option><option>SAQ</option></select></div><div><label>Difficulty</label><select id="bankFilterDifficulty" class="field"><option value="all">All difficulties</option><option>Unspecified</option><option>Easy</option><option>Moderate</option><option>Hard</option><option>Very hard</option></select></div><div><label>Status</label><select id="bankFilterStatus" class="field"><option value="all">All</option><option value="active">Active</option><option value="inactive">Inactive</option></select></div></div><button class="soft" type="button" onclick="loadQuestionBankAdmin()">Refresh questions</button><div id="bankQuestionList" style="margin-top:10px">Loading question bank…</div></div></section><div class="notice">Choose a Topic folder when creating each quiz. Students browse Pharmacology by topic folder; Pathology is grouped into MCQ and SAQ first, then by topic folder. Pharmacology is MCQ-only. Pathology supports MCQs and SAQs. MCQ JSON: <code>question, options, answer, explanation, topic, subtopic, difficulty</code> (answer is a zero-based option index; use five options A–E). SAQ JSON: <code>question, marks, modelAnswer, topic, subtopic, difficulty</code>. MCQs are automatically graded; SAQs use the deterministic Cloudflare key-point marking function.</div><div class="grid"><div class="card"><h2 id="formTitle">Add a quiz</h2><label>Quiz title</label><input id="qTitle" class="field" placeholder="e.g. Beta-lactam antibiotics"><label>Subject</label><select id="qSubject" class="field"><option>Pharmacology</option><option>Pathology</option></select><label>Topic folder (where students will find this quiz)</label><input id="qTopicFolder" class="field" list="topicFolderSuggestions" placeholder="e.g. Antimicrobial drugs, Cardiovascular pathology" required><datalist id="topicFolderSuggestions"><option value="General"><option value="Autacoids"><option value="General Pharmacology"><option value="Antimicrobials"><option value="Antimicrobial drugs"><option value="Autonomic pharmacology"><option value="Cardiovascular pharmacology"><option value="Endocrine pharmacology"><option value="Inflammation"><option value="Cell injury and adaptation"><option value="Haematology"><option value="Immunology"><option value="Cardiovascular pathology"><option value="Respiratory pathology"><option value="Gastrointestinal pathology"><option value="Renal pathology"><option value="Neoplasia"></datalist><label>Question format</label><select id="qFormat" class="field"><option value="MCQ">MCQ — automatically graded</option><option value="SAQ">SAQ — key-point marked</option></select><label>Timer (minutes)</label><input id="qMinutes" class="field" type="number" min="1" value="20"><label>Description</label><input id="qDesc" class="field" placeholder="Topics covered"><label>Questions (JSON array)</label><textarea id="qData" class="field answer" placeholder='[{"question":"Which drug...","options":["A","B","C","D","E"],"answer":1,"explanation":"..."}]'></textarea><p id="formatHelp" class="muted small">MCQ: use 5 options (A–E), answer index 0–4, explanation, topic, subtopic and difficulty.</p><div class="row" style="justify-content:flex-start;margin:8px 0 12px"><button id="previewQuizImport" class="soft" type="button">Validate & preview questions</button><button id="formatExampleBtn" class="soft" type="button">Insert example JSON</button></div><div id="quizImportPreview" class="card hidden" aria-live="polite" style="padding:16px;margin-bottom:14px"></div><button id="saveQuiz" class="primary">Save quiz</button> <button id="cancelEdit" class="soft hidden">Cancel edit</button><p id="formMsg" class="error"></p></div><div><div class="card"><h2>Manage quizzes</h2><input id="adminQuizSearch" class="field" placeholder="Search quiz title or topic…" aria-label="Search quizzes"><div class="row"><select id="adminQuizSubjectFilter" class="field" style="max-width:220px;margin:0 0 10px"><option value="all">All subjects</option><option>Pharmacology</option><option>Pathology</option></select><select id="adminQuizStatusFilter" class="field" style="max-width:220px;margin:0 0 10px"><option value="all">All statuses</option><option value="published">Published</option><option value="draft">Drafts</option></select></div><div id="adminQuizzes">Loading…</div></div><div class="grid admin-management-links" style="margin:16px 0"><article class="card"><h2>📁 All Student Attempts</h2><p class="muted small">Search, filter, review, delete and export student quiz attempts.</p><button class="primary" type="button" onclick="openAdminAttemptsPage()">Open All Student Attempts →</button></article><article class="card"><h2>📊 Student Performance Tracker</h2><p class="muted small">View registered students, scores, averages and progress history.</p><button class="primary" type="button" onclick="openAdminPerformancePage()">Open Performance Tracker →</button></article></div><div class="card hidden" id="pathologyMarkEditor"><div class="row" style="justify-content:space-between"><h2 id="markEditorTitle">Edit Pathology marks</h2><button class="soft" onclick="closeMarkEditor()">Close</button></div><p class="muted small">Adjust each awarded mark from 0 up to that question’s maximum. Saving recalculates the attempt total and percentage.</p><div id="markEditorBody">Loading answers…</div><p id="markEditorMsg" class="muted"></p><button id="saveAdjustedMarks" class="primary" onclick="saveAdjustedMarks()">Save adjusted marks</button></div></div></div></section>
-<section id="adminAttemptsPage" class="hidden"><div class="row"><div><h1>📁 All Student Attempts</h1><p class="muted">Search, filter, review and export student quiz attempts.</p></div><button class="soft" type="button" onclick="backToAdminDashboard()">← Back to Admin Dashboard</button></div><div class="card"><h2>All student attempts</h2><p class="muted small">Choose Pharmacology or Pathology to open that subject’s attempts. Use Delete attempt to permanently remove that attempt and its saved answer/performance rows. This does not delete the student account or quiz. CSV export downloads the full attempt list allowed by your admin permissions.</p><input id="adminAttemptSearch" class="field" placeholder="Search student name, ID or quiz…" aria-label="Search attempts"><div class="row"><select id="adminAttemptSubjectFilter" class="field" style="max-width:220px;margin:0 0 10px"><option value="all">All subjects</option><option>Pharmacology</option><option>Pathology</option></select><select id="adminAttemptStatusFilter" class="field" style="max-width:220px;margin:0 0 10px"><option value="all">All statuses</option><option value="submitted">Submitted</option><option value="pending">Pending / other</option></select><button class="soft" id="exportAttemptsBtn" type="button">Export all attempts CSV</button></div><p id="adminExportMsg" class="muted small"></p><div id="adminAttempts">Loading…</div></div></section>
-<section id="adminPerformancePage" class="hidden"><div class="row"><div><h1>📊 Student Performance Tracker</h1><p class="muted">Registered students, scores and progress history.</p></div><button class="soft" type="button" onclick="backToAdminDashboard()">← Back to Admin Dashboard</button></div><div class="card"><p class="muted small">Permanent score history is stored separately from quiz attempts, so deleting a quiz will not delete its saved performance records.</p><div id="adminPerformance">Loading performance records…</div></div></section>
-<div id="globalMsg" class="error"></div><div class="footer">MedQuiz · Pharmacology MCQs · Pathology MCQs & SAQs</div></div></div></main>
+<div class="card" style="margin-top:16px"><div class="row"><h3 style="margin:0">Find questions</h3></div><input id="bankSearch" class="field" placeholder="Search question, topic or subtopic"><div class="grid"><div><label>Subject</label><select id="bankFilterSubject" class="field"><option value="all">All subjects</option><option>Pharmacology</option><option>Pathology</option></select></div><div><label>Format</label><select id="bankFilterFormat" class="field"><option value="all">All formats</option><option>MCQ</option><option>SAQ</option></select></div><div><label>Difficulty</label><select id="bankFilterDifficulty" class="field"><option value="all">All difficulties</option><option>Unspecified</option><option>Easy</option><option>Moderate</option><option>Hard</option><option>Very hard</option></select></div><div><label>Status</label><select id="bankFilterStatus" class="field"><option value="all">All</option><option value="active">Active</option><option value="inactive">Inactive</option></select></div></div><button class="soft" type="button" onclick="loadQuestionBankAdmin()">Refresh questions</button></div>
+<div class="card" style="margin-top:16px"><div class="row"><h3 style="margin:0">Saved questions</h3><span id="bankSavedCount" class="pill">Loading…</span></div><div id="bankQuestionList" style="margin-top:10px">Loading question bank…</div></div></section><div class="notice">Choose a Topic folder when creating each quiz. Students browse Pharmacology by topic folder; Pathology is grouped into MCQ and SAQ first, then by topic folder. Pharmacology is MCQ-only. Pathology supports MCQs and SAQs. MCQ JSON: <code>question, options, answer, explanation, topic, subtopic, difficulty</code> (answer is a zero-based option index; use five options A–E). SAQ JSON: <code>question, marks, modelAnswer, topic, subtopic, difficulty</code>. MCQs are automatically graded; SAQs use the deterministic Cloudflare key-point marking function.</div><div class="grid"><div class="card"><h2 id="formTitle">Add a quiz</h2><label>Quiz title</label><input id="qTitle" class="field" placeholder="e.g. Beta-lactam antibiotics"><label>Subject</label><select id="qSubject" class="field"><option>Pharmacology</option><option>Pathology</option></select><label>Topic folder (where students will find this quiz)</label><input id="qTopicFolder" class="field" list="topicFolderSuggestions" placeholder="e.g. Antimicrobial drugs, Cardiovascular pathology" required><datalist id="topicFolderSuggestions"><option value="General"><option value="Autacoids"><option value="General Pharmacology"><option value="Antimicrobials"><option value="Antimicrobial drugs"><option value="Autonomic pharmacology"><option value="Cardiovascular pharmacology"><option value="Endocrine pharmacology"><option value="Inflammation"><option value="Cell injury and adaptation"><option value="Haematology"><option value="Immunology"><option value="Cardiovascular pathology"><option value="Respiratory pathology"><option value="Gastrointestinal pathology"><option value="Renal pathology"><option value="Neoplasia"></datalist><label>Question format</label><select id="qFormat" class="field"><option value="MCQ">MCQ — automatically graded</option><option value="SAQ">SAQ — key-point marked</option></select><label>Timer (minutes)</label><input id="qMinutes" class="field" type="number" min="1" value="20"><label>Description</label><input id="qDesc" class="field" placeholder="Topics covered"><label>Questions (JSON array)</label><textarea id="qData" class="field answer" placeholder='[{"question":"Which drug...","options":["A","B","C","D","E"],"answer":1,"explanation":"..."}]'></textarea><p id="formatHelp" class="muted small">MCQ: use 5 options (A–E), answer index 0–4, explanation, topic, subtopic and difficulty.</p><div class="row" style="justify-content:flex-start;margin:8px 0 12px"><button id="previewQuizImport" class="soft" type="button">Validate & preview questions</button><button id="formatExampleBtn" class="soft" type="button">Insert example JSON</button></div><div id="quizImportPreview" class="card hidden" aria-live="polite" style="padding:16px;margin-bottom:14px"></div><button id="saveQuiz" class="primary">Save quiz</button> <button id="cancelEdit" class="soft hidden">Cancel edit</button><p id="formMsg" class="error"></p></div><div><div class="card"><h2>Manage quizzes</h2><input id="adminQuizSearch" class="field" placeholder="Search quiz title or topic…" aria-label="Search quizzes"><div class="row"><select id="adminQuizSubjectFilter" class="field" style="max-width:220px;margin:0 0 10px"><option value="all">All subjects</option><option>Pharmacology</option><option>Pathology</option></select><select id="adminQuizStatusFilter" class="field" style="max-width:220px;margin:0 0 10px"><option value="all">All statuses</option><option value="published">Published</option><option value="draft">Drafts</option></select></div><div id="adminQuizzes">Loading…</div></div><details class="admin-folder" open><summary><span class="folder-icon">📁</span><span><span class="folder-title">All student attempts</span><span class="folder-subtitle">Search, filter and export student quiz attempts</span></span></summary><div class="folder-content"><div class="card"><h2>All student attempts</h2><p class="muted small">Choose Pharmacology or Pathology to open that subject’s attempts. Use Delete attempt to permanently remove that attempt and its saved answer/performance rows. This does not delete the student account or quiz. CSV export downloads the full attempt list allowed by your admin permissions.</p><input id="adminAttemptSearch" class="field" placeholder="Search student name, ID or quiz…" aria-label="Search attempts"><div class="row"><select id="adminAttemptSubjectFilter" class="field" style="max-width:220px;margin:0 0 10px"><option value="all">All subjects</option><option>Pharmacology</option><option>Pathology</option></select><select id="adminAttemptStatusFilter" class="field" style="max-width:220px;margin:0 0 10px"><option value="all">All statuses</option><option value="submitted">Submitted</option><option value="pending">Pending / other</option></select><button class="soft" id="exportAttemptsBtn" type="button">Export all attempts CSV</button></div><p id="adminExportMsg" class="muted small"></p><div id="adminAttempts">Loading…</div></div></div></details><details class="admin-folder" open><summary><span class="folder-icon">📊</span><span><span class="folder-title">Student performance tracker</span><span class="folder-subtitle">View registered students, scores and progress</span></span></summary><div class="folder-content"><div class="card"><h2>Student performance tracker</h2><p class="muted small">Permanent score history is stored separately from quiz attempts, so deleting a quiz will not delete its saved performance records.</p><div id="adminPerformance">Loading performance records…</div></div></div></details><div class="card hidden" id="pathologyMarkEditor"><div class="row" style="justify-content:space-between"><h2 id="markEditorTitle">Edit Pathology marks</h2><button class="soft" onclick="closeMarkEditor()">Close</button></div><p class="muted small">Adjust each awarded mark from 0 up to that question’s maximum. Saving recalculates the attempt total and percentage.</p><div id="markEditorBody">Loading answers…</div><p id="markEditorMsg" class="muted"></p><button id="saveAdjustedMarks" class="primary" onclick="saveAdjustedMarks()">Save adjusted marks</button></div></div></div></section><div id="globalMsg" class="error"></div><div class="footer">MedQuiz · Pharmacology MCQs · Pathology MCQs & SAQs</div></div></div></main>
 <script>
 const SUPABASE_URL='https://hdtxrfvnvdhdvwhecybu.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY='sb_publishable_S708xjhRgOGrkuW8Dt-RVg_QyuJWNa2';
 const db=supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
 let session=null,isAdmin=false,authMode='signin',editingId=null,currentQuiz=null,timerHandle=null,secondsLeft=0,submitted=false,currentQuestionIndex=0,flaggedQuestions=new Set();let attemptReturnPage='recentAttemptsPage';let subjectQuizPool=[],subjectQuestionMeta=[],activeSubjectFilters={topic:'all',subtopic:'all',difficulty:'all',count:0,shuffle:true};let recoveryMode=new URLSearchParams(location.search).get('reset')==='1';
-const $=id=>document.getElementById(id);function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function msg(t){$('globalMsg').textContent=t||''}function setSidebarActive(target){document.querySelectorAll('[data-sidebar]').forEach(b=>b.classList.toggle('active',b.dataset.sidebar===target))}function exitQuiz(){goHome()}function hidePages(){['home','availableQuizzesPage','subjectPage','questionBankStudent','performancePage','recentAttemptsPage','quizPage','attemptDetailPage','adminPage','adminAttemptsPage','adminPerformancePage','authPanel'].forEach(x=>$(x).classList.add('hidden'));if(timerHandle){clearInterval(timerHandle);timerHandle=null}}function goHome(){hidePages();setSidebarActive('home');$('home').classList.remove('hidden');renderHome()}function backToAdminDashboard(){if(!isAdmin){goHome();return}hidePages();$('adminPage').classList.remove('hidden')}async function openAdminAttemptsPage(){if(!isAdmin){msg('Admin access required.');return}hidePages();$('adminAttemptsPage').classList.remove('hidden');await renderAdminAttempts()}async function openAdminPerformancePage(){if(!isAdmin){msg('Admin access required.');return}hidePages();$('adminPerformancePage').classList.remove('hidden');await renderAdminPerformance()}function showPerformance(){if(!session){showAuth();return}hidePages();setSidebarActive('performance');$('performancePage').classList.remove('hidden');renderMyPerformance()}function showRecentAttempts(){if(!session){showAuth();return}hidePages();setSidebarActive('attempts');$('recentAttemptsPage').classList.remove('hidden');renderRecentAttempts()}async function openStudentQuestionBank(){if(!session){showAuth();$('authMsg').textContent='Sign in to practise from the Question Bank.';return}hidePages();setSidebarActive('questionBank');$('questionBankStudent').classList.remove('hidden');await loadStudentBankFilters()}function showAuth(mode='signin'){authMode=mode;const isForgot=mode==='forgot',isReset=mode==='reset';$('authTitle').textContent=isForgot?'Reset your password':isReset?'Choose a new password':mode==='signin'?'Sign in':'Create student account';$('authSubmit').textContent=isForgot?'Send reset email':isReset?'Save new password':mode==='signin'?'Sign in':'Create account';$('toggleAuth').classList.toggle('hidden',isForgot||isReset);$('forgotPassword').classList.toggle('hidden',mode!=='signin');$('backToLogin').classList.toggle('hidden',!isForgot&&!isReset);$('fullNameLabel').classList.toggle('hidden',mode!=='signup');$('fullName').classList.toggle('hidden',mode!=='signup');$('fullName').required=mode==='signup';$('password').classList.toggle('hidden',isForgot);$('email').classList.toggle('hidden',isReset);$('authMsg').textContent='';hidePages();$('authPanel').classList.remove('hidden');if(isReset){$('password').value='';$('password').placeholder='Enter a new password (at least 6 characters)';$('password').autocomplete='new-password'}else{$('password').placeholder='';$('password').autocomplete='current-password'}}
-async function refreshSession(){const {data:{session:s}}=await db.auth.getSession();session=s;isAdmin=false;if(session){const {data,error}=await db.from('user_roles').select('role').eq('user_id',session.user.id).maybeSingle();isAdmin=!error&&data?.role==='admin';const {data:profile}=await db.from('profiles').select('full_name').eq('user_id',session.user.id).maybeSingle();const displayName=profile?.full_name||session.user.user_metadata?.full_name||session.user.email?.split('@')[0]||'Student';$('userLabel').textContent=displayName;if($('welcomeName'))$('welcomeName').textContent=displayName;$('authBtn').textContent='Sign out';$('adminBtn').classList.toggle('hidden',!isAdmin);$('sidebarAdminBtn').classList.toggle('hidden',!isAdmin)}else{$('userLabel').textContent='';$('authBtn').textContent='Sign in';$('adminBtn').classList.add('hidden')}await renderHome()}
+const $=id=>document.getElementById(id);function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function msg(t){$('globalMsg').textContent=t||''}function setSidebarActive(target){document.querySelectorAll('[data-sidebar]').forEach(b=>b.classList.toggle('active',b.dataset.sidebar===target))}function exitQuiz(){goHome()}function hidePages(){['home','subjectPage','questionBankStudent','performancePage','recentAttemptsPage','quizPage','attemptDetailPage','adminPage','authPanel'].forEach(x=>$(x).classList.add('hidden'));if(timerHandle){clearInterval(timerHandle);timerHandle=null}}function goHome(){hidePages();setSidebarActive('home');$('home').classList.remove('hidden');renderHome()}function showPerformance(){if(!session){showAuth();return}hidePages();setSidebarActive('performance');$('performancePage').classList.remove('hidden');renderMyPerformance()}function showRecentAttempts(){if(!session){showAuth();return}hidePages();setSidebarActive('attempts');$('recentAttemptsPage').classList.remove('hidden');renderRecentAttempts()}async function openStudentQuestionBank(){if(!session){showAuth();$('authMsg').textContent='Sign in to practise from the Question Bank.';return}hidePages();setSidebarActive('questionBank');$('questionBankStudent').classList.remove('hidden');await loadStudentBankFilters()}function showAuth(mode='signin'){authMode=mode;const isForgot=mode==='forgot',isReset=mode==='reset';$('authTitle').textContent=isForgot?'Reset your password':isReset?'Choose a new password':mode==='signin'?'Sign in':'Create student account';$('authSubmit').textContent=isForgot?'Send reset email':isReset?'Save new password':mode==='signin'?'Sign in':'Create account';$('toggleAuth').classList.toggle('hidden',isForgot||isReset);$('forgotPassword').classList.toggle('hidden',mode!=='signin');$('backToLogin').classList.toggle('hidden',!isForgot&&!isReset);$('fullNameLabel').classList.toggle('hidden',mode!=='signup');$('fullName').classList.toggle('hidden',mode!=='signup');$('fullName').required=mode==='signup';$('password').classList.toggle('hidden',isForgot);$('email').classList.toggle('hidden',isReset);$('authMsg').textContent='';hidePages();$('authPanel').classList.remove('hidden');if(isReset){$('password').value='';$('password').placeholder='Enter a new password (at least 6 characters)';$('password').autocomplete='new-password'}else{$('password').placeholder='';$('password').autocomplete='current-password'}}
+async function refreshSession(){const {data:{session:s}}=await db.auth.getSession();session=s;isAdmin=false;if(session){const {data,error}=await db.from('user_roles').select('role').eq('user_id',session.user.id).maybeSingle();isAdmin=!error&&data?.role==='admin';const {data:profile}=await db.from('profiles').select('full_name').eq('user_id',session.user.id).maybeSingle();$('userLabel').textContent=profile?.full_name||session.user.user_metadata?.full_name||session.user.email||'Signed in';$('authBtn').textContent='Sign out';$('adminBtn').classList.toggle('hidden',!isAdmin);$('sidebarAdminBtn').classList.toggle('hidden',!isAdmin)}else{$('userLabel').textContent='';$('authBtn').textContent='Sign in';$('adminBtn').classList.add('hidden')}await renderHome()}
 $('authBtn').onclick=async()=>{if(session){await db.auth.signOut();await refreshSession();goHome()}else showAuth()};$('toggleAuth').onclick=()=>showAuth(authMode==='signin'?'signup':'signin');$('forgotPassword').onclick=()=>showAuth('forgot');$('backToLogin').onclick=()=>{history.replaceState({},'',location.pathname);recoveryMode=false;showAuth('signin')};$('cancelAuth').onclick=goHome;$('authSubmit').onclick=async()=>{const email=$('email').value.trim(),password=$('password').value,fullName=$('fullName').value.trim();try{$('authSubmit').disabled=true;$('authMsg').textContent='';if(authMode==='forgot'){if(!email){$('authMsg').textContent='Enter the email address used for your MedQuiz account.';return}const redirectTo=location.origin+location.pathname+'?reset=1';const r=await db.auth.resetPasswordForEmail(email,{redirectTo});if(r.error)throw r.error;$('authMsg').className='success';$('authMsg').textContent='If an account exists for that email, a password-reset link has been sent. Check your inbox and spam folder.';return}if(authMode==='reset'){if(password.length<6){$('authMsg').textContent='Use a password with at least 6 characters.';return}const r=await db.auth.updateUser({password});if(r.error)throw r.error;$('authMsg').className='success';$('authMsg').textContent='Password updated. You can now sign in with your new password.';setTimeout(()=>{history.replaceState({},'',location.pathname);recoveryMode=false;showAuth('signin')},1800);return}if(!email||!password){$('authMsg').textContent='Enter your email and password.';return}if(authMode==='signup'&&!fullName){$('authMsg').textContent='Enter your full name to create your account.';return}let r;if(authMode==='signin')r=await db.auth.signInWithPassword({email,password});else r=await db.auth.signUp({email,password,options:{data:{full_name:fullName}}});if(r.error)throw r.error;if(authMode==='signup'&&!r.data.session){$('authMsg').className='success';$('authMsg').textContent='Account created. Check your email to confirm it, then sign in using only your email and password. Your name is saved to your account.';return}if(authMode==='signup'&&r.data.session){const {error:pe}=await db.from('profiles').upsert({user_id:r.data.session.user.id,full_name:fullName},{onConflict:'user_id'});if(pe)throw new Error('Account created, but your name could not be saved to your profile: '+pe.message)}await refreshSession();goHome()}catch(e){$('authMsg').className='error';$('authMsg').textContent=e.message||'Could not complete the request. Please try again.'}finally{$('authSubmit').disabled=false}};db.auth.onAuthStateChange((event)=>{if(event==='PASSWORD_RECOVERY'){recoveryMode=true;showAuth('reset')}setTimeout(refreshSession,0)});if(recoveryMode){setTimeout(()=>showAuth('reset'),300)}
 async function fetchQuizzes(subject=null){let query=db.from('quizzes').select('id,title,subject,topic_folder,question_format,duration_minutes,description,is_published,created_at').eq('is_streak_quiz',false).order('created_at',{ascending:false});if(!isAdmin)query=query.eq('is_published',true);if(subject)query=query.eq('subject',subject);const {data,error}=await query;if(error)throw error;return data||[]}
 function quizCard(q,topicPractice=false){const format=String(q.question_format||'MCQ').toUpperCase();return `<div class="quizrow"><div class="row"><div><b>${esc(q.title)}</b><div class="muted small">${esc(q.topic_folder||'General')} · ${esc(q.subject)} · ${format==='MCQ'?'MCQs':'SAQs'} · ${Number(q.duration_minutes)||20} min</div>${q.description?`<div class="muted small">${esc(q.description)}</div>`:''}</div><button class="primary" onclick="startQuiz('${q.id}',${topicPractice?'true':'false'})">Start →</button></div></div>`}
@@ -317,7 +176,26 @@ async function renderMyPerformance(){
   const overall=avg(scored),pAvg=avg(pharm.filter(a=>a.score!==null&&a.score!==undefined&&Number(a.total_marks)>0)),paAvg=avg(patho.filter(a=>a.score!==null&&a.score!==undefined&&Number(a.total_marks)>0));
   const renderSubject=(name,list,average)=>`<details class="student-performance-folder" open><summary style="cursor:pointer;font-weight:850;color:var(--navy)">${name} <span class="pill">${list.length} completed</span> <span class="muted small">Average: ${average===null?'No scored results':average.toFixed(1)+'%'}</span></summary><div style="overflow-x:auto;margin-top:12px">${list.length?`<table style="width:100%;border-collapse:collapse;font-size:13px"><thead><tr><th style="text-align:left;padding:8px;border-bottom:1px solid var(--line)">Quiz</th><th style="text-align:left;padding:8px;border-bottom:1px solid var(--line)">Format</th><th style="text-align:right;padding:8px;border-bottom:1px solid var(--line)">Score</th><th style="text-align:right;padding:8px;border-bottom:1px solid var(--line)">Percentage</th><th style="text-align:left;padding:8px;border-bottom:1px solid var(--line)">Date</th><th style="padding:8px;border-bottom:1px solid var(--line)">Review</th></tr></thead><tbody>${list.map(a=>{const valid=a.score!==null&&a.score!==undefined&&Number(a.total_marks)>0;return `<tr><td style="padding:8px;border-bottom:1px solid var(--line)"><b>${esc(a.quizzes?.title||'Quiz')}</b></td><td style="padding:8px;border-bottom:1px solid var(--line)">${esc(a.quizzes?.question_format||(name==='Pharmacology'?'MCQ':'MCQ/SAQ'))}</td><td style="padding:8px;text-align:right;border-bottom:1px solid var(--line)">${valid?`${esc(a.score)}/${esc(a.total_marks)}`:'Awaiting marking'}</td><td style="padding:8px;text-align:right;border-bottom:1px solid var(--line)">${valid?pct(a).toFixed(1)+'%':'—'}</td><td style="padding:8px;border-bottom:1px solid var(--line)">${esc(new Date(a.submitted_at||a.created_at).toLocaleString())}</td><td style="padding:8px;text-align:center;border-bottom:1px solid var(--line)"><button class="soft small" onclick="viewAttempt('${a.id}')">View results</button></td></tr>`}).join('')}</tbody></table>`:'<p class="muted">No completed quizzes in this subject yet.</p>'}</div></details>`;
   box.innerHTML=`<div class="metric-grid"><div class="metric-card"><div class="metric-value">${completed.length}</div><div class="metric-label">Completed quizzes</div></div><div class="metric-card"><div class="metric-value">${overall===null?'—':overall.toFixed(1)+'%'}</div><div class="metric-label">Average across scored quizzes</div></div></div><p class="muted small">These totals include ordinary Pharmacology and Pathology quizzes.</p>${renderSubject('💊 Pharmacology',pharm,pAvg)}${renderSubject('🔬 Pathology',patho,paAvg)}${completed.length?'':'<p class="muted">Your results will appear here after you complete a quiz.</p>'}`;
+  await appendBankPracticePerformance(box);
  }catch(e){box.innerHTML=`<p class="error">Could not load your results: ${esc(e.message)}</p>`;}
+}
+
+async function appendBankPracticePerformance(box){
+ const section=document.createElement('section');section.className='card';section.style.marginTop='16px';section.innerHTML='<h2 style="margin-top:0">📚 Question Bank practice analytics</h2><p class="muted">Loading your saved practice sessions…</p>';box.appendChild(section);
+ try{
+  const {data:rows,error}=await db.from('question_bank_practice_attempts').select('id,subject,question_format,topic_filter,subtopic_filter,difficulty_filter,question_count,score,total_marks,percentage,created_at').eq('user_id',session.user.id).order('created_at',{ascending:false}).limit(100);
+  if(error)throw error;
+  const attempts=rows||[];const scored=attempts.filter(a=>a.percentage!==null&&a.percentage!==undefined&&Number.isFinite(Number(a.percentage)));
+  const average=scored.length?scored.reduce((n,a)=>n+Number(a.percentage),0)/scored.length:null;
+  const totalQuestions=attempts.reduce((n,a)=>n+Number(a.question_count||0),0);
+  const ids=attempts.map(a=>a.id);let answerRows=[];
+  if(ids.length){const {data:ans,error:ansError}=await db.from('question_bank_practice_answers').select('attempt_id,topic,is_correct').in('attempt_id',ids);if(ansError)throw ansError;answerRows=ans||[];}
+  const topicMap=new Map();answerRows.filter(a=>a.is_correct!==null).forEach(a=>{const key=a.topic||'Uncategorised';if(!topicMap.has(key))topicMap.set(key,{correct:0,total:0});const v=topicMap.get(key);v.total++;if(a.is_correct)v.correct++;});
+  const topics=[...topicMap.entries()].map(([topic,v])=>({topic,percentage:100*v.correct/Math.max(1,v.total),...v})).sort((a,b)=>a.percentage-b.percentage);
+  const topicHtml=topics.length?`<h3>Topic performance</h3>${topics.map(t=>`<div class="trend-item"><div class="trend-title">${esc(t.topic)}<br><span class="muted small">${t.correct}/${t.total} correct</span></div><div class="trend-track"><div class="trend-fill" style="width:${Math.max(0,Math.min(100,t.percentage))}%"></div></div><div class="trend-percent">${t.percentage.toFixed(0)}%</div></div>`).join('')}`:'<p class="muted small">Topic analytics will appear after you complete MCQ practice sessions.</p>';
+  const history=attempts.length?`<h3>Practice history</h3><div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:13px"><thead><tr><th style="text-align:left;padding:8px;border-bottom:1px solid var(--line)">Session</th><th style="text-align:left;padding:8px;border-bottom:1px solid var(--line)">Subject / format</th><th style="text-align:right;padding:8px;border-bottom:1px solid var(--line)">Score</th><th style="text-align:right;padding:8px;border-bottom:1px solid var(--line)">Percentage</th><th style="text-align:left;padding:8px;border-bottom:1px solid var(--line)">Date</th></tr></thead><tbody>${attempts.map(a=>`<tr><td style="padding:8px;border-bottom:1px solid var(--line)"><b>${esc(a.topic_filter&&a.topic_filter!=='all'?a.topic_filter:'All topics')}</b><br><span class="muted small">${Number(a.question_count)||0} questions</span></td><td style="padding:8px;border-bottom:1px solid var(--line)">${esc(a.subject)} · ${esc(a.question_format)}</td><td style="padding:8px;text-align:right;border-bottom:1px solid var(--line)">${a.score===null||a.score===undefined?'Self-review':`${esc(a.score)}/${esc(a.total_marks)}`}</td><td style="padding:8px;text-align:right;border-bottom:1px solid var(--line)">${a.percentage===null||a.percentage===undefined?'—':Number(a.percentage).toFixed(1)+'%'}</td><td style="padding:8px;border-bottom:1px solid var(--line)">${a.created_at?esc(new Date(a.created_at).toLocaleString()):'—'}</td></tr>`).join('')}</tbody></table></div>`:'<p class="muted">No Question Bank practice sessions saved yet. Complete a practice session and it will appear here.</p>';
+  section.innerHTML=`<h2 style="margin-top:0">📚 Question Bank practice analytics</h2><div class="metric-grid"><div class="metric-card"><div class="metric-value">${attempts.length}</div><div class="metric-label">Practice sessions</div></div><div class="metric-card"><div class="metric-value">${totalQuestions}</div><div class="metric-label">Questions practised</div></div><div class="metric-card"><div class="metric-value">${average===null?'—':average.toFixed(1)+'%'}</div><div class="metric-label">Average MCQ score</div></div><div class="metric-card"><div class="metric-value">${scored.length}</div><div class="metric-label">Scored MCQ sessions</div></div></div><p class="muted small">MCQ scores are calculated automatically. Pathology SAQs are recorded as self-review and are not included in the average because they are not automatically marked.</p>${topicHtml}${history}`;
+ }catch(e){section.innerHTML=`<h2 style="margin-top:0">📚 Question Bank practice analytics</h2><p class="error">Could not load practice analytics: ${esc(e.message)}</p><p class="muted small">Run the Question Bank practice tracking SQL migration in Supabase, then refresh this page.</p>`;}
 }
 
 async function renderRecentAttempts(){
@@ -332,16 +210,14 @@ async function renderRecentAttempts(){
  }catch(e){box.innerHTML=`<p class="error">Could not load attempts: ${esc(e.message)}</p>`;}
 }
 
-async function showAvailableQuizzes(){
- hidePages();setSidebarActive('availableQuizzes');$('availableQuizzesPage').classList.remove('hidden');
- const box=$('availableQuizzesList');box.innerHTML='<p class="muted">Loading published quizzes…</p>';
- try{const qs=await fetchQuizzes();box.innerHTML=qs.length?qs.map(quizCard).join(''):'<p class="muted">There are no published quizzes available at the moment.</p>';}
- catch(e){box.innerHTML=`<p class="error">Could not load available quizzes: ${esc(e.message)}</p>`;}
-}
 async function renderHome(){
- const name=session?($('userLabel').textContent||session.user.user_metadata?.full_name||session.user.email?.split('@')[0]||'Student'):'Student';
- if($('welcomeName'))$('welcomeName').textContent=name;
- if(isAdmin)renderAdmin();
+ try{
+  const qs=await fetchQuizzes();
+  $('allQuizzes').innerHTML=qs.length?qs.slice(0,5).map(quizCard).join(''):'<p class="muted">No published main quizzes yet. Sign in and check again later.</p>';
+  if(session){await renderMyPerformance();await renderRecentAttempts();}
+  else{$('myPerformance').innerHTML='<p class="muted">Sign in to view your completed main quizzes, average score and results.</p>';$('myAttempts').innerHTML='<p class="muted">Sign in to view your latest attempts.</p>';}
+  if(isAdmin)renderAdmin();
+ }catch(e){$('allQuizzes').innerHTML=`<p class="error">Could not load quizzes: ${esc(e.message)}</p>`;$('myAttempts').innerHTML=`<p class="error">Could not load attempts: ${esc(e.message)}</p>`;}
 }
 
 function returnFromAttempt(){const target=attemptReturnPage||'recentAttemptsPage';hidePages();if(target==='performancePage'){$('performancePage').classList.remove('hidden');renderMyPerformance();return}if(target==='recentAttemptsPage'){$('recentAttemptsPage').classList.remove('hidden');renderRecentAttempts();return}if(target==='subjectPage'){showSubject($('subjectTitle').textContent||'Pharmacology');return}if(target==='adminPage'){if(isAdmin){$('adminPage').classList.remove('hidden');renderAdmin()}else goHome();return}goHome()}
@@ -639,150 +515,12 @@ function applyAdminAttemptFilters(){
 }
 
 let studentBankMeta=[];
-let studentBankSelected=new Set();
-
-function studentBankGroupKey(topic,subtopic){return `${String(topic||'').trim()}|||${String(subtopic||'').trim()}`;}
-function studentBankGroups(){
- const subject=$('studentBankSubject').value,format=$('studentBankFormat').value,topic=$('studentBankTopic').value;
- if(!topic)return [];
- const rows=studentBankMeta.filter(q=>q.subject===subject&&q.question_format===format&&q.topic===topic);
- const map=new Map();
- rows.forEach(q=>{
-  const t=String(q.topic||'Uncategorised').trim(),st=String(q.subtopic||'Uncategorised').trim(),key=studentBankGroupKey(t,st);
-  if(!map.has(key))map.set(key,{key,topic:t,subtopic:st,count:0});
-  map.get(key).count++;
- });
- return [...map.values()].sort((a,b)=>a.topic.localeCompare(b.topic)||a.subtopic.localeCompare(b.subtopic));
-}
-function studentBankSelectedGroups(){return studentBankGroups().filter(g=>studentBankSelected.has(g.key));}
-function updateStudentBankSelectionSummary(){
- const groups=studentBankSelectedGroups();
- const count=studentBankMeta.filter(q=>{
-  if(q.subject!==$('studentBankSubject').value||q.question_format!==$('studentBankFormat').value)return false;
-  if($('studentBankTopic').value!=='all'&&q.topic!==$('studentBankTopic').value)return false;
-  if($('studentBankDifficulty').value!=='all'&&(q.difficulty||'Unspecified')!==$('studentBankDifficulty').value)return false;
-  return groups.some(g=>g.topic===String(q.topic||'Uncategorised').trim()&&g.subtopic===String(q.subtopic||'Uncategorised').trim());
- }).length;
- $('studentBankSelectionSummary').textContent=`${groups.length} subtopic${groups.length===1?'':'s'} selected`;
- $('studentBankAvailableCount').textContent=`${count} active question${count===1?'':'s'} available`;
-}
-function renderStudentBankSubtopics(){
- const box=$('studentBankSubtopicList');if(!box)return;
- const groups=studentBankGroups();
- const valid=new Set(groups.map(g=>g.key));
- studentBankSelected=new Set([...studentBankSelected].filter(k=>valid.has(k)));
- if(!$('studentBankTopic').value){box.innerHTML='<div class="notice" style="margin:0">Choose a major topic above to see its subtopics. Subtopics will stay hidden until you select a major topic.</div>';updateStudentBankSelectionSummary();return;}
- if(!groups.length){box.innerHTML='<p class="muted small">No active subtopics are available under this major topic and question format.</p>';updateStudentBankSelectionSummary();return;}
- box.innerHTML=groups.map(g=>`<label class="subtopic-check"><input type="checkbox" data-bank-subtopic="${esc(g.key)}" ${studentBankSelected.has(g.key)?'checked':''}><span class="subtopic-check-copy"><span>${esc(g.subtopic)}</span><small>${esc(g.topic)} · ${g.count} active question${g.count===1?'':'s'}</small></span></label>`).join('');
- box.querySelectorAll('input[data-bank-subtopic]').forEach(input=>input.addEventListener('change',()=>{
-  const key=input.dataset.bankSubtopic;
-  if(input.checked)studentBankSelected.add(key);else studentBankSelected.delete(key);
-  updateStudentBankSelectionSummary();
- }));
- updateStudentBankSelectionSummary();
-}
-function fillStudentBankSelect(id,values,label,placeholderValue='all'){
- const el=$(id),old=el.value,vals=[...new Set((values||[]).filter(v=>String(v||'').trim()).map(v=>String(v).trim()))].sort((a,b)=>a.localeCompare(b));
- el.innerHTML=`<option value="${placeholderValue}">${label}</option>`+vals.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');
- el.value=vals.includes(old)?old:placeholderValue;
-}
-async function fetchAllStudentBankRows(columns,subject,format){
- const all=[];let from=0,batch=1000;
- while(true){
-  let query=db.from('question_bank').select(columns).eq('is_active',true);
-  if(subject)query=query.eq('subject',subject);
-  if(format)query=query.eq('question_format',format);
-  const {data,error}=await query.range(from,from+batch-1);
-  if(error)throw error;
-  const rows=data||[];all.push(...rows);
-  if(rows.length<batch)break;
-  from+=batch;
- }
- return all;
-}
-async function loadStudentBankFilters(){
- const note=$('studentBankMessage');note.textContent='Loading available topics and subtopics…';
- try{
-  studentBankMeta=await fetchAllStudentBankRows('subject,question_format,topic,subtopic,difficulty',null,null);
-  studentBankSelected.clear();
-  updateStudentBankFilters();
-  note.className='muted small';
-  note.textContent=studentBankMeta.length?`${studentBankMeta.length} active Question Bank questions are available. Select one or more subtopics to begin.`:'No active questions are available yet.';
- }catch(e){note.textContent='Could not load Question Bank filters: '+e.message;note.className='error';}
-}
-function updateStudentBankFilters(){
- const subject=$('studentBankSubject').value,format=$('studentBankFormat').value;
- const rows=studentBankMeta.filter(q=>q.subject===subject&&q.question_format===format);
- fillStudentBankSelect('studentBankTopic',rows.map(q=>q.topic),'Select a major topic first','');
- fillStudentBankSelect('studentBankDifficulty',rows.map(q=>q.difficulty||'Unspecified'),'All difficulties');
- renderStudentBankSubtopics();
-}
-function updateStudentBankSubtopics(){renderStudentBankSubtopics();}
-function resetStudentBankFilters(){
- $('studentBankSubject').value='Pharmacology';$('studentBankFormat').value='MCQ';$('studentBankCount').value='10';
- $('studentBankTopic').value='';$('studentBankDifficulty').value='all';studentBankSelected.clear();
- updateStudentBankFilters();$('studentBankMessage').className='muted small';
- $('studentBankMessage').textContent='Filters reset. Select one or more subtopics to generate a new practice session.';
-}
-function shuffleStudentBank(items){
- const a=[...items];
- for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
- return a;
-}
-function distributeStudentBankQuestions(rows,selectedGroups,limit){
- const grouped=new Map(selectedGroups.map(g=>[g.key,[]]));
- rows.forEach(q=>{
-  const key=studentBankGroupKey(q.topic||'Uncategorised',q.subtopic||'Uncategorised');
-  if(grouped.has(key))grouped.get(key).push(q);
- });
- for(const [key,list] of grouped)grouped.set(key,shuffleStudentBank(list));
- const result=[];let remaining=true;
- while(result.length<limit&&remaining){
-  remaining=false;
-  for(const g of selectedGroups){
-   const list=grouped.get(g.key);
-   if(list&&list.length&&result.length<limit){result.push(list.pop());remaining=true;}
-  }
- }
- return shuffleStudentBank(result);
-}
-async function generateBankPractice(){
- if(!session){showAuth();return;}
- const subject=$('studentBankSubject').value,format=$('studentBankFormat').value,topic=$('studentBankTopic').value,difficulty=$('studentBankDifficulty').value,count=Number($('studentBankCount').value);
- const note=$('studentBankMessage'),selectedGroups=studentBankSelectedGroups();
- if(subject==='Pharmacology'&&format!=='MCQ'){note.className='error';note.textContent='Pharmacology Question Bank practice is MCQ-only.';return;}
- if(!topic){note.className='error';note.textContent='Choose a major topic first. Its subtopics will then appear below.';return;}
- if(!selectedGroups.length){note.className='error';note.textContent='Select at least one subtopic. Use Select all if you want questions from every available subtopic.';return;}
- const button=$('generateBankPractice');button.disabled=true;note.className='muted small';note.textContent='Finding matching questions…';
- try{
-  let query=db.from('question_bank').select('id,subject,question_format,question_text,options,marks,topic,subtopic,difficulty').eq('is_active',true).eq('subject',subject).eq('question_format',format);
-  if(topic!=='all')query=query.eq('topic',topic);
-  if(difficulty!=='all')query=query.eq('difficulty',difficulty);
-  let allRows=[],from=0,batch=1000;
-  while(true){
-   const {data,error}=await query.range(from,from+batch-1);if(error)throw error;
-   const page=data||[];allRows.push(...page);if(page.length<batch)break;from+=batch;
-  }
-  const selectedKeys=new Set(selectedGroups.map(g=>g.key));
-  let questions=allRows.filter(q=>selectedKeys.has(studentBankGroupKey(q.topic||'Uncategorised',q.subtopic||'Uncategorised')));
-  if(!questions.length){note.className='error';note.textContent='No active questions are currently available in the selected subtopics. Please choose another subtopic.';return;}
-  const requested=count>0?Math.min(count,100):100;
-  questions=distributeStudentBankQuestions(questions,selectedGroups,Math.min(requested,questions.length));
-  if(!questions.length){note.className='error';note.textContent='No questions could be selected from those subtopics.';return;}
-  const selectedNames=selectedGroups.map(g=>g.subtopic);
-  currentQuiz={id:null,title:`Question Bank Practice · ${subject}`,subject,question_format:format,duration_minutes:0,questions,isBankPractice:true,topicPractice:{topic,subtopics:selectedNames,subtopic:selectedNames.join(', '),difficulty}};
-  currentQuestionIndex=0;flaggedQuestions=new Set();submitted=false;hidePages();$('quizPage').classList.remove('hidden');$('quizResult').classList.add('hidden');$('submitQuiz').classList.remove('hidden');$('submitQuiz').textContent='Submit practice';
-  $('quizTag').textContent=`QUESTION BANK · ${subject} · ${format}`;
-  $('quizTitle').textContent=currentQuiz.title;
-  $('quizMeta').textContent=`${questions.length} randomly selected questions · ${selectedNames.join(', ')} · ${format==='MCQ'?'Automatic marking':'Model-answer review'}`;
-  $('quizQuestions').innerHTML=questions.map((it,i)=>format==='MCQ'?`<article class="question mcq-question" data-mcq-index="${i}"><h3>${i+1}. ${esc(it.question_text)}</h3><p class="muted small">${esc([it.topic,it.subtopic,it.difficulty].filter(Boolean).join(' · '))}</p>${(it.options||[]).map((o,j)=>`<label class="option"><input type="radio" name="ans${i}" value="${j}"><span>${String.fromCharCode(65+j)}. ${esc(o)}</span></label>`).join('')}</article>`:`<article class="question"><h3>${i+1}. ${esc(it.question_text)} <span class="pill">${it.marks||1} marks</span></h3><p class="muted small">${esc([it.topic,it.subtopic,it.difficulty].filter(Boolean).join(' · '))}</p><textarea class="field answer" id="saq${i}" placeholder="Type your answer..."></textarea></article>`).join('');
-  const mcq=format==='MCQ';$('mcqNavigator').classList.toggle('hidden',!mcq);
-  if(mcq){buildQuestionPalette();$('flagQuestion').onclick=toggleCurrentFlag;$('mcqPrevious').onclick=()=>moveMCQQuestion(-1);$('mcqNext').onclick=()=>moveMCQQuestion(1);showMCQQuestion(0);}else{$('submitQuiz').textContent='Submit answers';}
-  $('timer').textContent='Practice';$('submitQuiz').onclick=()=>submitCurrent(false);
-  note.className='success';note.textContent=`Practice started with ${questions.length} question(s) from ${selectedGroups.length} selected subtopic(s).`;
- }catch(e){note.className='error';note.textContent='Could not generate practice: '+e.message;}
- finally{button.disabled=false;}
-}
+function fillStudentBankSelect(id,values,label){const el=$(id);const old=el.value;const vals=[...new Set((values||[]).filter(v=>String(v||'').trim()).map(v=>String(v).trim()))].sort((a,b)=>a.localeCompare(b));el.innerHTML=`<option value="all">${label}</option>`+vals.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');el.value=vals.includes(old)?old:'all';}
+async function loadStudentBankFilters(){const note=$('studentBankMessage');note.textContent='Loading available topics…';try{const {data,error}=await db.from('question_bank').select('subject,question_format,topic,subtopic,difficulty').eq('is_active',true).limit(2000);if(error)throw error;studentBankMeta=data||[];updateStudentBankFilters();note.textContent=studentBankMeta.length?`${studentBankMeta.length} active bank questions are available. Choose your filters to begin.`:'No active questions are available yet.';}catch(e){note.textContent='Could not load Question Bank filters: '+e.message;note.className='error';}}
+function updateStudentBankFilters(){const subject=$('studentBankSubject').value,format=$('studentBankFormat').value;const rows=studentBankMeta.filter(q=>q.subject===subject&&q.question_format===format);fillStudentBankSelect('studentBankTopic',rows.map(q=>q.topic),'All topics');updateStudentBankSubtopics();fillStudentBankSelect('studentBankDifficulty',rows.map(q=>q.difficulty||'Unspecified'),'All difficulties');}
+function updateStudentBankSubtopics(){const subject=$('studentBankSubject').value,format=$('studentBankFormat').value,topic=$('studentBankTopic').value;const rows=studentBankMeta.filter(q=>q.subject===subject&&q.question_format===format&&(topic==='all'||q.topic===topic));fillStudentBankSelect('studentBankSubtopic',rows.map(q=>q.subtopic),'All subtopics');}
+function resetStudentBankFilters(){$('studentBankSubject').value='Pharmacology';$('studentBankFormat').value='MCQ';$('studentBankCount').value='10';updateStudentBankFilters();$('studentBankMessage').className='muted small';$('studentBankMessage').textContent='Filters reset. Generate a new practice session when ready.';}
+async function generateBankPractice(){if(!session){showAuth();return;}const subject=$('studentBankSubject').value,format=$('studentBankFormat').value,topic=$('studentBankTopic').value,subtopic=$('studentBankSubtopic').value,difficulty=$('studentBankDifficulty').value,count=Number($('studentBankCount').value);const note=$('studentBankMessage');if(subject==='Pharmacology'&&format!=='MCQ'){note.className='error';note.textContent='Pharmacology Question Bank practice is MCQ-only.';return;}const button=$('generateBankPractice');button.disabled=true;note.className='muted small';note.textContent='Finding matching questions…';try{let query=db.from('question_bank').select('id,subject,question_format,question_text,options,marks,topic,subtopic,difficulty').eq('is_active',true).eq('subject',subject).eq('question_format',format);if(topic!=='all')query=query.eq('topic',topic);if(subtopic!=='all')query=query.eq('subtopic',subtopic);if(difficulty!=='all')query=query.eq('difficulty',difficulty);const {data,error}=await query.limit(1000);if(error)throw error;let questions=data||[];if(!questions.length){note.textContent='No active questions match these filters. Try another topic, difficulty or format.';return;}questions=questions.sort(()=>Math.random()-.5);if(count>0)questions=questions.slice(0,count);questions=questions.slice(0,100);currentQuiz={id:null,title:`Question Bank Practice · ${subject}`,subject,question_format:format,duration_minutes:0,questions,isBankPractice:true,topicPractice:{topic,subtopic,difficulty}};currentQuestionIndex=0;flaggedQuestions=new Set();submitted=false;hidePages();$('quizPage').classList.remove('hidden');$('quizResult').classList.add('hidden');$('submitQuiz').classList.remove('hidden');$('submitQuiz').textContent='Submit practice';$('quizTag').textContent=`QUESTION BANK · ${subject} · ${format}`;$('quizTitle').textContent=currentQuiz.title;$('quizMeta').textContent=`${questions.length} randomly selected questions · ${topic==='all'?'All topics':topic} · ${format==='MCQ'?'Automatic marking':'Model-answer review'}`;$('quizQuestions').innerHTML=questions.map((it,i)=>format==='MCQ'?`<article class="question mcq-question" data-mcq-index="${i}"><h3>${i+1}. ${esc(it.question_text)}</h3><p class="muted small">${esc([it.topic,it.subtopic,it.difficulty].filter(Boolean).join(' · '))}</p>${(it.options||[]).map((o,j)=>`<label class="option"><input type="radio" name="ans${i}" value="${j}"><span>${String.fromCharCode(65+j)}. ${esc(o)}</span></label>`).join('')}</article>`:`<article class="question"><h3>${i+1}. ${esc(it.question_text)} <span class="pill">${it.marks||1} marks</span></h3><p class="muted small">${esc([it.topic,it.subtopic,it.difficulty].filter(Boolean).join(' · '))}</p><textarea class="field answer" id="saq${i}" placeholder="Type your answer..."></textarea></article>`).join('');const mcq=format==='MCQ';$('mcqNavigator').classList.toggle('hidden',!mcq);if(mcq){buildQuestionPalette();$('flagQuestion').onclick=toggleCurrentFlag;$('mcqPrevious').onclick=()=>moveMCQQuestion(-1);$('mcqNext').onclick=()=>moveMCQQuestion(1);showMCQQuestion(0);}else{$('submitQuiz').textContent='Submit answers';}$('timer').textContent='Practice';$('submitQuiz').onclick=()=>submitCurrent(false);note.textContent=`Practice started with ${questions.length} question(s).`; }catch(e){note.className='error';note.textContent='Could not generate practice: '+e.message;}finally{button.disabled=false;}}
 async function submitBankPractice(auto){
  const format=currentQuiz.question_format,questions=currentQuiz.questions;submitted=true;$('mcqNavigator').classList.add('hidden');if(timerHandle){clearInterval(timerHandle);timerHandle=null;}$('quizResult').classList.remove('hidden');$('submitQuiz').classList.add('hidden');
  try{
@@ -800,18 +538,55 @@ async function submitBankPractice(auto){
   $('quizResult').scrollIntoView({behavior:'smooth'});
  }catch(e){$('quizResult').innerHTML=`<p class="error">Could not mark this practice session: ${esc(e.message)}</p><p class="muted">Check that the student Question Bank answer-key read policy has been added in Supabase.</p>`;}
 }
-
+async function saveBankPracticeAttempt({format,questions,score,totalMarks,answerRows}){
+ if(!session?.user?.id)throw new Error('You must be signed in to save practice history.');
+ const percentage=format==='MCQ'?Number((100*Number(score)/Math.max(1,Number(totalMarks))).toFixed(2)):null;
+ const payload={user_id:session.user.id,subject:currentQuiz.subject,question_format:format,topic_filter:currentQuiz.topicPractice?.topic||'all',subtopic_filter:currentQuiz.topicPractice?.subtopic||'all',difficulty_filter:currentQuiz.topicPractice?.difficulty||'all',question_count:questions.length,score:format==='MCQ'?score:null,total_marks:format==='MCQ'?totalMarks:questions.reduce((n,q)=>n+Number(q.marks||1),0),percentage};
+ const {data:attempt,error}=await db.from('question_bank_practice_attempts').insert(payload).select('id').single();if(error)throw error;
+ const rows=answerRows.map(a=>({...a,attempt_id:attempt.id}));const {error:answerError}=await db.from('question_bank_practice_answers').insert(rows);if(answerError){await db.from('question_bank_practice_attempts').delete().eq('id',attempt.id);throw answerError;}
+}
 
 let bankAdminCache=[],bankUploadRows=[],bankUploadValidated=false;
 function openQuestionBankAdmin(){if(!isAdmin){msg('Admin access required.');return;}document.querySelectorAll('#adminPage > .grid,#adminPage > details,#adminPage > .notice').forEach(el=>el.classList.add('hidden'));$('questionBankAdmin').classList.remove('hidden');loadQuestionBankAdmin();}
 function closeQuestionBankAdmin(){$('questionBankAdmin').classList.add('hidden');document.querySelectorAll('#adminPage > .grid,#adminPage > details,#adminPage > .notice').forEach(el=>el.classList.remove('hidden'));}
+const PHARMACOLOGY_MAJOR_TOPIC='Antimicrobial Drugs';
+const PHARMACOLOGY_ANTIMICROBIAL_SUBTOPICS=[
+ 'Antibiotic classification and mechanisms',
+ 'Beta-lactam antibiotics',
+ 'Aminoglycosides',
+ 'Tetracyclines',
+ 'Macrolides',
+ 'Lincosamides',
+ 'Glycopeptides',
+ 'Fluoroquinolones',
+ 'Oxazolidinones',
+ 'Sulfonamides and trimethoprim',
+ 'Other antibacterial drugs',
+ 'Antitubercular drugs',
+ 'Antileprosy drugs',
+ 'Antifungal drugs',
+ 'Antiviral drugs',
+ 'Antiretroviral drugs',
+ 'Antimalarial drugs',
+ 'Antiprotozoal drugs',
+ 'Antisyphilitic drugs'
+];
 function syncBankFormat(){const f=$('bankFormat').value;if($('bankSubject').value==='Pharmacology'&&f==='SAQ'){$('bankFormat').value='MCQ';$('bankImportMsg').textContent='Pharmacology supports MCQs only.';}}
 function refreshBankTopicOptions(){
- const subject=$('bankSubject').value,topics=[...new Set(bankAdminCache.filter(q=>q.subject===subject).map(q=>q.topic).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
- $('bankTopicOptions').innerHTML=topics.map(t=>`<option value="${esc(t)}"></option>`).join('');
+ const subject=$('bankSubject').value,topics=[...new Set(bankAdminCache.filter(q=>q.subject===subject).map(q=>q.topic).filter(Boolean))];
+ if(subject==='Pharmacology')topics.push(PHARMACOLOGY_MAJOR_TOPIC);
+ const uniqueTopics=[...new Set(topics)].sort((a,b)=>a.localeCompare(b));
+ $('bankTopicOptions').innerHTML=uniqueTopics.map(t=>`<option value="${esc(t)}"></option>`).join('');
+ if(subject==='Pharmacology'&&!$('bankTopicChoice').value.trim())$('bankTopicChoice').value=PHARMACOLOGY_MAJOR_TOPIC;
  refreshBankSubtopicOptions();
 }
-function refreshBankSubtopicOptions(){const subject=$('bankSubject').value,topic=$('bankTopicChoice').value.trim();const subs=[...new Set(bankAdminCache.filter(q=>q.subject===subject&&q.topic===topic).map(q=>q.subtopic).filter(Boolean))].sort((a,b)=>a.localeCompare(b));$('bankSubtopicOptions').innerHTML=subs.map(t=>`<option value="${esc(t)}"></option>`).join('');}
+function refreshBankSubtopicOptions(){
+ const subject=$('bankSubject').value,topic=$('bankTopicChoice').value.trim();
+ let subs=bankAdminCache.filter(q=>q.subject===subject&&q.topic===topic).map(q=>q.subtopic).filter(Boolean);
+ if(subject==='Pharmacology'&&topic.toLowerCase()===PHARMACOLOGY_MAJOR_TOPIC.toLowerCase())subs.push(...PHARMACOLOGY_ANTIMICROBIAL_SUBTOPICS);
+ const uniqueSubs=[...new Set(subs)].sort((a,b)=>a.localeCompare(b));
+ $('bankSubtopicOptions').innerHTML=uniqueSubs.map(t=>`<option value="${esc(t)}"></option>`).join('');
+}
 function bankCell(row,...names){for(const n of names){const key=Object.keys(row||{}).find(k=>k.trim().toLowerCase().replace(/[^a-z0-9]/g,'')===n.toLowerCase().replace(/[^a-z0-9]/g,''));if(key!==undefined&&row[key]!==null&&row[key]!==undefined&&String(row[key]).trim()!=='')return row[key];}return '';}
 function normaliseBankUploadRow(row,index){const subject=$('bankSubject').value,format=$('bankFormat').value;const question=String(bankCell(row,'question','questiontext','stem')||'').trim();if(!question)throw new Error(`Row ${index+2}: question is empty.`);const topic=String(bankCell(row,'topic')||$('bankTopicChoice').value||'').trim();const subtopic=String(bankCell(row,'subtopic')||$('bankSubtopicChoice').value||'').trim();const difficulty=String(bankCell(row,'difficulty')||$('bankDifficulty').value||'Unspecified').trim();if(!topic)throw new Error(`Row ${index+2}: choose a topic or provide a Topic column.`);
  const x={question,topic,subtopic,difficulty};
@@ -836,7 +611,7 @@ function downloadBankCsvTemplate(){const format=$('bankFormat').value;const head
 async function readBankUploadFile(){const file=$('bankUploadFile').files?.[0];if(!file)throw new Error('Choose an Excel or CSV file first.');if(!window.XLSX)throw new Error('Excel/CSV reader has not loaded. Refresh the page and try again.');const data=await file.arrayBuffer();const wb=XLSX.read(data,{type:'array'});const ws=wb.Sheets[wb.SheetNames[0]];const rows=XLSX.utils.sheet_to_json(ws,{defval:''});if(!rows.length)throw new Error('The first worksheet is empty.');return rows;}
 async function previewBankUpload(){bankUploadValidated=false;bankUploadRows=[];$('bankImportBtn').disabled=true;const box=$('bankImportPreview');box.classList.remove('hidden');try{const rows=await readBankUploadFile();const payloads=rows.map((r,i)=>normaliseBankUploadRow(r,i));bankUploadRows=payloads;bankUploadValidated=true;$('bankImportBtn').disabled=false;const topicGroups=[...new Set(payloads.map(p=>p.question.topic))],subGroups=[...new Set(payloads.map(p=>p.question.subtopic).filter(Boolean))];box.innerHTML=`<h3 class="success" style="margin-top:0">Validation successful</h3><div class="metric-grid"><div class="metric-card"><div class="metric-value">${payloads.length}</div><div class="metric-label">Questions ready</div></div><div class="metric-card"><div class="metric-value">${$('bankFormat').value}</div><div class="metric-label">Format</div></div><div class="metric-card"><div class="metric-value">${topicGroups.length}</div><div class="metric-label">Topics</div></div><div class="metric-card"><div class="metric-value">${subGroups.length}</div><div class="metric-label">Subtopics</div></div></div><p class="muted small">Showing first ${Math.min(5,payloads.length)} questions. Nothing has been saved yet. Click Import questions when ready.</p>${payloads.slice(0,5).map((p,i)=>`<div class="quizrow"><b>${i+1}. ${esc(p.question.question_text)}</b><div class="muted small">${esc(p.question.topic)}${p.question.subtopic?' · '+esc(p.question.subtopic):''} · ${esc(p.question.difficulty)}</div></div>`).join('')}`;$('bankImportMsg').textContent='';}catch(e){box.innerHTML=`<p class="error"><b>Validation failed:</b> ${esc(e.message)}</p>`;$('bankImportMsg').textContent='Correct the file or selected classification and validate again.';}}
 async function importBankQuestions(){if(!isAdmin||!bankUploadValidated||!bankUploadRows.length)return;const btn=$('bankImportBtn');btn.disabled=true;let saved=0;try{$('bankImportMsg').className='muted small';$('bankImportMsg').textContent=`Importing ${bankUploadRows.length} questions…`;for(const payload of bankUploadRows){await writeBankQuestion(payload);saved++;}$('bankImportMsg').className='success';$('bankImportMsg').textContent=`Successfully imported ${saved} questions into the selected topic/subtopic.`;$('bankUploadFile').value='';$('bankImportPreview').classList.add('hidden');bankUploadRows=[];bankUploadValidated=false;await loadQuestionBankAdmin();}catch(e){$('bankImportMsg').className='error';$('bankImportMsg').textContent=`Import stopped: ${e.message} Imported successfully before the error: ${saved}. Do not re-upload the whole file without checking saved questions first.`;}finally{btn.disabled=!bankUploadValidated;}}
-async function loadQuestionBankAdmin(){if(!isAdmin)return;$('bankQuestionList').textContent='Loading question bank…';try{const {data,error}=await db.from('question_bank').select('id,subject,question_format,question_text,options,marks,topic,subtopic,difficulty,is_active,created_at').order('created_at',{ascending:false}).limit(1000);if(error)throw error;bankAdminCache=data||[];refreshBankTopicOptions();renderQuestionBankAdmin();}catch(e){$('bankQuestionList').innerHTML=`<p class="error">Could not load question bank: ${esc(e.message)}</p>`;$('bankCount').textContent='Error';}}
+async function loadQuestionBankAdmin(){if(!isAdmin)return;$('bankQuestionList').textContent='Loading question bank…';try{const {data,error}=await db.from('question_bank').select('id,subject,question_format,question_text,options,marks,topic,subtopic,difficulty,is_active,created_at').order('created_at',{ascending:false}).limit(1000);if(error)throw error;bankAdminCache=data||[];refreshBankTopicOptions();renderQuestionBankAdmin();}catch(e){$('bankQuestionList').innerHTML=`<p class="error">Could not load question bank: ${esc(e.message)}</p>`;$('bankSavedCount').textContent='Error';}}
 function renderQuestionBankAdmin(){const term=($('bankSearch').value||'').trim().toLowerCase(),sub=$('bankFilterSubject').value,fmt=$('bankFilterFormat').value,diff=$('bankFilterDifficulty').value,status=$('bankFilterStatus').value;const rows=bankAdminCache.filter(q=>(sub==='all'||q.subject===sub)&&(fmt==='all'||q.question_format===fmt)&&(diff==='all'||q.difficulty===diff)&&(status==='all'||(status==='active'?q.is_active:!q.is_active))&&(`${q.question_text} ${q.topic} ${q.subtopic||''}`).toLowerCase().includes(term));$('bankCount').textContent=`${rows.length} shown · ${bankAdminCache.length} total`;$('bankQuestionList').innerHTML=rows.length?rows.map(q=>`<div class="quizrow"><div class="row" style="align-items:flex-start"><div style="flex:1;min-width:0"><div class="row" style="justify-content:flex-start"><span class="pill">${esc(q.subject)}</span><span class="pill">${esc(q.question_format)}</span><span class="pill">${esc(q.difficulty||'Unspecified')}</span><span class="pill">${q.is_active?'Active':'Inactive'}</span></div><b>${esc(q.question_text)}</b><div class="muted small">${esc(q.topic)}${q.subtopic?' · '+esc(q.subtopic):''}${q.question_format==='SAQ'?' · '+Number(q.marks)+' marks':''}</div></div><div class="row" style="justify-content:flex-end"><button class="soft" type="button" onclick="editBankQuestion('${q.id}')">Edit</button><button class="soft" type="button" onclick="toggleBankQuestion('${q.id}',${!q.is_active})">${q.is_active?'Deactivate':'Activate'}</button><button class="danger" type="button" onclick="deleteBankQuestion('${q.id}')">Delete</button></div></div></div>`).join(''):'<p class="muted">No questions match these filters.</p>';}
 async function editBankQuestion(id){try{const q=bankAdminCache.find(x=>x.id===id);if(!q)throw new Error('Question not found.');const {data:k,error}=await db.from('question_bank_answer_keys').select('*').eq('question_id',id).maybeSingle();if(error)throw error;$('bankSubject').value=q.subject;$('bankFormat').value=q.question_format;syncBankFormat();$('bankQuestion').value=q.question_text;$('bankTopic').value=q.topic;$('bankSubtopic').value=q.subtopic||'';$('bankDifficulty').value=q.difficulty||'Unspecified';if(q.question_format==='MCQ'){$('bankOptions').value=(q.options||[]).join('\n');$('bankAnswer').value=String(Number(k?.correct_answer??0));$('bankExplanation').value=k?.explanation||'';}else{$('bankMarks').value=q.marks;$('bankModelAnswer').value=k?.model_answer||k?.marking_scheme||'';}$('bankFormTitle').textContent='Edit bank question';$('bankSaveBtn').textContent='Update question';$('bankCancelEdit').classList.remove('hidden');editingBankQuestionId=id;$('bankQuestion').scrollIntoView({behavior:'smooth',block:'center'});}catch(e){alert('Could not load question: '+e.message)}}
 async function toggleBankQuestion(id,value){try{const {error}=await db.from('question_bank').update({is_active:value}).eq('id',id);if(error)throw error;await loadQuestionBankAdmin();}catch(e){alert('Could not update question: '+e.message)}}
@@ -845,24 +620,13 @@ async function deleteBankQuestion(id){const q=bankAdminCache.find(x=>x.id===id);
 async function renderAdmin(){try{
  activeAdminAttemptSubject=null;
  const qs=await fetchQuizzes();adminQuizCache=qs;applyAdminQuizFilters();
- // Attempts and performance are loaded on their own internal pages.
- await Promise.resolve();
+ const {data:ats,error}=await db.from('attempts').select('id,user_id,quiz_id,score,total_marks,status,submitted_at,created_at,quizzes(title,subject)').order('created_at',{ascending:false}).limit(100);
+ if(error){$('adminAttempts').innerHTML=`<p class="error">${esc(error.message)}</p>`}else if(!ats?.length){adminAttemptCache=[];showAdminAttemptCategories()}else{
+  const ids=[...new Set(ats.map(a=>a.user_id).filter(Boolean))];const {data:profiles,error:profileError}=await db.from('profiles').select('user_id,full_name').in('user_id',ids);const names=new Map((profiles||[]).map(p=>[p.user_id,p.full_name]));
+  adminAttemptCache=ats.map(a=>({...a,studentName:names.get(a.user_id)||'Name not added yet',quizTitle:a.quizzes?.title||'Quiz',subject:a.quizzes?.subject||''}));applyAdminAttemptFilters();if(profileError)$('adminAttempts').insertAdjacentHTML('afterbegin',`<p class="error">Could not load student names: ${esc(profileError.message)}</p>`)
+ }
+ await renderAdminPerformance();
  }catch(e){$('adminQuizzes').textContent=e.message}}
-async function renderAdminAttempts(){
- if(!isAdmin)return;
- $('adminAttempts').innerHTML='<p class="muted">Loading student attempts…</p>';
- try{
-  const {data:ats,error}=await db.from('attempts').select('id,user_id,quiz_id,score,total_marks,status,submitted_at,created_at,quizzes(title,subject)').order('created_at',{ascending:false}).limit(100);
-  if(error)throw error;
-  if(!ats?.length){adminAttemptCache=[];activeAdminAttemptSubject=null;showAdminAttemptCategories();return;}
-  const ids=[...new Set(ats.map(a=>a.user_id).filter(Boolean))];let profiles=[];let profileError=null;
-  if(ids.length){const result=await db.from('profiles').select('user_id,full_name').in('user_id',ids);profiles=result.data||[];profileError=result.error;}
-  const names=new Map(profiles.map(p=>[p.user_id,p.full_name]));
-  adminAttemptCache=ats.map(a=>({...a,studentName:names.get(a.user_id)||'Name not added yet',quizTitle:a.quizzes?.title||'Quiz',subject:a.quizzes?.subject||''}));
-  applyAdminAttemptFilters();
-  if(profileError)$('adminAttempts').insertAdjacentHTML('afterbegin',`<p class="error">Could not load student names: ${esc(profileError.message)}</p>`);
- }catch(e){$('adminAttempts').innerHTML=`<p class="error">Could not load attempts: ${esc(e.message)}</p>`;}
-}
 async function deleteStudentAttempt(attemptId){
  if(!isAdmin){alert('Admin access required.');return;}
  const row=adminAttemptCache.find(a=>String(a.id)===String(attemptId));
@@ -875,7 +639,7 @@ async function deleteStudentAttempt(attemptId){
   adminAttemptCache=adminAttemptCache.filter(a=>String(a.id)!==String(attemptId));
   if(!adminAttemptCache.length)activeAdminAttemptSubject=null;
   applyAdminAttemptFilters();
-  if(!$('adminPerformancePage').classList.contains('hidden'))await renderAdminPerformance();
+  await renderAdminPerformance();
   await renderHome();
   msg('Attempt and its saved answer/performance rows were deleted.');
  }catch(e){alert('Could not delete attempt: '+e.message);}
@@ -1045,26 +809,17 @@ async function saveAdjustedMarks(){
  finally{$('saveAdjustedMarks').disabled=false;}
 }
 
-$('bankSubject').addEventListener('change',()=>{syncBankFormat();refreshBankTopicOptions();});$('bankFormat').addEventListener('change',()=>{syncBankFormat();bankUploadValidated=false;$('bankImportBtn').disabled=true;});$('bankTopicChoice').addEventListener('input',refreshBankSubtopicOptions);['bankSearch','bankFilterSubject','bankFilterFormat','bankFilterDifficulty','bankFilterStatus'].forEach(id=>$(id).addEventListener(id==='bankSearch'?'input':'change',renderQuestionBankAdmin));$('bankUploadFile').addEventListener('change',()=>{bankUploadValidated=false;bankUploadRows=[];$('bankImportBtn').disabled=true;$('bankImportPreview').classList.add('hidden');});syncBankFormat();
-$('studentBankSubject').addEventListener('change',()=>{if($('studentBankSubject').value==='Pharmacology')$('studentBankFormat').value='MCQ';$('studentBankTopic').value='';studentBankSelected.clear();updateStudentBankFilters();});$('studentBankFormat').addEventListener('change',()=>{$('studentBankTopic').value='';studentBankSelected.clear();updateStudentBankFilters();});$('studentBankTopic').addEventListener('change',()=>{studentBankSelected.clear();updateStudentBankSubtopics();});
-$('studentBankDifficulty').addEventListener('change',updateStudentBankSelectionSummary);
-$('studentBankSelectAll').addEventListener('click',()=>{studentBankSelected=new Set(studentBankGroups().map(g=>g.key));renderStudentBankSubtopics();});
-$('studentBankClearSelection').addEventListener('click',()=>{studentBankSelected.clear();renderStudentBankSubtopics();});
+$('bankSubject').addEventListener('change',()=>{syncBankFormat();if($('bankSubject').value==='Pharmacology')$('bankTopicChoice').value=PHARMACOLOGY_MAJOR_TOPIC;else if($('bankTopicChoice').value===PHARMACOLOGY_MAJOR_TOPIC)$('bankTopicChoice').value='';refreshBankTopicOptions();});$('bankFormat').addEventListener('change',()=>{syncBankFormat();bankUploadValidated=false;$('bankImportBtn').disabled=true;});$('bankTopicChoice').addEventListener('input',refreshBankSubtopicOptions);['bankSearch','bankFilterSubject','bankFilterFormat','bankFilterDifficulty','bankFilterStatus'].forEach(id=>$(id).addEventListener(id==='bankSearch'?'input':'change',renderQuestionBankAdmin));$('bankUploadFile').addEventListener('change',()=>{bankUploadValidated=false;bankUploadRows=[];$('bankImportBtn').disabled=true;$('bankImportPreview').classList.add('hidden');});syncBankFormat();
+$('studentBankSubject').addEventListener('change',()=>{if($('studentBankSubject').value==='Pharmacology')$('studentBankFormat').value='MCQ';updateStudentBankFilters();});$('studentBankFormat').addEventListener('change',()=>updateStudentBankFilters());$('studentBankTopic').addEventListener('change',updateStudentBankSubtopics);
 refreshSession();
-
-// Dashboard destination cards navigate to dedicated full-page sections.
-const mobileMenuToggle=$('mobileMenuToggle'),mainSidebar=$('mainSidebar');
-if(mobileMenuToggle&&mainSidebar){mobileMenuToggle.addEventListener('click',()=>{const open=mainSidebar.classList.toggle('mobile-open');mobileMenuToggle.setAttribute('aria-expanded',String(open));mobileMenuToggle.querySelector('span:last-child').textContent=open?'Close menu':'Menu';mobileMenuToggle.querySelector('span:first-child').textContent=open?'✕':'☰';});}
 
 // Sidebar navigation: use the existing page functions so database/auth behaviour stays unchanged.
 document.querySelectorAll('[data-sidebar]').forEach(btn=>btn.addEventListener('click',()=>{
   document.querySelectorAll('[data-sidebar]').forEach(b=>b.classList.toggle('active',b===btn));
   const target=btn.dataset.sidebar;
-  if(mainSidebar){mainSidebar.classList.remove('mobile-open');mobileMenuToggle?.setAttribute('aria-expanded','false');if(mobileMenuToggle){mobileMenuToggle.querySelector('span:last-child').textContent='Menu';mobileMenuToggle.querySelector('span:first-child').textContent='☰';}}
   if(target==='home'){goHome();return}
   if(target==='pharmacology'){showSubject('Pharmacology');return}
   if(target==='pathology'){showSubject('Pathology');return}
-  if(target==='availableQuizzes'){showAvailableQuizzes();return}
   if(target==='questionBank'){openStudentQuestionBank();return}
   if(target==='performance'){showPerformance();return}
   if(target==='attempts'){showRecentAttempts();return}
