@@ -1083,4 +1083,169 @@ document.querySelectorAll('[data-sidebar]').forEach(btn=>btn.addEventListener('c
   if(target==='attempts'){showRecentAttempts();return}
   if(target==='admin'){if(isAdmin){$('adminBtn').click()}return}
 }));
+
+  // ======================================================
+// MEDQUIZ: BROWSER AND PHONE BACK/FORWARD NAVIGATION
+// ======================================================
+
+(function () {
+  const pageIds = [
+    'home',
+    'questionBankStudent',
+    'availableQuizzesPage',
+    'subjectPage',
+    'performancePage',
+    'recentAttemptsPage',
+    'quizPage',
+    'attemptDetailPage',
+    'adminPage',
+    'adminAttemptsPage',
+    'adminPerformancePage',
+    'authPanel',
+    'questionBankAdmin',
+    'pathologyMarkEditor'
+  ];
+
+  let restoringNavigation = false;
+  let lastSnapshot = '';
+
+  // Capture which MedQuiz screens are currently visible.
+  function captureScreen() {
+    const screens = {};
+
+    pageIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+
+      screens[id] = {
+        hidden: el.hidden,
+        display: el.style.display,
+        hiddenClass: el.classList.contains('hidden')
+      };
+    });
+
+    return screens;
+  }
+
+  function snapshotKey(screens) {
+    return JSON.stringify(screens);
+  }
+
+  // Save the current screen in browser history.
+  function saveNavigation() {
+    if (restoringNavigation) return;
+
+    const screens = captureScreen();
+    const key = snapshotKey(screens);
+
+    if (key === lastSnapshot) return;
+
+    lastSnapshot = key;
+
+    history.pushState(
+      { medquiz: true, screens },
+      '',
+      location.pathname + location.search + location.hash
+    );
+  }
+
+  // Restore a previously visited MedQuiz screen.
+  function restoreNavigation(screens) {
+    if (!screens) return;
+
+    restoringNavigation = true;
+
+    Object.entries(screens).forEach(([id, state]) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+
+      el.hidden = state.hidden;
+      el.style.display = state.display;
+
+      el.classList.toggle('hidden', state.hiddenClass);
+    });
+
+    // Restore the sidebar's active state.
+    const activePage = Object.entries(screens).find(([id, state]) => {
+      return state.hidden === false &&
+        state.display !== 'none' &&
+        !state.hiddenClass &&
+        !['questionBankAdmin', 'pathologyMarkEditor'].includes(id);
+    });
+
+    const sidebarMap = {
+      home: 'home',
+      subjectPage: 'pharmacology',
+      availableQuizzesPage: 'availableQuizzes',
+      questionBankStudent: 'questionBank',
+      performancePage: 'performance',
+      recentAttemptsPage: 'attempts'
+    };
+
+    document.querySelectorAll('[data-sidebar]').forEach(btn => {
+      btn.classList.toggle(
+        'active',
+        activePage && btn.dataset.sidebar === sidebarMap[activePage[0]]
+      );
+    });
+
+    // Close the mobile navigation menu.
+    if (mainSidebar) {
+      mainSidebar.classList.remove('mobile-open');
+    }
+
+    if (mobileMenuToggle) {
+      mobileMenuToggle.setAttribute('aria-expanded', 'false');
+      mobileMenuToggle.querySelector('span:last-child').textContent = 'Menu';
+      mobileMenuToggle.querySelector('span:first-child').textContent = '☰';
+    }
+
+    lastSnapshot = snapshotKey(captureScreen());
+
+    setTimeout(() => {
+      restoringNavigation = false;
+    }, 50);
+  }
+
+  // Establish the initial browser-history entry.
+  const initialScreens = captureScreen();
+
+  history.replaceState(
+    { medquiz: true, screens: initialScreens },
+    '',
+    location.pathname + location.search + location.hash
+  );
+
+  lastSnapshot = snapshotKey(initialScreens);
+
+  // Detect navigation performed by existing MedQuiz functions.
+  const observer = new MutationObserver(() => {
+    if (restoringNavigation) return;
+
+    clearTimeout(window.medQuizNavigationTimer);
+
+    window.medQuizNavigationTimer = setTimeout(() => {
+      saveNavigation();
+    }, 100);
+  });
+
+  pageIds.forEach(id => {
+    const el = document.getElementById(id);
+
+    if (el) {
+      observer.observe(el, {
+        attributes: true,
+        attributeFilter: ['hidden', 'style', 'class']
+      });
+    }
+  });
+
+  // Handle phone Back, browser Back and browser Forward.
+  window.addEventListener('popstate', event => {
+    if (event.state && event.state.medquiz) {
+      restoreNavigation(event.state.screens);
+    }
+  });
+
+})();
 </script></body></html>
