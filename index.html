@@ -1177,8 +1177,13 @@ let notesCache=[],visibleNotes=[],currentNoteIndex=-1,currentNoteFontSize=16,not
 function noteAdminMessage(text,isError=false){const el=$('notesAdminMessage');if(el){el.textContent=text||'';el.className=isError?'error small':'success small';}}
 function noteMarkdownInline(value){
  let safe=esc(value).replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/\*([^*]+)\*/g,'<em>$1</em>');
- // Safe inline colour syntax for study notes: [[blue]]important text[[/blue]].
- safe=safe.replace(/\[\[(blue|green|red|purple|orange|gold|teal)\]\]([\s\S]*?)\[\[\/\1\]\]/gi,(_,colour,content)=>`<span class="note-text-${colour.toLowerCase()}">${content}</span>`);
+ // Render colour tags safely. Accept both [[/orange]] and the common typo [[/orange].
+ const colours='blue|green|red|purple|orange|gold|teal';
+ safe=safe.replace(new RegExp('\\[\\[\\/('+colours+')\\](?!\\])','gi'),(_,colour)=>`[[/${colour}]]`);
+ // First render properly paired tags, including content containing line-safe markup.
+ safe=safe.replace(new RegExp('\\[\\[('+colours+')\\]\\]([\\s\\S]*?)\\[\\[\\/\\1\\]\\]','gi'),(_,colour,content)=>`<span class="note-text-${colour.toLowerCase()}">${content}</span>`);
+ // If a heading/label has an opening colour tag but no closing tag, colour the rest of that line.
+ safe=safe.replace(new RegExp('\\[\\[('+colours+')\\]\\]([^\\[]*)$','gi'),(_,colour,content)=>`<span class="note-text-${colour.toLowerCase()}">${content}</span>`);
  return safe;
 }
 function renderNoteMarkdown(markdown){
