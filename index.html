@@ -1160,18 +1160,21 @@ function noteScheduleRank(subject,subdivision,label){
  if(index<0)index=list.findIndex(x=>{const a=norm(x);return a.includes(target)||target.includes(a)});
  return index<0?Number.MAX_SAFE_INTEGER:index;
 }
-function noteCreatedTime(note){const t=Date.parse(note.created_at||note.updated_at||'');return Number.isFinite(t)?t:0;}
-function sortNotesByStudySchedule(rows,subject,subdivision=''){
- return [...rows].sort((a,b)=>{
-  const la=a.topic||a.title||'General',lb=b.topic||b.title||'General';
-  const ra=noteScheduleRank(subject,subdivision,la),rb=noteScheduleRank(subject,subdivision,lb);
-  if(ra!==rb)return ra-rb;
-  return noteCreatedTime(a)-noteCreatedTime(b);
- });
-}
-function sortNoteLabels(labels,rows,subject,subdivision=''){
-  const firstSeen=new Map();rows.forEach(n=>{const k=n.topic||n.title||'General';if(!firstSeen.has(k))firstSeen.set(k,noteCreatedTime(n));});
-  return [...labels].sort((a,b)=>{const ra=noteScheduleRank(subject,subdivision,a),rb=noteScheduleRank(subject,subdivision,b);if(ra!==rb)return ra-rb;return (firstSeen.get(a)||0)-(firstSeen.get(b)||0);});
+// Keep the original upload timestamp as the permanent position of a note.
+// Editing a note changes updated_at, but must never move it in the student library.
+function noteCreatedTime(note){const t=Date.parse(note.created_at||'');return Number.isFinite(t)?t:0;}
+function sortNotesByUploadOrder(rows){return [...rows].sort((a,b)=>noteCreatedTime(a)-noteCreatedTime(b));}
+function sortNoteLabels(labels,rows,labelField='topic'){
+  const firstSeen=new Map();
+  rows.forEach((note,index)=>{
+    const key=note[labelField]||(labelField==='topic'?(note.title||'General'):'General');
+    if(!firstSeen.has(key))firstSeen.set(key,{time:noteCreatedTime(note),index});
+  });
+  return [...labels].sort((a,b)=>{
+    const aa=firstSeen.get(a)||{time:Number.MAX_SAFE_INTEGER,index:Number.MAX_SAFE_INTEGER};
+    const bb=firstSeen.get(b)||{time:Number.MAX_SAFE_INTEGER,index:Number.MAX_SAFE_INTEGER};
+    return aa.time-bb.time||aa.index-bb.index;
+  });
 }
 let notesCache=[],visibleNotes=[],currentNoteIndex=-1,currentNoteFontSize=16,notesFilter={subject:'',subdivision:'',topic:''};
 function noteAdminMessage(text,isError=false){const el=$('notesAdminMessage');if(el){el.textContent=text||'';el.className=isError?'error small':'success small';}}
@@ -1197,7 +1200,7 @@ function renderNoteMarkdown(markdown){
 }
 function noteCard(note){const heading=note.title||note.topic||'Untitled topic';const meta=[note.subject,note.subdivision,note.topic,note.subtopic].filter(Boolean).join(' · ');return `<article class="notes-list-item"><span class="notes-category-icon">📖</span><div class="notes-category-copy"><b>${esc(heading)}</b><small>${esc(meta)}</small></div><button class="primary" type="button" onclick="openStudyNote('${esc(note.id)}')">Read notes →</button></article>`;}
 function noteMatchesSearch(n,q){return !q||[n.title,n.description,n.subject,n.subdivision,n.topic,n.subtopic,n.content].join(' ').toLowerCase().includes(q);}
-async function openNotesLibrary(){if(!session){showAuth();$('authMsg').textContent='Sign in to access your study notes.';return;}hidePages();setSidebarActive('notes');$('notesPage').classList.remove('hidden');$('notesLibraryContent').innerHTML='<p class="muted">Loading published notes…</p>';try{const {data,error}=await db.from('study_notes').select('id,title,subject,subdivision,topic,subtopic,description,content,created_at,updated_at').eq('published',true).order('created_at',{ascending:true});if(error)throw error;notesCache=data||[];renderNotesLibrary();}catch(e){$('notesLibraryContent').innerHTML=`<div class="notice">Could not load notes: ${esc(e.message)}<br><span class="small">If this is a new Notes installation, run the MedQuiz Notes SQL migration in Supabase first.</span></div>`;}}
+async function openNotesLibrary(){if(!session){showAuth();$('authMsg').textContent='Sign in to access your study notes.';return;}hidePages();setSidebarActive('notes');$('notesPage').classList.remove('hidden');$('notesLibraryContent').innerHTML='<p class="muted">Loading published notes…</p>';try{const {data,error}=await db.from('study_notes').select('id,title,subject,subdivision,topic,subtopic,description,content,created_at,updated_at').eq('published',true).order('created_at',{ascending:true}).order('id',{ascending:true});if(error)throw error;notesCache=data||[];renderNotesLibrary();}catch(e){$('notesLibraryContent').innerHTML=`<div class="notice">Could not load notes: ${esc(e.message)}<br><span class="small">If this is a new Notes installation, run the MedQuiz Notes SQL migration in Supabase first.</span></div>`;}}
 function renderNotesLibrary(){
  const box=$('notesLibraryContent');if(!box)return;const q=($('notesSearch')?.value||'').trim().toLowerCase(),matches=notesCache.filter(n=>noteMatchesSearch(n,q));
  if(q){box.innerHTML=`<div class="notes-section"><div class="row"><h2>Search results</h2><span class="pill">${matches.length} result${matches.length===1?'':'s'}</span></div>${matches.length?`<div class="notes-list">${matches.map(noteCard).join('')}</div>`:'<div class="notes-empty">No published notes match that search yet.</div>'}</div>`;return;}
@@ -1205,7 +1208,7 @@ function renderNotesLibrary(){
  box.innerHTML='<div class="notes-subject-grid">'+subjects.map(x=>{const count=matches.filter(n=>n.subject===x.name).length;return `<article class="card notes-subject-card ${x.cls}"><span class="subject-symbol">${x.icon}</span><h2>${x.name}</h2><p class="muted">${x.desc}</p><span class="pill">${count} note${count===1?'':'s'}</span><button class="primary" type="button" onclick="filterNotesSubject('${x.name}')">Explore ${x.name} →</button></article>`}).join('')+'</div>';
 }
 function renderTopicChoices(subject,rows,subdivision=''){
- const box=$('notesLibraryContent'),grouped=sortNoteLabels([...new Set(rows.map(n=>n.topic||n.title||'General').filter(Boolean))],rows,subject,subdivision),label=subdivision||subject;
+ const box=$('notesLibraryContent'),grouped=sortNoteLabels([...new Set(rows.map(n=>n.topic||n.title||'General').filter(Boolean))],rows,'topic'),label=subdivision||subject;
  box.innerHTML=`<div class="notes-section"><div class="row"><div><button class="soft" type="button" onclick="${subdivision?`filterNotesSubdivision('${esc(subdivision)}')`:`renderNotesLibrary()`}">← Back</button><h2 style="margin:12px 0 4px">${esc(label)}</h2><p class="muted small">Choose a topic to view its notes.</p></div></div>${grouped.length?`<div class="notes-subdivision-grid">${grouped.map(t=>{const count=rows.filter(n=>(n.topic||n.title||'General')===t).length;return `<button class="notes-category-card" type="button" onclick="filterNotesTopic('${esc(subject)}','${esc(t)}','${esc(subdivision)}')"><span class="notes-category-icon">📘</span><span class="notes-category-copy"><b>${esc(t)}</b><small>${count} note${count===1?'':'s'}</small></span><span class="notes-category-arrow">→</span></button>`}).join('')}</div>`:'<div class="notes-empty">No topics have been published here yet.</div>'}</div>`;
 }
 function filterNotesSubject(subject){
@@ -1221,15 +1224,15 @@ function filterNotesSubject(subject){
  renderTopicChoices(subject,rows);
 }
 function filterPharmMajor(major){
- const rows=notesCache.filter(n=>n.subject==='Pharmacology'&&n.topic===major),subtopics=sortNoteLabels([...new Set(rows.map(n=>n.subtopic||'General').filter(Boolean))],rows,'Pharmacology',major),box=$('notesLibraryContent');
+ const rows=notesCache.filter(n=>n.subject==='Pharmacology'&&n.topic===major),subtopics=sortNoteLabels([...new Set(rows.map(n=>n.subtopic||'General').filter(Boolean))],rows,'subtopic'),box=$('notesLibraryContent');
  box.innerHTML=`<div class="notes-section"><div class="row"><div><button class="soft" type="button" onclick="filterNotesSubject('Pharmacology')">← Major topics</button><h2 style="margin:12px 0 4px">${esc(major)}</h2><p class="muted small">Choose a subtopic.</p></div></div>${subtopics.length?`<div class="notes-subdivision-grid">${subtopics.map(sub=>{const count=rows.filter(n=>(n.subtopic||'General')===sub).length;return `<button class="notes-category-card" type="button" onclick="filterPharmSubtopic('${esc(major)}','${esc(sub)}')"><span class="notes-category-icon">📘</span><span class="notes-category-copy"><b>${esc(sub)}</b><small>${count} note${count===1?'':'s'}</small></span><span class="notes-category-arrow">→</span></button>`}).join('')}</div>`:'<div class="notes-empty">No subtopics have been published here yet.</div>'}</div>`;
 }
 function filterPharmSubtopic(major,subtopic){
  const rows=notesCache.filter(n=>n.subject==='Pharmacology'&&n.topic===major&&(n.subtopic||'General')===subtopic),box=$('notesLibraryContent');
- box.innerHTML=`<div class="notes-section"><div class="row"><div><button class="soft" type="button" onclick="filterPharmMajor('${esc(major)}')">← Subtopics</button><h2 style="margin:12px 0 4px">${esc(subtopic)}</h2></div></div>${rows.length?`<div class="notes-list">${[...rows].sort((a,b)=>noteCreatedTime(a)-noteCreatedTime(b)).map(noteCard).join('')}</div>`:'<div class="notes-empty">No notes have been published for this subtopic yet.</div>'}</div>`;
+ box.innerHTML=`<div class="notes-section"><div class="row"><div><button class="soft" type="button" onclick="filterPharmMajor('${esc(major)}')">← Subtopics</button><h2 style="margin:12px 0 4px">${esc(subtopic)}</h2></div></div>${rows.length?`<div class="notes-list">${sortNotesByUploadOrder(rows).map(noteCard).join('')}</div>`:'<div class="notes-empty">No notes have been published for this subtopic yet.</div>'}</div>`;
 }
 function filterNotesSubdivision(subdivision){const rows=notesCache.filter(n=>n.subject==='Pathology'&&n.subdivision===subdivision);renderTopicChoices('Pathology',rows,subdivision);}
-function filterNotesTopic(subject,topic,subdivision=''){const rows=notesCache.filter(n=>n.subject===subject&&(!subdivision||n.subdivision===subdivision)&&(n.topic||n.title||'General')===topic);const box=$('notesLibraryContent');box.innerHTML=`<div class="notes-section"><div class="row"><div><button class="soft" type="button" onclick="${subdivision?`filterNotesSubdivision('${esc(subdivision)}')`:`filterNotesSubject('${esc(subject)}')`}">← Back to topics</button><h2 style="margin:12px 0 4px">${esc(topic)}</h2></div></div>${rows.length?`<div class="notes-list">${[...rows].sort((a,b)=>noteCreatedTime(a)-noteCreatedTime(b)).map(noteCard).join('')}</div>`:'<div class="notes-empty">No notes have been published for this topic yet.</div>'}</div>`;}
+function filterNotesTopic(subject,topic,subdivision=''){const rows=notesCache.filter(n=>n.subject===subject&&(!subdivision||n.subdivision===subdivision)&&(n.topic||n.title||'General')===topic);const box=$('notesLibraryContent');box.innerHTML=`<div class="notes-section"><div class="row"><div><button class="soft" type="button" onclick="${subdivision?`filterNotesSubdivision('${esc(subdivision)}')`:`filterNotesSubject('${esc(subject)}')`}">← Back to topics</button><h2 style="margin:12px 0 4px">${esc(topic)}</h2></div></div>${rows.length?`<div class="notes-list">${sortNotesByUploadOrder(rows).map(noteCard).join('')}</div>`:'<div class="notes-empty">No notes have been published for this topic yet.</div>'}</div>`;}
 async function openStudyNote(id){const note=notesCache.find(n=>String(n.id)===String(id));if(!note)return;currentNoteIndex=notesCache.findIndex(n=>String(n.id)===String(id));hidePages();setSidebarActive('notes');$('noteReaderPage').classList.remove('hidden');renderStudyNote(note);}
 function renderStudyNote(note){const box=$('noteReaderContent');const path=[note.subject,note.subdivision,note.topic,note.subtopic].filter(Boolean).join(' · ');box.innerHTML=`<span class="pill">${esc(path)}</span><h1 class="notes-reader-title">${esc(note.title)}</h1><div class="notes-reader-meta"><span class="pill">MedQuiz Notes</span></div><div class="notes-reader-body">${renderNoteMarkdown(note.content)}</div>`;box.style.setProperty('--note-font-size',currentNoteFontSize+'px');$('previousNoteBtn').disabled=currentNoteIndex<=0;$('nextNoteBtn').disabled=currentNoteIndex>=notesCache.length-1;}
 function changeNoteTextSize(delta){currentNoteFontSize=Math.max(14,Math.min(22,currentNoteFontSize+delta));$('noteReaderContent')?.style.setProperty('--note-font-size',currentNoteFontSize+'px');}
