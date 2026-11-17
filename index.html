@@ -1177,13 +1177,15 @@ let notesCache=[],visibleNotes=[],currentNoteIndex=-1,currentNoteFontSize=16,not
 function noteAdminMessage(text,isError=false){const el=$('notesAdminMessage');if(el){el.textContent=text||'';el.className=isError?'error small':'success small';}}
 function noteMarkdownInline(value){
  let safe=esc(value).replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/\*([^*]+)\*/g,'<em>$1</em>');
- // Render colour tags safely. Accept both [[/orange]] and the common typo [[/orange].
+ // Convert supported colour tags into styled spans. Also tolerate a missing
+ // final bracket in closing tags, and never expose raw colour tokens to students.
  const colours='blue|green|red|purple|orange|gold|teal';
- safe=safe.replace(new RegExp('\\[\\[\\/('+colours+')\\](?!\\])','gi'),(_,colour)=>`[[/${colour}]]`);
- // First render properly paired tags, including content containing line-safe markup.
- safe=safe.replace(new RegExp('\\[\\[('+colours+')\\]\\]([\\s\\S]*?)\\[\\[\\/\\1\\]\\]','gi'),(_,colour,content)=>`<span class="note-text-${colour.toLowerCase()}">${content}</span>`);
- // If a heading/label has an opening colour tag but no closing tag, colour the rest of that line.
+ const tagPattern=new RegExp('\\[\\[('+colours+')\\]\\]([\\s\\S]*?)\\[\\[\\/\\1\\]\\]','gi');
+ safe=safe.replace(tagPattern,(_,colour,content)=>`<span class="note-text-${colour.toLowerCase()}">${content}</span>`);
+ // Support a colour tag that intentionally runs to the end of one note line.
  safe=safe.replace(new RegExp('\\[\\[('+colours+')\\]\\]([^\\[]*)$','gi'),(_,colour,content)=>`<span class="note-text-${colour.toLowerCase()}">${content}</span>`);
+ // Remove unmatched opening/closing tokens (including the common single-bracket typo).
+ safe=safe.replace(new RegExp('\\[\\[\\/?(?:'+colours+')(?:\\]\\]?|$)','gi'),'');
  return safe;
 }
 function renderNoteMarkdown(markdown){
